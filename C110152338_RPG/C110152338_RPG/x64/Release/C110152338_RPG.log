@@ -1,9 +1,0 @@
-﻿  C110152338_ItemData.cpp
-C:\Users\User\Desktop\save\C110152338_ItemData.cpp(16,48): warning C4267: 'return': 將 'size_t' 轉換為 'int'，資料可能遺失
-C:\Users\User\Desktop\save\C110152338_ItemData.cpp(24,28): warning C4267: '-=': 將 'size_t' 轉換為 'unsigned int'，資料可能遺失
-  正在產生程式碼
-  Previous IPDB not found, fall back to full compilation.
-C:\Users\User\Desktop\save\C110152338_User.cpp(27): warning C4715: 'CUser::get_current_city': 不是所有控制路徑都傳回值
-  All 832 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  已完成程式碼產生
-  C110152338_RPG.vcxproj -> C:\Users\User\Desktop\C110152338_RPG\x64\Release\C110152338_RPG.exe
