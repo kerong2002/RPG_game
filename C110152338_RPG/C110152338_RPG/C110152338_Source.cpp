@@ -77,6 +77,7 @@ void opening_animation() {
 //======================================================
 //==================<繪製地圖>==========================
 void printmap() {
+	system("color 0F");
 	cursor_movement(0, 15);				//移動位置
 	SetColor(15);						//設定顏色
 	for (int y = 0; y < map_y_size; y++) {
@@ -221,9 +222,29 @@ void Initialize() {
 int main() {
 	opening_animation();			//開始RPG動畫
 	printmap();
+	
 	char key;
+	string move_map;
 	while (true) {
+		
 		key = _getch();
+		if (key == ' ') {
+			cursor_movement(map_x_size + 5, 14);
+			system("color 0F");
+			cout << "請輸入移動位置";
+			cursor_movement(map_x_size + 5, 15);
+			cin >> move_map;
+			if (move_map == "A_city") {
+				cout << "";
+			}
+			cursor_movement(map_x_size + 5, 14);
+			cout << "                      ";
+			cursor_movement(map_x_size + 5, 15);
+			for (int y = 0; y < move_map.length(); y++) {
+				cout << " ";
+			}
+			//printmap();
+		}
 		if ((key == 'W' || key == 'w')) {
 			if (pos_y > 1) {
 				cursor_movement(pos_x, pos_y);
@@ -268,12 +289,11 @@ int main() {
 	system("color 0F");											//黑底白字
 	//SetColor(15);
 	Initialize();												//初始化設定
-
 	CFighter* fighter = new CFighter();
 	CGlobalInfo::user->set_user((CLifeEntity*)fighter);
 	int cur_city = CGlobalInfo::user->get_current_city();
-	CGlobalInfo::map_data->show_description(cur_city);
 
+	CGlobalInfo::map_data->show_description(cur_city);
 	while (CGlobalInfo::parser->query() >= 0) {
 		//CGlobalInfo::map_data->show_description (cur_city);
 	//	cin >> cur_city;
