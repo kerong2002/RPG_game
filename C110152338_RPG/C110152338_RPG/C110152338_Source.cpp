@@ -265,6 +265,7 @@ int main() {
 	}
 
 	system("CLS");
+	system("color 0F");											//黑底白字
 	//SetColor(15);
 	Initialize();												//初始化設定
 
