@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cassert>
+#include <windows.h>
 #include "C110152338_Place.h"
 #include "C110152338_CmdParser.h"
 #include "C110152338_GlobalInfo.h"
@@ -13,7 +14,14 @@
 int function_exit (vector<string> &tokens){	
 	return -1;
 }
-
+//==================<光標移動>=========================
+void cursor_movement_cmd(int x, int y) {
+	COORD coord;
+	coord.X = x;
+	coord.Y = y + 3;
+	HANDLE a = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleCursorPosition(a, coord);
+}
 int function_next_direction (vector<string> &tokens){	
 	if (tokens.size () != 1){
 		for (vector<string>::iterator it = tokens.begin (); it != tokens.end (); it++){
@@ -50,6 +58,7 @@ int function_next_direction (vector<string> &tokens){
 		system ("cls");
 		CGlobalInfo::map_data->show_description (next_city);		
 	} else {
+		cursor_movement_cmd(0, 21);
 		cout << "那邊沒路喔!!!請換個方向吧" << endl;		
 	}
 	return 0;
@@ -167,9 +176,10 @@ CCmdParser::CCmdParser (){
 
 }
 
-int CCmdParser::query (){
-	string sentense;	
-	getline (cin, sentense);	
+int CCmdParser::query (string thing) {
+	string sentense;
+	sentense = thing;
+	//getline (cin, sentense);	
 	vector<string> tokens;		
 	splitstring (sentense, tokens, string(" "));	
 	if (tokens.size () == 0){

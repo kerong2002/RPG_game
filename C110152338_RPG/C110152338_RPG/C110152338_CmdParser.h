@@ -9,8 +9,9 @@ using namespace std;
 class CCmdParser {		
 public:	
 	CCmdParser ();	
+	void cursor_movement_cmd(int x, int y);
 	void splitstring(const string& s, vector<string>& v, const string& c);
-	int query ();
+	int query (string thing);
 private:		
 	map<string,  void (*)> mappingfunc;
 };

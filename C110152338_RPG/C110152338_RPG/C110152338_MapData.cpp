@@ -3,6 +3,7 @@
 #include <string>
 #include <ctime>
 #include <cassert>
+#include <windows.h>
 #include "C110152338_MapData.h"
 #include "C110152338_MonsterData.h"
 #include "C110152338_GlobalInfo.h"
@@ -50,6 +51,14 @@ CMapData::~CMapData (){
 	}
 }
 
+void CMapData::cursor_movement(int x, int y){
+	COORD coord;
+	coord.X = (x + 4) * 2;
+	coord.Y = (y + 1);
+	HANDLE a = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleCursorPosition(a, coord);
+}
+
 string CMapData::get_exits (int in_ID){
 	map<int, CPlace *>::iterator it = mapdata.find (in_ID);
 	if (it == mapdata.end ()){
@@ -67,7 +76,10 @@ void CMapData::show_description (int in_ID){
 	}
 	CPlace *place = (*it).second;
 	assert (place);
-	cout << place->getname () << endl << place->getdescription () << endl;
+	cursor_movement(10, 0);
+	cout << "<" << place->getname() << ">";
+	//cout << place->getdescription() << endl;
+	cursor_movement(1, 1);
 	cout << place->get_exits () << endl;
 }
 
@@ -86,7 +98,9 @@ void CMapData::generate_monsters (){
 	int num, monster_id;
 	for(it = mapdata.begin(); it != mapdata.end(); it++){
 		num = rand () % MAX_MONSTER_PER_PLACE;
+		//cursor_movement(6, 0);
 		cout << it->second->name << "²£¥Í " << num << " °¦©ÇÃ~"<< endl;
+		//cursor_movement(0, 16);
 		for (int i = 0; i < num; i++){
 			monster_id = CGlobalInfo::monster_data->rand_get_monster_id ();
 			it->second->gen_monster_by_id (monster_id);

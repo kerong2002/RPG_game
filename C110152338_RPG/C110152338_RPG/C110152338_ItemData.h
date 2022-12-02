@@ -1,4 +1,3 @@
-
 #ifndef ITEMDATA_H
 #define ITEMDATA_H
 

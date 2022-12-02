@@ -1,6 +1,7 @@
 #include <iostream>
-//#include <fstream>
+#include <fstream>
 #include <cstdlib>
+#include <cstdio>
 #include <string>
 #include <iterator>
 #include <sstream>
@@ -23,10 +24,16 @@
 using namespace std;
 
 #define MAXBARLEN 40
-int map_y_size = 25;			//地圖y大小
-int map_x_size = 30;			//地圖x大小
-int pos_x = 10;					//玩家座標x
-int pos_y = 8;					//玩家座標y
+#define map_y_size 15			//地圖y大小
+#define map_x_size 20			//地圖x大小
+int pos_x = map_x_size / 2;		//玩家座標x
+int pos_y = map_y_size / 2;		//玩家座標y
+char all_map[15][20];
+//=================<重製位置>==========================
+void reset_pos() {
+	pos_x = map_x_size / 2;		//玩家座標x
+	pos_y = map_y_size / 2;		//玩家座標y
+}
 
 //==================<建立顏色>==========================
 void SetColor(int color = 7) {
@@ -34,7 +41,7 @@ void SetColor(int color = 7) {
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hConsole, color);
 }
-//=====================================================
+
 //==================<光標移動>=========================
 void cursor_movement(int x, int y) {
 	COORD coord;
@@ -43,7 +50,76 @@ void cursor_movement(int x, int y) {
 	HANDLE a = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(a, coord);
 }
-//=====================================================
+
+//==================<讀地圖圖形>=======================
+void ReadFile_line(const string file_name) {
+	fstream fs(file_name, ios::in);
+	if (!fs.is_open())
+		throw runtime_error("Reading error.");
+
+	for (string str; getline(fs, str);) {
+		cout << str << endl;
+	} fs.seekg(0, fs.beg);
+	fs.close();
+}
+
+// 按照空格或跳行讀取
+void ReadFile_space(const string file_name) {
+	fstream fs(file_name, ios::in);
+	if (!fs.is_open())
+		throw runtime_error("Reading error.");
+	for (string str; fs >> str;) {
+		cout << str << endl;
+	} fs.seekg(0, ios::beg);
+	fs.close();
+}
+
+// 一次性讀取整個文件
+void ReadFile_all(const string file_name) {
+	fstream fs(file_name, ios::in);
+	if (!fs.is_open())
+		throw runtime_error("Reading error.");
+	string str(
+		(istreambuf_iterator<char>(fs)),
+		istreambuf_iterator<char>()
+	);
+	//    cout<<str.length()<<endl;
+	for (int y = 0; y < 15; y++) {
+		for (int x = 0; x <= 20; x++) {
+			if (x == 20) {
+				continue;
+			}
+			else {
+				all_map[y][x] = str[y * 21 + x];
+			}
+		}
+	}
+	//    cout << str << endl;
+	fs.close();
+}
+
+// 按照所需長度讀取到C字串char*
+void ReadFile_buffer(const string file_name) {
+	fstream fs(file_name, ios::in);
+	if (!fs.is_open())
+		throw runtime_error("Reading error.");
+	char buffer[256]{};
+	size_t readSize = sizeof(buffer);
+	fs.getline(buffer, readSize);
+	cout << buffer << endl;
+	fs.close();
+}
+
+// 獲取檔案長度
+size_t FileSize(fstream& fs) {
+	size_t curr = fs.tellg();
+	fs.seekg(0, ios::end);
+	size_t len = fs.tellg();
+	fs.seekg(curr);
+	return len;
+};
+//=======================================================
+
 //==================<開場動畫>==========================
 void opening_animation() {
 	int gametitle[7][22] =
@@ -74,7 +150,7 @@ void opening_animation() {
 	//system("PAUSE");												//停止
 	system("CLS");													//清除
 }
-//======================================================
+
 //==================<繪製地圖>==========================
 void printmap() {
 	system("color 0F");
@@ -83,17 +159,18 @@ void printmap() {
 	for (int y = 0; y < map_y_size; y++) {
 		for (int x = 0; x < map_x_size; x++) {
 			cursor_movement(x, y);
-			if (y == 0 || y == map_y_size - 1 || x == 0 || x == map_x_size - 1) {
+			if (all_map[y][x] == '=') {
 				cout << "■";
 			}
-			else if (x == map_x_size / 2 && y == map_y_size / 2) {
+			/*else if (x == map_x_size / 2 && y == map_y_size / 2) {
 				cout << "商";
-			}
+			}*/
 			else {
 				cout << "  ";
 			}
 		}
 	}
+	cout << endl;
 }
 //=====================================================
 void askforbaglist(CFighter* f) {
@@ -220,84 +297,135 @@ void Initialize() {
 }
 //===================<主要程式>==========================
 int main() {
-	opening_animation();			//開始RPG動畫
+	//opening_animation();			//開始RPG動畫
+	string filename = "graph_map/map_center.txt";
+	ReadFile_all(filename);
 	printmap();
-	
 	char key;
 	string move_map;
+	CFighter* fighter = new CFighter();							//建置玩家
+	Initialize();												//初始化設定
+	CGlobalInfo::user->set_user((CLifeEntity*)fighter);
+	int cur_city = CGlobalInfo::user->get_current_city();
+	CGlobalInfo::map_data->show_description(cur_city);
+	/*while (CGlobalInfo::parser->query() >= 0) {
+		CGlobalInfo::map_data->show_description(cur_city);
+		//	cin >> cur_city;
+	}*/
+	
 	while (true) {
-		
 		key = _getch();
+		system("color 0F");
 		if (key == ' ') {
-			cursor_movement(map_x_size + 5, 14);
-			system("color 0F");
+			cursor_movement(map_x_size + 5, map_y_size / 2);
+			
 			cout << "請輸入移動位置";
-			cursor_movement(map_x_size + 5, 15);
+			cursor_movement(map_x_size + 5, map_y_size / 2 + 1);
 			cin >> move_map;
 			if (move_map == "A_city") {
 				cout << "";
 			}
-			cursor_movement(map_x_size + 5, 14);
+			cursor_movement(map_x_size + 5, map_y_size / 2);
 			cout << "                      ";
-			cursor_movement(map_x_size + 5, 15);
+			cursor_movement(map_x_size + 5, map_y_size / 2 + 1);
 			for (int y = 0; y < move_map.length(); y++) {
-				cout << " ";
+				cout << "  ";
 			}
 			//printmap();
 		}
 		if ((key == 'W' || key == 'w')) {
-			if (pos_y > 1) {
+			if (pos_x == map_x_size / 2 && pos_y == 1) {
+				CGlobalInfo::parser->query("north");
+				//SetColor(15);
 				cursor_movement(pos_x, pos_y);
-				SetColor(15); printf("  ");
+				cout << "  ";
+				reset_pos();
+				printmap();
+				//CGlobalInfo::map_data->show_description(cur_city);
+			}
+			else if (pos_y > 1) {
+				cursor_movement(pos_x, pos_y);
+				SetColor(15);
+				cout << "  ";
 				pos_y--;
 			}
 		}
 		if ((key == 'S' || key == 's')) {
-			if (pos_y < map_y_size - 2) {
+			if (pos_x == map_x_size / 2 && pos_y == map_y_size - 2) {
+				CGlobalInfo::parser->query("south");
+				//SetColor(15);
 				cursor_movement(pos_x, pos_y);
-				SetColor(15); printf("  ");
+				cout << "  ";
+				reset_pos();
+				printmap();
+				//CGlobalInfo::map_data->show_description(cur_city);
+			}
+			else if (pos_y < map_y_size - 2) {
+				cursor_movement(pos_x, pos_y);
+				SetColor(15);
+				cout << "  ";
 				pos_y++;
 			}
 		}
 		if ((key == 'A' || key == 'a')) {
-			if (pos_x > 1) {
+			if (pos_x == 1 && pos_y == map_y_size / 2) {
+				CGlobalInfo::parser->query("west");
+				//SetColor(15);
 				cursor_movement(pos_x, pos_y);
-				SetColor(15); printf("  ");
+				cout << "  ";
+				reset_pos();
+				printmap();
+				//CGlobalInfo::map_data->show_description(cur_city);
+			}
+			else if (pos_x > 1) {
+				cursor_movement(pos_x, pos_y);
+				SetColor(15);
+				cout << "  ";
 				pos_x--;
 			}
 		}
 		if ((key == 'D' || key == 'd')) {
-			if (pos_x == map_x_size - 2  && pos_y == map_y_size - 5) {
-				break;
-			}
-			if (pos_x < map_x_size - 2) {
+			if (pos_x == map_x_size - 2 && pos_y == map_y_size / 2) {
+				CGlobalInfo::parser->query("east");
+				//SetColor(15);
 				cursor_movement(pos_x, pos_y);
-				SetColor(15); printf("  ");
+				cout << "  ";
+				reset_pos();
+				printmap();
+				//CGlobalInfo::map_data->show_description(cur_city);
+				//break;
+			}
+			else if(pos_x < map_x_size - 2) {
+				cursor_movement(pos_x, pos_y);
+				SetColor(15);
+				cout << "  ";
 				pos_x++;
 			}
 		}
 		SetColor(15);
-		cursor_movement(map_x_size - 1, map_y_size - 5);
-		printf("門");
+		cursor_movement(map_x_size - 1, map_y_size / 2);		//東
+		cout << "門";
+		cursor_movement(0, map_y_size / 2);						//西
+		cout << "門";
+		cursor_movement(map_x_size / 2, map_y_size - 1);		//南
+		cout << "門";
+		cursor_movement(map_x_size / 2, 0);						//北
+		cout << "門";
 		cursor_movement(pos_x, pos_y);
 		SetColor(240);
-		printf("我");
+		cout << "我";
 		Sleep(100);
 	}
+
 
 	system("CLS");
 	system("color 0F");											//黑底白字
 	//SetColor(15);
-	Initialize();												//初始化設定
-	CFighter* fighter = new CFighter();
-	CGlobalInfo::user->set_user((CLifeEntity*)fighter);
-	int cur_city = CGlobalInfo::user->get_current_city();
-
-	CGlobalInfo::map_data->show_description(cur_city);
-	while (CGlobalInfo::parser->query() >= 0) {
-		//CGlobalInfo::map_data->show_description (cur_city);
-	//	cin >> cur_city;
-	}
+	cout << "out";
+	/*while (CGlobalInfo::parser->query() >= 0) {
+		CGlobalInfo::map_data->show_description(cur_city);
+		//	cin >> cur_city;
+	}*/
 #if 0
 	CFighter fighter;
 	while (!fighter.isdead()) {

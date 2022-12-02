@@ -19,39 +19,39 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\save\C110152338_Bag.cpp" />
-    <ClCompile Include="..\..\save\C110152338_CmdParser.cpp" />
-    <ClCompile Include="..\..\save\C110152338_Fighter.cpp" />
-    <ClCompile Include="..\..\save\C110152338_food.cpp" />
-    <ClCompile Include="..\..\save\C110152338_Item.cpp" />
-    <ClCompile Include="..\..\save\C110152338_ItemData.cpp" />
-    <ClCompile Include="..\..\save\C110152338_LifeEntity.cpp" />
-    <ClCompile Include="..\..\save\C110152338_MapData.cpp" />
-    <ClCompile Include="..\..\save\C110152338_Monster.cpp" />
-    <ClCompile Include="..\..\save\C110152338_MonsterData.cpp" />
-    <ClCompile Include="..\..\save\C110152338_Place.cpp" />
-    <ClCompile Include="..\..\save\C110152338_Source.cpp" />
-    <ClCompile Include="..\..\save\C110152338_User.cpp" />
-    <ClCompile Include="..\..\save\C110152338_weapon.cpp" />
+    <ClInclude Include="C110152338_Bag.h" />
+    <ClInclude Include="C110152338_bsd-list.h" />
+    <ClInclude Include="C110152338_CmdParser.h" />
+    <ClInclude Include="C110152338_def.h" />
+    <ClInclude Include="C110152338_Fighter.h" />
+    <ClInclude Include="C110152338_food.h" />
+    <ClInclude Include="C110152338_GlobalInfo.h" />
+    <ClInclude Include="C110152338_Header.h" />
+    <ClInclude Include="C110152338_Item.h" />
+    <ClInclude Include="C110152338_ItemData.h" />
+    <ClInclude Include="C110152338_LifeEntity.h" />
+    <ClInclude Include="C110152338_MapData.h" />
+    <ClInclude Include="C110152338_Monster.h" />
+    <ClInclude Include="C110152338_MonsterData.h" />
+    <ClInclude Include="C110152338_Place.h" />
+    <ClInclude Include="C110152338_User.h" />
+    <ClInclude Include="C110152338_weapon.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\save2\C110152338_Bag.h" />
-    <ClInclude Include="..\..\save2\C110152338_bsd-list.h" />
-    <ClInclude Include="..\..\save2\C110152338_CmdParser.h" />
-    <ClInclude Include="..\..\save2\C110152338_def.h" />
-    <ClInclude Include="..\..\save2\C110152338_Fighter.h" />
-    <ClInclude Include="..\..\save2\C110152338_food.h" />
-    <ClInclude Include="..\..\save2\C110152338_GlobalInfo.h" />
-    <ClInclude Include="..\..\save2\C110152338_Header.h" />
-    <ClInclude Include="..\..\save2\C110152338_Item.h" />
-    <ClInclude Include="..\..\save2\C110152338_ItemData.h" />
-    <ClInclude Include="..\..\save2\C110152338_LifeEntity.h" />
-    <ClInclude Include="..\..\save2\C110152338_MapData.h" />
-    <ClInclude Include="..\..\save2\C110152338_Monster.h" />
-    <ClInclude Include="..\..\save2\C110152338_MonsterData.h" />
-    <ClInclude Include="..\..\save2\C110152338_Place.h" />
-    <ClInclude Include="..\..\save2\C110152338_User.h" />
-    <ClInclude Include="..\..\save2\C110152338_weapon.h" />
+    <ClCompile Include="C110152338_Bag.cpp" />
+    <ClCompile Include="C110152338_CmdParser.cpp" />
+    <ClCompile Include="C110152338_Fighter.cpp" />
+    <ClCompile Include="C110152338_food.cpp" />
+    <ClCompile Include="C110152338_Item.cpp" />
+    <ClCompile Include="C110152338_ItemData.cpp" />
+    <ClCompile Include="C110152338_LifeEntity.cpp" />
+    <ClCompile Include="C110152338_MapData.cpp" />
+    <ClCompile Include="C110152338_Monster.cpp" />
+    <ClCompile Include="C110152338_MonsterData.cpp" />
+    <ClCompile Include="C110152338_Place.cpp" />
+    <ClCompile Include="C110152338_Source.cpp" />
+    <ClCompile Include="C110152338_User.cpp" />
+    <ClCompile Include="C110152338_weapon.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

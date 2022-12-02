@@ -12,6 +12,7 @@ class CMapData {
 public:	
 	CMapData ();
 	~CMapData ();	
+	void cursor_movement(int x, int y);
 	void show_description (int in_ID);
 	string get_exits (int in_ID);
 	int next_city (int cur_city, int next_dir);
