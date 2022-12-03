@@ -33,6 +33,7 @@ class CPlace {
 	friend class CMapData;
 public:	
 	CPlace (string filename);	
+	void cursor_movement_place(int x, int y);
 	string getname (){return name;};	
 	string getdescription (){return description;};
 	string get_exits ();

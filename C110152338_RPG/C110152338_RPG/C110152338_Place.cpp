@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cassert>
+#include <windows.h>
 #include "C110152338_Place.h"
 #include "C110152338_MapData.h"
 #include "C110152338_MonsterData.h"
@@ -21,6 +22,13 @@ CPlace::CPlace (string filename){
 	}	
 }
 
+void CPlace::cursor_movement_place(int x, int y) {
+	COORD coord;
+	coord.X = x;
+	coord.Y = y;
+	HANDLE a = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleCursorPosition(a, coord);
+}
 string CPlace::get_exits (){
 	string output;
 	int next_city;
@@ -29,7 +37,8 @@ string CPlace::get_exits (){
 		next_city = exits[i];
 		if (next_city > 0){
 			if (comma)
-				output += string("，");				
+				output += string("，");		
+			cursor_movement_place(5, 2);
 			switch (i){
 			case eNorth:
 				output += string("往北方(north)是 ") + CGlobalInfo::map_data->mapdata [next_city]->getname ();

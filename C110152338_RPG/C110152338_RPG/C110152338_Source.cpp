@@ -19,7 +19,7 @@
 #include "C110152338_User.h"
 #include "C110152338_MonsterData.h"
 #include <limits>
-#define cursor_x_offset 6		//光標X座標的偏移
+#define cursor_x_offset 12		//光標X座標的偏移
 #define cursor_y_offset 3		//光標X座標的偏移
 using namespace std;
 
@@ -29,6 +29,21 @@ using namespace std;
 int pos_x = map_x_size / 2;		//玩家座標x
 int pos_y = map_y_size / 2;		//玩家座標y
 char all_map[15][20];
+//=================<職業>=============================
+struct profession{
+	string name;
+	int HP;
+	int Damage;
+	int Lucky;
+	string mark;
+}
+profession[5] ={
+				{},
+				{"射手"	 , 150, 200, 20, "射"},
+				{"法師"	 , 200, 100, 50, "法"},
+				{"召喚師", 100, 130, 50, "召"},
+				{"戰士"  , 500,  60, 80, "戰"},
+};
 //=================<重製位置>==========================
 void reset_pos() {
 	pos_x = map_x_size / 2;		//玩家座標x
@@ -295,9 +310,59 @@ void Initialize() {
 	CGlobalInfo::itm_data->Initialize();
 	CGlobalInfo::map_data->generate_monsters();
 }
+//==================<選擇職業>===========================
+void choose_profession(string & token) {
+	system("CLS");
+	system("color 0F");
+	cursor_movement(0, 0);
+	printf("請選擇您的職業：");
+	cursor_movement(2, 1);
+	printf("職業   血量    傷害    幸運    圖標");
+	for (int i = 1; i <= 4; i++){
+		cursor_movement(2, 1 + i);
+		cout << profession[i].name;
+		cursor_movement(6, 1 + i);
+		cout << profession[i].HP;
+		cursor_movement(10, 1 + i);
+		cout << profession[i].Damage;
+		cursor_movement(14, 1 + i);
+		cout << profession[i].Lucky;
+		cursor_movement(18, 1 + i);
+		cout << profession[i].mark;
+	}
+	int choose_pos = 1;
+	cursor_movement(0, 2);
+	printf(">>");
+	int key = 0;
+	while (key != 13){
+		key = _getch();
+		if (key == 'w' || key == 'W'){
+			cursor_movement(0, 1 + choose_pos);
+			printf("  ");
+			choose_pos--;
+		}
+		if (key == 's' || key == 'S'){
+			cursor_movement(0, 1 + choose_pos);
+			printf("  ");
+			choose_pos++;
+		}
+		if (choose_pos > 4) {
+			choose_pos = 1;
+		}
+		if (choose_pos < 1) {
+			choose_pos = 4;
+		}
+		cursor_movement(0, 1 + choose_pos);
+		printf(">>");
+	}
+	token.assign(profession[choose_pos].mark);
+}
 //===================<主要程式>==========================
 int main() {
-	//opening_animation();			//開始RPG動畫
+	string my_profession = "你";
+	opening_animation();			//開始RPG動畫
+	choose_profession(my_profession);
+	cout << my_profession;
 	string filename = "graph_map/map_center.txt";
 	ReadFile_all(filename);
 	printmap();
@@ -312,7 +377,7 @@ int main() {
 		CGlobalInfo::map_data->show_description(cur_city);
 		//	cin >> cur_city;
 	}*/
-	
+
 	while (true) {
 		key = _getch();
 		system("color 0F");
@@ -413,7 +478,7 @@ int main() {
 		cout << "門";
 		cursor_movement(pos_x, pos_y);
 		SetColor(240);
-		cout << "我";
+		cout << my_profession;
 		Sleep(100);
 	}
 

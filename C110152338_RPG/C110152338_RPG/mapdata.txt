@@ -1,14 +1,21 @@
-4
-1 map/map01.txt 2 2 2 4 3
-2 map/map02.txt 2 6 1 4 4
-3 map/map03.txt 2 0 1 2 4
-4 map/map04.txt 2 0 2 6 3
+9
+1 map/map01.txt 3 6 0 2 2 4 4
+2 map/map02.txt 3 6 1 2 3 4 5
+3 map/map03.txt 2 6 2 4 6
+4 map/map04.txt 3 0 1 2 5 4 7
+5 map/map05.txt 4 0 2 6 4 2 6 4 8
+6 map/map06.txt 3 0 3 6 5 4 9
+7 map/map07.txt 2 0 4 2 8
+8 map/map08.txt 3 0 5 6 7 2 9
+9 map/map09.txt 2 0 6 6 8
 
-
-1 -- 2
-|    |  
-|    |
-3 -- 4 
+ 1 -- 2 -- 3
+ |    |    |
+ |    |    |
+ 4 -- 5 -- 6
+ |    |    |
+ |    |    |
+ 7 -- 8 -- 9
 
 // 0: north
 // 1: eastnorth

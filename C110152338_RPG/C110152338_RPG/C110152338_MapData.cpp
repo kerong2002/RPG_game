@@ -76,7 +76,7 @@ void CMapData::show_description (int in_ID){
 	}
 	CPlace *place = (*it).second;
 	assert (place);
-	cursor_movement(10, 0);
+	cursor_movement(16, 0);
 	cout << "<" << place->getname() << ">";
 	//cout << place->getdescription() << endl;
 	cursor_movement(1, 1);
