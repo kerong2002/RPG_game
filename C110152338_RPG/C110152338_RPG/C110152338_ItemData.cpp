@@ -15,7 +15,19 @@ void CItemData::Initialize() {
 int CItemData::totalsize() {
 	return food_array.size() + weapon_array.size();
 }
-
+int CItemData::weapon_array_size() {
+	return weapon_array.size();
+}
+CItem* CItemData::getCheck_num(int pick) {
+	if (pick < food_array.size()) {
+		return food_array[pick];
+	}
+	pick -= food_array.size();
+	if (pick < weapon_array.size()) {
+		return weapon_array[pick];
+	}
+	return NULL;
+}
 CItem* CItemData::getRand() {
 	unsigned int randnum = rand() % totalsize();
 	if (randnum < food_array.size()) {

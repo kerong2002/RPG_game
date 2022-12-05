@@ -13,7 +13,9 @@ public:
 	~CItemData ();
 	void Initialize ();
 	int totalsize ();
+	int weapon_array_size();
 	CItem *getRand ();
+	CItem* getCheck_num(int);
 	void showWeaponData();
 	vector <CFood *> food_array;	
 	vector <CWeapon *> weapon_array;	

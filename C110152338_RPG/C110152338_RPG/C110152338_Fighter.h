@@ -21,6 +21,7 @@ public:
 	virtual int defense (CLifeEntity *);	
 	virtual int isA ();
 	void captureItem (CItem *);
+	void shop_captureItem(CItem*);
 	int showAllBagItems ();
 	bool useBagItems (int no);
 	int goto_next_city (int next_dir);

@@ -2,6 +2,7 @@
 #include <string>
 #include <cassert>
 #include <windows.h>
+#include <conio.h>
 #include "C110152338_Place.h"
 #include "C110152338_CmdParser.h"
 #include "C110152338_GlobalInfo.h"
@@ -154,8 +155,81 @@ int function_check_bag (vector<string> &tokens){
 	cin.ignore(1024, '\n');		
 	return 0;
 }
+void function_shop() {
+	system("cls");
+	system("color 0F");
+	cursor_movement_cmd(15, 0);
+	cout <<"武器商店";
+	cursor_movement_cmd(8, 2);
+	cout<<" 名稱      傷害值     買價";
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CItemData* id = CGlobalInfo::itm_data;
 
-int function_move(vector<string>& tokens) {
+	//((CFighter*)usr)->captureItem(id->getCheck_num(17));//撿到商品
+	CWeapon take;
+	int weapon_list[7] = { 0 };
+	for (int i = 1; i <= 6; i++) {
+		int take = rand() % id->weapon_array_size();
+		weapon_list[i] = take;
+		cursor_movement_cmd(8, 2 + i); 
+		cout << id->weapon_array[take]->getName();
+		cursor_movement_cmd(20, 2 + i);
+		cout << id->weapon_array[take]->getattackbonus();
+		cursor_movement_cmd(32, 2 + i);
+		cout << id->weapon_array[take]->getattackbonus() * 2;
+	}
+	int choose_pos = 3;
+	cursor_movement_cmd(5, 3);
+	printf(">>");
+	int key = 0;
+	while (key != 27) {
+		key = _getch();
+		if (key == 13) {
+			int compare_money = usr->getMoney();
+			//cout << weapon_list[choose_pos - 2];
+			if (compare_money < id->weapon_array[weapon_list[choose_pos - 2]]->getattackbonus() * 2) {
+				cursor_movement_cmd(2, 10);
+				cout << "                                       ";
+				cursor_movement_cmd(2, 10);
+				cout << "你沒有足夠的錢";
+			}
+			else { 
+				usr->subMoney(id->weapon_array[weapon_list[choose_pos - 2]]->getattackbonus() * 2);
+				cursor_movement_cmd(2, 10);
+				cout << "                                       ";
+				cursor_movement_cmd(2, 10);
+				cout << "您剩下的金錢為 $"<< usr->getMoney();
+				cursor_movement_cmd(2, 11);
+				cout << "                                       ";
+				cursor_movement_cmd(2, 11);
+				((CFighter*)usr)->shop_captureItem(id->getCheck_num(weapon_list[choose_pos - 2] + id->food_array.size()));//撿到商品
+			}
+			//
+		}
+		if (key == 'w' || key == 'W') {
+			cursor_movement_cmd(5, choose_pos);
+			printf("  ");
+			choose_pos--;
+		}
+		if (key == 's' || key == 'S') {
+			cursor_movement_cmd(5, choose_pos);
+			printf("  ");
+			choose_pos++;
+		}
+		if (choose_pos > 8) {
+			choose_pos = 3;
+		}
+		if (choose_pos < 3) {
+			choose_pos = 8;
+		}
+		cursor_movement_cmd(5, choose_pos);
+		printf(">>");
+	}
+	system("CLS");
+	CFighter* set = (CFighter*)usr;
+	CGlobalInfo::map_data->show_description(set->get_current_city());
+}
+int function_move(vector<string>& tokens){
 	CLifeEntity* usr = CGlobalInfo::user->get_user();
 	CFighter* set = (CFighter*)usr;
 	int go_next;
@@ -164,7 +238,11 @@ int function_move(vector<string>& tokens) {
 	cin >> go_next;
 	cursor_movement_cmd(62, 10);
 	if (go_next > 9 || go_next < 0) {
-		cout << "Out of map range!";
+		cout << "Out of map!";
+		cursor_movement_cmd(62, 9);
+		cout << "                              ";
+		cursor_movement_cmd(62, 10);
+		cout << "                              ";
 		return -1;
 	}
 	cursor_movement_cmd(62, 9);
@@ -195,7 +273,7 @@ CCmdParser::CCmdParser (){
 	mappingfunc [string("kill")] = function_kill;
 	mappingfunc [string("checkbag")] = function_check_bag;
 	mappingfunc [string("move")] = function_move;
-
+	mappingfunc [string("shop")] = function_shop;
 
 #if 0
 	for (vector<string>::iterator it = tokens.begin (); it != tokens.end (); it++){

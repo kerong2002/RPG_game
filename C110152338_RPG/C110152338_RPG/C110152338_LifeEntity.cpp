@@ -8,11 +8,24 @@ CLifeEntity::CLifeEntity(int initHP, int initSP, string initname) {
 	maxHP = HP = initHP;
 	Name = initname;
 	weapon = NULL;
+	setMoney(200);				//初始金幣
 }
 
 void CLifeEntity::setInitSPHP(int initHP, int initSP) {
 	maxSP = SP = initSP;
 	maxHP = HP = initHP;
+}
+
+void CLifeEntity::setMoney(int initMoney) {
+	Money = initMoney;
+}
+
+int CLifeEntity::showMoney() {
+	return Money;
+}
+
+void CLifeEntity::AddMoney(int inMoney) {
+	Money = inMoney + Money;
 }
 
 void CLifeEntity::setHP(int inHP) {
@@ -25,6 +38,15 @@ void  CLifeEntity::show_HP_detail(CLifeEntity*fighter) {
 }
 void  CLifeEntity::show_SP_detail(CLifeEntity*fighter) {
 	cout << "玩家傷害：" << fighter->getSP();
+}
+void  CLifeEntity::show_Money_detail(CLifeEntity* fighter) {
+	cout << "玩家金錢：$" << fighter->getMoney();
+}
+int  CLifeEntity::getMoney() {
+	return Money;
+}
+void  CLifeEntity::subMoney(int  take) {
+	Money -= take;
 }
 void CLifeEntity::addHP(int inHP) {
 	HP = (inHP + HP) > maxHP ? maxHP : (HP + inHP);

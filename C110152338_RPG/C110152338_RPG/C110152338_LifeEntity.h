@@ -18,10 +18,16 @@ public:
 	int getMAXHP();
 	int getSP();
 	int getMAXSP();
+	void setMoney(int);
+	int showMoney();
+	int getMoney();
+	void subMoney(int);
+	void AddMoney(int);
 	void addSP(int);
 	void delSP(int);
 	int gethurt(int hurt);
 	string getname();
+	void show_Money_detail(CLifeEntity*);
 	void show_HP_detail(CLifeEntity*);
 	void show_SP_detail(CLifeEntity*);
 	void setname(string);
@@ -36,6 +42,8 @@ private:
 	void bloodbarshow(string title, int maxvalue, int value);
 	int maxSP, maxHP;
 	int SP, HP;
+	int EXP;
+	int Money;
 	string Name;
 	CWeapon* weapon;
 

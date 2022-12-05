@@ -10,7 +10,7 @@ CWeapon::CWeapon (string inname, int initSize, int initWeight, int initID, int i
 	bonus_attack = init_attack;
 }
 
-int CWeapon::getattackbonus (){	
+int CWeapon::getattackbonus() {
 	return bonus_attack;
 }
 

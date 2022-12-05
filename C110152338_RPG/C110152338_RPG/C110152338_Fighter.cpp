@@ -25,6 +25,7 @@ CFighter::CFighter (int job,int initHP, int initSP, int initLucky, string name, 
 	initLucky = initLucky;
 	setname(name);
 	setInitSPHP (initHP,initSP);
+	
 	Lucky = initLucky;
 	cur_city = in_city;
 	bag = new CBag ();
@@ -33,7 +34,8 @@ CFighter::CFighter (int job,int initHP, int initSP, int initLucky, string name, 
 	cursor_movement_fighter(60, 8);
 	cout << "玩家傷害：" << initSP;
 	cursor_movement_fighter(60, 9);
-	cout << "玩家幸運值：" << initLucky;
+	cout <<"玩家金錢：$"<< showMoney();
+	//cout << "玩家幸運值：" << initLucky;
 	cursor_movement_fighter(0, 20);
 	//cout << "One Fighter is created with (maxHP, maxSP, maxLucky) = (" << initHP << ", " << initSP << ", " << initLucky << ")" <<endl; 
 }
@@ -47,6 +49,8 @@ void CFighter::show_fighter_detail(CLifeEntity* fighter) {
 	show_HP_detail(fighter);
 	cursor_movement_fighter(60, 8);
 	show_SP_detail(fighter);
+	cursor_movement_fighter(60, 9);
+	show_Money_detail(fighter);
 }
 int CFighter::get_move_city(int move_city) {
 	cur_city = move_city;
@@ -78,6 +82,15 @@ int CFighter::attack (CLifeEntity *l){
 
 int CFighter::defense (CLifeEntity *l){
 	return 	getLucky();
+}
+void CFighter::shop_captureItem(CItem* in_item) {
+
+	CBagEntry* entry = bag->item_lookup(in_item->isA(), in_item->getID());
+	if (!entry)
+		bag->item_insert(in_item);
+	else
+		entry->addNum(1);
+	cout << this->getname() << " 從商店獲取 " << in_item->getName() << endl;
 }
 
 void CFighter::captureItem (CItem *in_item){

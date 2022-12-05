@@ -46,6 +46,7 @@ profession[5] = {
 	{"召喚師", 100, 130, 15, "召"},
 	{"戰士"  , 500,  60, 30, "戰"},
 };
+
 //=================<重製位置>==========================
 void reset_pos() {
 	pos_x = map_x_size / 2;		//玩家座標x
@@ -378,10 +379,44 @@ void modeset(int w, int h) {
 	system("cls");
 	return;
 }
+void opening_password() {
+	cursor_movement(0, 0);
+	cout << "user : ";
+	cursor_movement(0, 1);
+	cout << "password : ";
+	char key = 0;
+	while (true) {
+		string user;
+		string password;
+		cursor_movement(4, 0);
+		cin >> user;
+		cursor_movement(6, 1);
+		while (key != 13) {
+			key = _getch();
+			if (key == 13) {
+				break;
+			}
+			password += key;
+			cout << "#";
+		}
+		if (user.compare("kerong")==0 && password.compare("abc1234")==0) {
+			break;
+		}
+		else {
+			system("CLS");
+			cursor_movement(0, 0);
+			cout << "user : ";
+			cursor_movement(0, 1);
+			cout << "password : ";
+			key = 0;
+		}
+	}
+}
 //===================<主要程式>==========================
 int main() {
 	//modeset(150, 50);					//視窗大小設定
 	string my_profession = "你";
+	opening_password();
 	//opening_animation();				//開始RPG動畫
 
 	int get_job_num = choose_profession(my_profession);	//選擇職業
@@ -421,7 +456,9 @@ int main() {
 			for (int y = 0; y <active.length(); y++) {
 				cout << "        ";
 			}
-			//printmap();
+			fighter->show_fighter_detail(fighter);
+			printmap();
+			//CGlobalInfo::map_data->show_description(cur_city);
 		}
 		if ((key == 'W' || key == 'w')) {
 			if (pos_x == map_x_size / 2 && pos_y == 1) {
@@ -450,7 +487,6 @@ int main() {
 				reset_pos();
 				printmap();
 				fighter->show_fighter_detail(fighter);
-				//CGlobalInfo::map_data->show_description(cur_city);
 			}
 			else if (pos_y < map_y_size - 2) {
 				cursor_movement(pos_x, pos_y);
