@@ -31,6 +31,8 @@ public:
 	void show_HP_detail(CLifeEntity*);
 	void show_SP_detail(CLifeEntity*);
 	void setname(string);
+	void set_kill_counter();
+	int show_kill_counter();
 	CWeapon* getWeapon() { return weapon; };
 	void setWeapon(CWeapon* in_weapon) { weapon = in_weapon; }
 	bool kill(CLifeEntity*);
@@ -44,6 +46,7 @@ private:
 	int SP, HP;
 	int EXP;
 	int Money;
+	int kill_counter;
 	string Name;
 	CWeapon* weapon;
 

@@ -105,7 +105,12 @@ int function_kill (vector<string> &tokens){
 	assert (usr);
 	if (usr->kill (monster)){		
 		cityptr->remove_moster_by_engname (monster_engname);		
-		cout << "怪物已死，從怪物身上掉下寶物" << endl;		
+		cout << "怪物已死，從怪物身上掉下寶物" << endl;	
+		usr->set_kill_counter();
+		if (usr->show_kill_counter()>=6) {
+			//cout << "monser generated";
+			CGlobalInfo::map_data->generate_monsters();
+		}
 		CItemData *id = CGlobalInfo::itm_data;		
 		if (usr->isA() == efighter){
 			((CFighter *) usr)->captureItem (id->getRand ());				
@@ -180,7 +185,7 @@ void function_shop() {
 	}
 	int choose_pos = 3;
 	cursor_movement_cmd(5, 3);
-	printf(">>");
+	cout << ">>";
 	int key = 0;
 	while (key != 27) {
 		key = _getch();
@@ -208,12 +213,12 @@ void function_shop() {
 		}
 		if (key == 'w' || key == 'W') {
 			cursor_movement_cmd(5, choose_pos);
-			printf("  ");
+			cout<<"  ";
 			choose_pos--;
 		}
 		if (key == 's' || key == 'S') {
 			cursor_movement_cmd(5, choose_pos);
-			printf("  ");
+			cout << "  ";
 			choose_pos++;
 		}
 		if (choose_pos > 8) {
@@ -223,7 +228,7 @@ void function_shop() {
 			choose_pos = 8;
 		}
 		cursor_movement_cmd(5, choose_pos);
-		printf(">>");
+		cout << ">>";
 	}
 	system("CLS");
 	CFighter* set = (CFighter*)usr;

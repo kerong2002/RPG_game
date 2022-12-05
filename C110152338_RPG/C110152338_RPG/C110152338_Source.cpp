@@ -25,6 +25,7 @@
 #define cursor_y_offset 3		//光標X座標的偏移
 using namespace std;
 
+#define Profession_size 8		//職業數量
 #define MAXBARLEN 40
 #define map_y_size 15			//地圖y大小
 #define map_x_size 20			//地圖x大小
@@ -39,12 +40,16 @@ static struct profession {
 	int Lucky;				//幸運值
 	string mark;			//標示
 }
-profession[5] = {
+profession[Profession_size+1] = {
 	{},
-	{"射手"	 , 150, 200, 5, "射"},
-	{"法師"	 , 200, 100, 20, "法"},
-	{"召喚師", 100, 130, 15, "召"},
-	{"戰士"  , 500,  60, 30, "戰"},
+	{"射手"	 , 150, 200,   5, "射"},
+	{"法師"	 , 200, 100,  20, "法"},
+	{"召喚師", 100, 130,  15, "召"},
+	{"戰士"  , 300,  60,  25, "戰"},
+	{"劍士"  ,  50, 300,   1, "劍"},
+	{"坦克"  , 800,   5,  30, "坦"},
+	{"忍者"  , 100, 100,  10, "忍"},
+	{"輔助"  ,  20,  20, 100, "輔"}
 };
 
 //=================<重製位置>==========================
@@ -329,7 +334,7 @@ int choose_profession(string & token) {
 	printf("請選擇您的職業：");
 	cursor_movement(2, 1);
 	printf("職業   血量    傷害    幸運    圖標");
-	for (int i = 1; i <= 4; i++){
+	for (int i = 1; i <= Profession_size; i++){
 		cursor_movement(2, 1 + i);
 		cout << profession[i].name;
 		cursor_movement(6, 1 + i);
@@ -357,11 +362,11 @@ int choose_profession(string & token) {
 			printf("  ");
 			choose_pos++;
 		}
-		if (choose_pos > 4) {
+		if (choose_pos > Profession_size) {
 			choose_pos = 1;
 		}
 		if (choose_pos < 1) {
-			choose_pos = 4;
+			choose_pos = Profession_size;
 		}
 		cursor_movement(0, 1 + choose_pos);
 		printf(">>");
@@ -379,6 +384,7 @@ void modeset(int w, int h) {
 	system("cls");
 	return;
 }
+//===================<登入系統>===========================
 void opening_password() {
 	cursor_movement(0, 0);
 	cout << "user : ";
@@ -416,7 +422,7 @@ void opening_password() {
 int main() {
 	//modeset(150, 50);					//視窗大小設定
 	string my_profession = "你";
-	opening_password();
+	//opening_password();				//登入系統
 	//opening_animation();				//開始RPG動畫
 
 	int get_job_num = choose_profession(my_profession);	//選擇職業

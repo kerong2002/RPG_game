@@ -4,6 +4,7 @@
 #include "C110152338_LifeEntity.h"
 
 CLifeEntity::CLifeEntity(int initHP, int initSP, string initname) {
+	kill_counter = 0;
 	maxSP = SP = initSP;
 	maxHP = HP = initHP;
 	Name = initname;
@@ -134,6 +135,15 @@ void CLifeEntity::fightstatus(CLifeEntity* f, CLifeEntity* s) {
 	cout << s->getname() << endl;
 	bloodbarshow(string("HP"), s->getMAXHP(), s->getHP());
 	cout << endl;
+}
+
+
+void  CLifeEntity::set_kill_counter() {
+	kill_counter += 1;
+}
+
+int  CLifeEntity::show_kill_counter() {
+	return kill_counter;
 }
 
 void CLifeEntity::bloodbarshow(string title, int maxvalue, int value) {
