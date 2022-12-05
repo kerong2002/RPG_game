@@ -75,20 +75,22 @@ int function_list (vector<string> &tokens){
 	int city = CGlobalInfo::user->get_current_city ();	
 	CPlace *cityptr = CGlobalInfo::map_data->get_place_by_id (city);
 	if (cityptr){
+		//cout << cityptr->get_monster_num();
 		cityptr->show_mosters ();
 	}	
 	return 0;
 }
 
 int function_kill (vector<string> &tokens){	
-	if (tokens.size () != 2){
+	/*if (tokens.size() != 2) {
 		for (vector<string>::iterator it = tokens.begin (); it != tokens.end (); it++){
 			cerr << (*it) << " ";
 		}
 		cerr << " command error" << endl;
 		return 0;
-	}	
-	string monster_engname = tokens[1];
+	}*/	
+	string monster_engname;
+	cin >> monster_engname;
 	int city = CGlobalInfo::user->get_current_city ();	
 	CPlace *cityptr = CGlobalInfo::map_data->get_place_by_id (city);
 	assert(cityptr);
@@ -153,6 +155,32 @@ int function_check_bag (vector<string> &tokens){
 	return 0;
 }
 
+int function_move(vector<string>& tokens) {
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CFighter* set = (CFighter*)usr;
+	int go_next;
+	cursor_movement_cmd(62, 9);
+	cout << "請輸入傳送位置:";
+	cin >> go_next;
+	cursor_movement_cmd(62, 10);
+	if (go_next > 9 || go_next < 0) {
+		cout << "Out of map range!";
+		return -1;
+	}
+	cursor_movement_cmd(62, 9);
+	cout << "                              ";
+	cursor_movement_cmd(62, 10);
+	cout << "                              ";
+	int next_city = set->get_move_city(go_next);
+	if (next_city) {
+		CGlobalInfo::map_data->show_description(next_city);
+	}
+	else {
+		cout << "那邊沒路喔!!!請換個方向吧" << endl;
+	}
+	return 0;
+}
+
 CCmdParser::CCmdParser (){
 	mappingfunc [string("exit")] = function_exit;
 	mappingfunc [string("east")] = function_next_direction;
@@ -166,6 +194,7 @@ CCmdParser::CCmdParser (){
 	mappingfunc [string("ls")] = function_list;
 	mappingfunc [string("kill")] = function_kill;
 	mappingfunc [string("checkbag")] = function_check_bag;
+	mappingfunc [string("move")] = function_move;
 
 
 #if 0

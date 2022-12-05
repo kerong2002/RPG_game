@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <windows.h>
 #include <conio.h>
+//#include "C110152338_Profession.h"
 #include "C110152338_Fighter.h"
 #include "C110152338_Monster.h"
 #include "C110152338_food.h"
@@ -19,7 +20,8 @@
 #include "C110152338_User.h"
 #include "C110152338_MonsterData.h"
 #include <limits>
-#define cursor_x_offset 12		//光標X座標的偏移
+
+#define cursor_x_offset 6		//光標X座標的偏移
 #define cursor_y_offset 3		//光標X座標的偏移
 using namespace std;
 
@@ -29,20 +31,20 @@ using namespace std;
 int pos_x = map_x_size / 2;		//玩家座標x
 int pos_y = map_y_size / 2;		//玩家座標y
 char all_map[15][20];
-//=================<職業>=============================
-struct profession{
-	string name;
-	int HP;
-	int Damage;
-	int Lucky;
-	string mark;
+//==================<職業>=====================
+static struct profession {
+	string name;			//名稱
+	int HP;					//血量
+	int Damage;				//傷害
+	int Lucky;				//幸運值
+	string mark;			//標示
 }
-profession[5] ={
-				{},
-				{"射手"	 , 150, 200, 20, "射"},
-				{"法師"	 , 200, 100, 50, "法"},
-				{"召喚師", 100, 130, 50, "召"},
-				{"戰士"  , 500,  60, 80, "戰"},
+profession[5] = {
+	{},
+	{"射手"	 , 150, 200, 5, "射"},
+	{"法師"	 , 200, 100, 20, "法"},
+	{"召喚師", 100, 130, 15, "召"},
+	{"戰士"  , 500,  60, 30, "戰"},
 };
 //=================<重製位置>==========================
 void reset_pos() {
@@ -65,7 +67,16 @@ void cursor_movement(int x, int y) {
 	HANDLE a = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(a, coord);
 }
-
+//================<清屏>=============================
+void clear_screen() {
+	for (int y = 0; y < 50; y++) {
+		cursor_movement(-cursor_x_offset, map_y_size / 2 + 10 + y);
+		for (int x = 0; x < 100; x++) {
+			cout << " ";
+		}
+	}
+	cursor_movement(-cursor_x_offset, -cursor_y_offset);
+}
 //==================<讀地圖圖形>=======================
 void ReadFile_line(const string file_name) {
 	fstream fs(file_name, ios::in);
@@ -165,7 +176,6 @@ void opening_animation() {
 	//system("PAUSE");												//停止
 	system("CLS");													//清除
 }
-
 //==================<繪製地圖>==========================
 void printmap() {
 	system("color 0F");
@@ -311,7 +321,7 @@ void Initialize() {
 	CGlobalInfo::map_data->generate_monsters();
 }
 //==================<選擇職業>===========================
-void choose_profession(string & token) {
+int choose_profession(string & token) {
 	system("CLS");
 	system("color 0F");
 	cursor_movement(0, 0);
@@ -356,20 +366,35 @@ void choose_profession(string & token) {
 		printf(">>");
 	}
 	token.assign(profession[choose_pos].mark);
+	return choose_pos;
+}
+//================<視窗大小設定>========================
+void modeset(int w, int h) {
+	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD size = { w, h };
+	SetConsoleScreenBufferSize(hOut, size);
+	SMALL_RECT rc = { 1,1, w, h };
+	SetConsoleWindowInfo(hOut, true, &rc);
+	system("cls");
+	return;
 }
 //===================<主要程式>==========================
 int main() {
+	//modeset(150, 50);					//視窗大小設定
 	string my_profession = "你";
-	opening_animation();			//開始RPG動畫
-	choose_profession(my_profession);
-	cout << my_profession;
+	//opening_animation();				//開始RPG動畫
+
+	int get_job_num = choose_profession(my_profession);	//選擇職業
 	string filename = "graph_map/map_center.txt";
 	ReadFile_all(filename);
-	printmap();
-	char key;
-	string move_map;
-	CFighter* fighter = new CFighter();							//建置玩家
+	
+	string active;
+	cursor_movement(-cursor_x_offset, map_y_size / 2 + 10);
+	//建置玩家
+	CFighter* fighter = new CFighter(get_job_num, profession[get_job_num].HP, profession[get_job_num].Damage, profession[get_job_num].Lucky, profession[get_job_num].name, 1);
 	Initialize();												//初始化設定
+	//system("CLS");
+	printmap();
 	CGlobalInfo::user->set_user((CLifeEntity*)fighter);
 	int cur_city = CGlobalInfo::user->get_current_city();
 	CGlobalInfo::map_data->show_description(cur_city);
@@ -377,24 +402,24 @@ int main() {
 		CGlobalInfo::map_data->show_description(cur_city);
 		//	cin >> cur_city;
 	}*/
-
+	char key;
 	while (true) {
 		key = _getch();
+		fighter->show_fighter_detail(fighter);
 		system("color 0F");
 		if (key == ' ') {
+			clear_screen();
 			cursor_movement(map_x_size + 5, map_y_size / 2);
-			
-			cout << "請輸入移動位置";
+			cout << "請輸入指令";
 			cursor_movement(map_x_size + 5, map_y_size / 2 + 1);
-			cin >> move_map;
-			if (move_map == "A_city") {
-				cout << "";
-			}
+			cin >> active;
+			cursor_movement(-cursor_x_offset, map_y_size / 2 + 10);
+			CGlobalInfo::parser->query(active);
 			cursor_movement(map_x_size + 5, map_y_size / 2);
 			cout << "                      ";
 			cursor_movement(map_x_size + 5, map_y_size / 2 + 1);
-			for (int y = 0; y < move_map.length(); y++) {
-				cout << "  ";
+			for (int y = 0; y <active.length(); y++) {
+				cout << "        ";
 			}
 			//printmap();
 		}
@@ -406,6 +431,7 @@ int main() {
 				cout << "  ";
 				reset_pos();
 				printmap();
+				fighter->show_fighter_detail(fighter);
 				//CGlobalInfo::map_data->show_description(cur_city);
 			}
 			else if (pos_y > 1) {
@@ -423,6 +449,7 @@ int main() {
 				cout << "  ";
 				reset_pos();
 				printmap();
+				fighter->show_fighter_detail(fighter);
 				//CGlobalInfo::map_data->show_description(cur_city);
 			}
 			else if (pos_y < map_y_size - 2) {
@@ -440,6 +467,7 @@ int main() {
 				cout << "  ";
 				reset_pos();
 				printmap();
+				fighter->show_fighter_detail(fighter);
 				//CGlobalInfo::map_data->show_description(cur_city);
 			}
 			else if (pos_x > 1) {
@@ -457,6 +485,7 @@ int main() {
 				cout << "  ";
 				reset_pos();
 				printmap();
+				fighter->show_fighter_detail(fighter);
 				//CGlobalInfo::map_data->show_description(cur_city);
 				//break;
 			}

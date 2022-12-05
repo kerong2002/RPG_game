@@ -10,7 +10,9 @@ CMonster::CMonster (int initHP, int initSP, int initrough, string init_name, str
 	cout << "one monster called " << init_name << " (" << init_eng_name << ") is created with <HP, SP, rough> = <" << initHP << ", " << initSP << ", " << initrough << ">" << endl;
 }
 
-CMonster::CMonster (const CMonsterType *type) : CLifeEntity (1 + rand () % type->max_hp, 1 + rand () % type->max_sp, type->name), RoughDegree(type->max_rough) {
+
+	
+CMonster::CMonster(const CMonsterType* type) : CLifeEntity(1 + rand() % type->max_hp, 1 + rand() % type->max_sp, type->name), RoughDegree(type->max_rough) {
 	counter_for_monster_id++;
 	eng_name = type->prefix_eng_name + to_string ((long double)counter_for_monster_id);	
 	cout << "Monster called " << type->name << " (" << eng_name << ") is created with <HP, SP, rough> = <" << this->getHP () << ", " << this->getSP () << ", " << this->getRough () << ">" << endl;

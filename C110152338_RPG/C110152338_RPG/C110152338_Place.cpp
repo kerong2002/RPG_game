@@ -113,3 +113,15 @@ void CPlace::show_mosters (){
 		cout << (*it)->get_basic_data () << endl;
 	}
 }
+int CPlace::get_monster_num() {
+	int cnt = 0;
+	vector <CMonster*>::iterator it = monsters.begin();
+	if (it == monsters.end()) {
+		cnt = 0;
+		return cnt;
+	}
+	for (; it != monsters.end(); it++) {
+		cnt += 1;
+	}
+	return cnt;
+}

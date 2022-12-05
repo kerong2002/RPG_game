@@ -1,4 +1,6 @@
 #include <iostream>
+#include "C110152338_Profession.h"
+#include "C110152338_cursor_movement_fighter.h"
 #include "C110152338_Fighter.h"
 #include "C110152338_food.h"
 #include "C110152338_Bag.h"
@@ -6,26 +8,49 @@
 #include "C110152338_GlobalInfo.h"
 #include "C110152338_MapData.h"
 
+
+
+
 using namespace std;
 
-CFighter::CFighter (int initHP, int initSP, int initLucky, int in_city) {
-	if (initHP == 0 && initSP == 0 && initLucky == 0){
-		initHP = 1 + rand() % (FIGHTER_MAXHP);
-		initSP = 1 + rand() % (FIGHTER_MAXSP);
-		initLucky = 1 + rand() % (FIGHTER_MAXLUCKY);
-		setname ("勇者無敵");
-	}
-
+CFighter::CFighter (int job,int initHP, int initSP, int initLucky, string name, int in_city) {
+	/*if (initHP == 0 && initSP == 0 && initLucky == 0) {
+		initHP =initHP;
+		initSP = initSP;
+		initLucky = initLucky;
+		setname(name);
+	}*/
+	initHP = initHP;
+	initSP = initSP;
+	initLucky = initLucky;
+	setname(name);
 	setInitSPHP (initHP,initSP);
 	Lucky = initLucky;
 	cur_city = in_city;
 	bag = new CBag ();
-	cout << "One Fighter is created with (maxHP, maxSP, maxLucky) = (" << initHP << ", " << initSP << ", " << initLucky << ")" <<endl; 
+	cursor_movement_fighter(60, 7);
+	cout << "玩家血量：" << initHP;
+	cursor_movement_fighter(60, 8);
+	cout << "玩家傷害：" << initSP;
+	cursor_movement_fighter(60, 9);
+	cout << "玩家幸運值：" << initLucky;
+	cursor_movement_fighter(0, 20);
+	//cout << "One Fighter is created with (maxHP, maxSP, maxLucky) = (" << initHP << ", " << initSP << ", " << initLucky << ")" <<endl; 
 }
 
 CFighter::~CFighter (){
 	if (bag)
 		delete bag;
+}
+void CFighter::show_fighter_detail(CLifeEntity* fighter) {
+	cursor_movement_fighter(60, 7);
+	show_HP_detail(fighter);
+	cursor_movement_fighter(60, 8);
+	show_SP_detail(fighter);
+}
+int CFighter::get_move_city(int move_city) {
+	cur_city = move_city;
+	return cur_city;
 }
 
 int CFighter::getLucky (){

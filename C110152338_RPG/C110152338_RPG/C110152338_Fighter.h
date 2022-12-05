@@ -1,6 +1,5 @@
 #ifndef FIGHTER_H
 #define FIGHTER_H
-
 #include "C110152338_LifeEntity.h"
 
 #define FIGHTER_MAXHP 100
@@ -13,10 +12,11 @@ class CItem;
 
 class CFighter : public CLifeEntity {
 public:
-	CFighter (int initHP = 0, int initSP = 0, int initLucky = 0, int in_city = 1);
+	CFighter (int job = 0, int initHP = 0, int initSP = 0, int initLucky = 0, string name="", int in_city = 1);
 	~CFighter();
 	int getLucky ();
 	int physicaldamage ();	
+	void show_fighter_detail(CLifeEntity*);
 	virtual int attack (CLifeEntity *);
 	virtual int defense (CLifeEntity *);	
 	virtual int isA ();
@@ -25,9 +25,12 @@ public:
 	bool useBagItems (int no);
 	int goto_next_city (int next_dir);
 	int get_current_city ();
+	void set_job(int);
+	int get_move_city(int move_city);
 private:
 	int cur_city;
 	int Lucky;
+	int get_job_num;
 	CBag *bag;
 };
 

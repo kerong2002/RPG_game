@@ -41,6 +41,7 @@ public:
 	void show_mosters ();	
 	CMonster *get_monster_by_engname (string);
 	bool remove_moster_by_engname (string);
+	int get_monster_num();
 private:		
 	string name;
 	string description;

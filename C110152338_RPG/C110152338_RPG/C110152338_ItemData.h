@@ -14,6 +14,7 @@ public:
 	void Initialize ();
 	int totalsize ();
 	CItem *getRand ();
+	void showWeaponData();
 	vector <CFood *> food_array;	
 	vector <CWeapon *> weapon_array;	
 private:

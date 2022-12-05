@@ -13,6 +13,7 @@ public:
 	int get_current_city ();
 	CLifeEntity* get_user (){return user;};
 private:		
+	int get_profession_num;
 	CLifeEntity *user;
 };
 

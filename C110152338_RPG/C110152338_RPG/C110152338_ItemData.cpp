@@ -46,7 +46,11 @@ void CItemData::LoadFoodData() {
 	}
 	fin.close();
 }
-
+void CItemData::showWeaponData() {
+	for (int x = 0; x < weapon_array.size(); x++) {
+		cout << weapon_array[x]->getName() << endl;
+	}
+}
 void CItemData::LoadWeaponData() {
 	ifstream fin("weapon.txt");
 	if (!fin) {
@@ -60,7 +64,11 @@ void CItemData::LoadWeaponData() {
 	while (!fin.eof()) {
 		fin >> inID >> name >> attack_bonus;
 		weapon = new CWeapon(name, 0, 0, inID, attack_bonus);
+		//cout << weapon;
 		CGlobalInfo::itm_data->weapon_array.push_back(weapon);
+		/*for (int x = 0; x < weapon_array.size(); x++) {
+			cout << weapon_array[x];
+		}*/
 		//cout << name << " " << hp_bonus << endl;
 	}
 	fin.close();
