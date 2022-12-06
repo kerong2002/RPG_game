@@ -77,11 +77,61 @@ int function_list (vector<string> &tokens){
 	CPlace *cityptr = CGlobalInfo::map_data->get_place_by_id (city);
 	if (cityptr){
 		//cout << cityptr->get_monster_num();
+		//cityptr->show_random_mosters();
+		//cout << "@@@";
 		cityptr->show_mosters ();
 	}	
 	return 0;
 }
+int function_meet_monster(vector<string>& tokens) {
+	/*if (tokens.size() != 2) {
+		for (vector<string>::iterator it = tokens.begin (); it != tokens.end (); it++){
+			cerr << (*it) << " ";
+		}
+		cerr << " command error" << endl;
+		return 0;
+	}*/
+	system("color 0F");
+	for (int y = 0; y < 30; y++) {
+		cursor_movement_cmd(0, 17+y);
+		cout << "                                                                                                      ";
+	}
+	cursor_movement_cmd(0, 17);
+	int city = CGlobalInfo::user->get_current_city();
+	CPlace* cityptr = CGlobalInfo::map_data->get_place_by_id(city);
+	assert(cityptr);
+	string monster_engname = cityptr->show_random_mosters();
+	CMonster* monster = cityptr->get_monster_by_engname(monster_engname);
+	if (!monster) {
+		cout << "no such monsters" << endl;
+		return 0;
+	}
 
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	assert(usr);
+	if (usr->kill(monster)) {
+		cityptr->remove_moster_by_engname(monster_engname);
+		cout << "怪物已死，從怪物身上掉下寶物" << endl;
+		int take_EXP = (rand() % 30 + 20);
+		cout << "獲取：(" << take_EXP << ")經驗值" << endl;
+		usr->AddEXP(take_EXP);
+		usr->AddMoney((rand() % 30 + 30));
+		usr->set_kill_counter();
+		if (usr->show_kill_counter() >= 6) {
+			//cout << "monser generated";
+			CGlobalInfo::map_data->generate_monsters();
+		}
+		CItemData* id = CGlobalInfo::itm_data;
+		if (usr->isA() == efighter) {
+			((CFighter*)usr)->captureItem(id->getRand());
+		}
+	}
+	else {
+		cout << "你現在屬於死亡狀態" << endl;
+	}
+
+	return 0;
+}
 int function_kill (vector<string> &tokens){	
 	/*if (tokens.size() != 2) {
 		for (vector<string>::iterator it = tokens.begin (); it != tokens.end (); it++){
@@ -103,9 +153,13 @@ int function_kill (vector<string> &tokens){
 
 	CLifeEntity *usr = CGlobalInfo::user->get_user ();
 	assert (usr);
-	if (usr->kill (monster)){		
+	if (usr->kill (monster)){	
 		cityptr->remove_moster_by_engname (monster_engname);		
 		cout << "怪物已死，從怪物身上掉下寶物" << endl;	
+		int take_EXP = (rand()%30 + 20);
+		cout << "獲取：(" << take_EXP << ")經驗值"<<endl;
+		usr->AddEXP(take_EXP);
+		usr->AddMoney((rand() % 30 + 30));
 		usr->set_kill_counter();
 		if (usr->show_kill_counter()>=6) {
 			//cout << "monser generated";
@@ -160,13 +214,88 @@ int function_check_bag (vector<string> &tokens){
 	cin.ignore(1024, '\n');		
 	return 0;
 }
-void function_shop() {
+void function_eshop() {
 	system("cls");
 	system("color 0F");
 	cursor_movement_cmd(15, 0);
-	cout <<"武器商店";
+	cout << "   <裝備商店>";
 	cursor_movement_cmd(8, 2);
-	cout<<" 名稱      傷害值     買價";
+	cout << " 名稱      傷害值      買價";
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CItemData* id = CGlobalInfo::itm_data;
+
+	//((CFighter*)usr)->captureItem(id->getCheck_num(17));//撿到商品
+	CEquiment take;
+	int equiment_list[7] = { 0 };
+	for (int i = 1; i <= 6; i++) {
+		int take = rand() % id->equiment_array_size();
+		equiment_list[i] = take;
+		cursor_movement_cmd(8, 2 + i);
+		cout << id->equiment_array[take]->getName();
+		cursor_movement_cmd(22, 2 + i);
+		cout << id->equiment_array[take]->getattackbonus();
+		cursor_movement_cmd(32, 2 + i);
+		cout << id->equiment_array[take]->getattackbonus() * 2;
+	}
+	int choose_pos = 3;
+	cursor_movement_cmd(5, 3);
+	cout << ">>";
+	int key = 0;
+	while (key != 27) {
+		key = _getch();
+		if (key == 13) {
+			int compare_money = usr->getMoney();
+			//cout << weapon_list[choose_pos - 2];
+			if (compare_money < id->equiment_array[equiment_list[choose_pos - 2]]->getattackbonus() * 2) {
+				cursor_movement_cmd(2, 10);
+				cout << "                                       ";
+				cursor_movement_cmd(2, 10);
+				cout << "你沒有足夠的錢";
+			}
+			else {
+				usr->subMoney(id->equiment_array[equiment_list[choose_pos - 2]]->getattackbonus() * 2);
+				cursor_movement_cmd(2, 10);
+				cout << "                                       ";
+				cursor_movement_cmd(2, 10);
+				cout << "您剩下的金錢為 $" << usr->getMoney();
+				cursor_movement_cmd(2, 11);
+				cout << "                                       ";
+				cursor_movement_cmd(2, 11);
+				((CFighter*)usr)->shop_captureItem(id->get_equiment_num(equiment_list[choose_pos - 2]));//撿到商品
+			}
+			//
+		}
+		if (key == 'w' || key == 'W') {
+			cursor_movement_cmd(5, choose_pos);
+			cout << "  ";
+			choose_pos--;
+		}
+		if (key == 's' || key == 'S') {
+			cursor_movement_cmd(5, choose_pos);
+			cout << "  ";
+			choose_pos++;
+		}
+		if (choose_pos > 8) {
+			choose_pos = 3;
+		}
+		if (choose_pos < 3) {
+			choose_pos = 8;
+		}
+		cursor_movement_cmd(5, choose_pos);
+		cout << ">>";
+	}
+	
+	system("CLS");
+	CFighter* set = (CFighter*)usr;
+	CGlobalInfo::map_data->show_description(set->get_current_city());
+}
+void function_wshop() {
+	system("cls");
+	system("color 0F");
+	cursor_movement_cmd(15, 0);
+	cout <<"   <武器商店>";
+	cursor_movement_cmd(8, 2);
+	cout<<" 名稱      傷害值      買價";
 	CLifeEntity* usr = CGlobalInfo::user->get_user();
 	CItemData* id = CGlobalInfo::itm_data;
 
@@ -278,8 +407,9 @@ CCmdParser::CCmdParser (){
 	mappingfunc [string("kill")] = function_kill;
 	mappingfunc [string("checkbag")] = function_check_bag;
 	mappingfunc [string("move")] = function_move;
-	mappingfunc [string("shop")] = function_shop;
-
+	mappingfunc [string("wshop")] = function_wshop;
+	mappingfunc [string("eshop")] = function_eshop;
+	mappingfunc [string("meet_monster")] = function_meet_monster;
 #if 0
 	for (vector<string>::iterator it = tokens.begin (); it != tokens.end (); it++){
 		cout << (*it) << endl;			

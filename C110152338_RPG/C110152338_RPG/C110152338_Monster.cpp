@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <Windows.h>
 #include "C110152338_Monster.h"
 #include "C110152338_MonsterData.h"
 #include "C110152338_def.h"
@@ -14,11 +15,22 @@ CMonster::CMonster (int initHP, int initSP, int initrough, string init_name, str
 	
 CMonster::CMonster(const CMonsterType* type) : CLifeEntity(1 + rand() % type->max_hp, 1 + rand() % type->max_sp, type->name), RoughDegree(type->max_rough) {
 	counter_for_monster_id++;
-	eng_name = type->prefix_eng_name + to_string ((long double)counter_for_monster_id);	
-	cout << "Monster called " << type->name << " (" << eng_name << ") is created with <HP, SP, rough> = <" << this->getHP () << ", " << this->getSP () << ", " << this->getRough () << ">" << endl;
+	int rand_take = (rand() % 3 + 1);				//亂數產生等級
+	eng_name = type->prefix_eng_name + "<" + to_string(rand_take) + ">";
+	if(rand_take >1){
+		this->addMAXHP(this->getHP() * (rand_take-1));
+	}
+	cout << "Monster called " << type->name << " (" << eng_name << ") is created with <HP, SP, rough> = <" << this->getHP () << ", " << this->getSP() << ", " << this->getRough() << ">" << endl;
 }
 
-
+//==================<光標移動>=========================
+void cursor_movement_Monster(int x, int y) {
+	COORD coord;
+	coord.X = x;
+	coord.Y = y;
+	HANDLE a = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleCursorPosition(a, coord);
+}
 int CMonster::getRough (){
 	return RoughDegree;
 }
@@ -31,7 +43,6 @@ int CMonster::attack (CLifeEntity *l){
 	int damage = physicaldamage () - l->defense (l); 
 	if (damage > l->getHP ())
 		damage = l->getHP ();
-
 	l->gethurt (damage);
 	
 	if (damage > 0){
@@ -53,4 +64,9 @@ int CMonster::isA (){
 string CMonster::get_basic_data (){
 	string output = this->getname () + string ("(") + this->eng_name + string (") <HP, SP, rough> = <") + to_string((long double)this->getHP ()) + string (", ")  + to_string((long double)this->getSP ()) + string (", ") + to_string((long double)this->getRough ()) + string(">");
 	return output;	
+}
+
+string CMonster::get_monster_name() {
+	string output = this->eng_name ;
+	return output;
 }

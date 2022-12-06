@@ -15,14 +15,15 @@ int CWeapon::getattackbonus() {
 }
 
 void CWeapon::beUsed (CLifeEntity *le){
-	cout << "戰士使用武器" << getName () << ", ";
+	cout << "玩家使用武器" << getName() << ", ";
 	cout << "攻擊力從原本 " << le->getSP ();
 	le->addSP (this->getattackbonus ());
 	cout << "上升到 " << le->getSP () << endl;
 }
 
+
 void CWeapon::UnUsed (CLifeEntity *le){
-	cout << "戰士 " << getName () << " ";
+	cout << "玩家 " << getName () << " ";
 	cout << "攻擊力從原本 " << le->getSP ();
 	le->delSP (this->getattackbonus ());
 	cout << "下降到 " << le->getSP () << endl;

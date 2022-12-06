@@ -4,7 +4,8 @@
 
 enum {
 	efood = 1,
-	eweapon
+	eweapon,
+	eequiment
 };
 
 enum {

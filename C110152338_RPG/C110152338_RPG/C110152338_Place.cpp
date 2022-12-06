@@ -101,7 +101,27 @@ bool CPlace::remove_moster_by_engname (string engname){
 	}	
 	return false;
 }
-
+string CPlace::show_random_mosters() {
+	vector <CMonster*>::iterator it = monsters.begin();
+	if (it == monsters.end()) {
+		cout << "無任何怪物資料" << endl;
+		return "";
+	}
+	int n = 0;
+	for (; it != monsters.end(); it++) {
+		n += 1;
+	}
+	int rand_monster = rand() % n;
+	it = monsters.begin();
+	string take_monster = "";
+	for (int x = 0; it != monsters.end(); it++,x++) {
+		if (x == rand_monster) {
+			take_monster = (*it)->get_monster_name();
+			break;
+		}
+	}
+	return take_monster;
+}
 
 void CPlace::show_mosters (){
 	vector <CMonster *>::iterator it = monsters.begin ();

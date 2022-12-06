@@ -39,6 +39,7 @@ public:
 	string get_exits ();
 	void gen_monster_by_id (int);
 	void show_mosters ();	
+	string show_random_mosters();
 	CMonster *get_monster_by_engname (string);
 	bool remove_moster_by_engname (string);
 	int get_monster_num();

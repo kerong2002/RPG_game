@@ -3,6 +3,7 @@
 #include "C110152338_Item.h"
 #include "C110152338_food.h"
 #include "C110152338_weapon.h"
+#include "C110152338_Equiment.h"
 #include "C110152338_ItemData.h"
 #include "C110152338_GlobalInfo.h"
 using namespace std;
@@ -10,14 +11,28 @@ using namespace std;
 void CItemData::Initialize() {
 	LoadFoodData();
 	LoadWeaponData();
+	LoadEquimentData();
 }
 
 int CItemData::totalsize() {
 	return food_array.size() + weapon_array.size();
 }
+
 int CItemData::weapon_array_size() {
 	return weapon_array.size();
 }
+
+int CItemData::equiment_array_size() {
+	return equiment_array.size();
+}
+
+CItem* CItemData::get_equiment_num(int pick) {
+	if (pick < equiment_array.size()) {
+		return equiment_array[pick];
+	}
+	return NULL;
+}
+
 CItem* CItemData::getCheck_num(int pick) {
 	if (pick < food_array.size()) {
 		return food_array[pick];
@@ -28,6 +43,7 @@ CItem* CItemData::getCheck_num(int pick) {
 	}
 	return NULL;
 }
+
 CItem* CItemData::getRand() {
 	unsigned int randnum = rand() % totalsize();
 	if (randnum < food_array.size()) {
@@ -82,6 +98,24 @@ void CItemData::LoadWeaponData() {
 			cout << weapon_array[x];
 		}*/
 		//cout << name << " " << hp_bonus << endl;
+	}
+	fin.close();
+
+}
+void CItemData::LoadEquimentData() {
+	ifstream fin("equiment.txt");
+	if (!fin) {
+		cout << "ÅªÀÉ¥¢±Ñ: equiment.txt" << endl;
+		return;
+	}
+	string name;
+	int attack_bonus;
+	int inID;
+	CEquiment* equiment;
+	while (!fin.eof()) {
+		fin >> inID >> name >> attack_bonus;
+		equiment = new CEquiment(name, 0, 0, inID, attack_bonus);
+		CGlobalInfo::itm_data->equiment_array.push_back(equiment);
 	}
 	fin.close();
 

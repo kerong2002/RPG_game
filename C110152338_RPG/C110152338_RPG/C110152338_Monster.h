@@ -14,6 +14,7 @@ public:
 	virtual int defense (CLifeEntity *);
 	virtual int isA ();
 	string get_basic_data ();
+	string get_monster_name();
 	string get_engname (){return eng_name;};
 private:	
 	static int counter_for_monster_id;
