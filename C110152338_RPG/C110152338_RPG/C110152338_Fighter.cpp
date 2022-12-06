@@ -56,7 +56,7 @@ void CFighter::show_fighter_detail(CLifeEntity* fighter) {
 	cursor_movement_fighter(60, 6);
 	show_SP_detail(fighter);
 	cursor_movement_fighter(60, 7);
-	show_Money_detail(fighter);
+	show_Money_detail(fighter); 
 	cursor_movement_fighter(60, 8);
 	show_Degree_detail(fighter);
 	cursor_movement_fighter(60, 9);

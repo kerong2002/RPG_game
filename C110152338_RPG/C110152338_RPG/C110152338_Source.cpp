@@ -385,37 +385,107 @@ void modeset(int w, int h) {
 	return;
 }
 //===================<登入系統>===========================
+string user_set = "";				//帳號
+string password_set = "";			//密碼
+string forgot_hint = "";
+int logint_cnt = 0;
 void opening_password() {
-	cursor_movement(0, 0);
-	cout << "user : ";
-	cursor_movement(0, 1);
+	string data[3];
+	system("CLS");
+	system("color 0F");
+	int choose_pos = 1;
+	cursor_movement(2, 2);
+	cout << "  user   : ";
+	cursor_movement(2, 3);
 	cout << "password : ";
-	char key = 0;
+	cursor_movement(2, 4);
+	cout << "<忘記密碼> ";
+	cursor_movement(2, 5);
+	cout << "<確定登入> ";
+	cursor_movement(0, 2);
+	printf(">>");
+	int key = 0;
 	while (true) {
-		string user;
-		string password;
-		cursor_movement(4, 0);
-		cin >> user;
-		cursor_movement(6, 1);
-		while (key != 13) {
-			key = _getch();
-			if (key == 13) {
-				break;
+		key = _getch();
+		cursor_movement(2, 2);
+		cout << "  user   : ";
+		cursor_movement(2, 3);
+		cout << "password : ";
+		cursor_movement(2, 4);
+		cout << "<忘記密碼> ";
+		cursor_movement(2, 5);
+		cout << "<確定登入> ";
+		if (key == 13) {
+			cursor_movement(8, 1 + choose_pos);
+			if (choose_pos == 2) {
+				key = 0;
+				while (key != 13) {
+					key = _getch();
+					if (key == 13) {
+						break;
+					}
+					data[choose_pos - 1] += key;
+					cout << "#";
+				}
 			}
-			password += key;
-			cout << "#";
+			else if (choose_pos == 3) {
+				cin >> data[2];
+				if (data[2].compare(forgot_hint) == 0) {
+					cursor_movement(4, 10);
+					cout << "請輸入您想修改的密碼:";
+					ofstream out_f("password.txt");
+					cin >> data[2];
+					out_f << data[2];
+					cursor_movement(4, 10);
+					cout << "                                         ";
+				}
+				else {
+					cursor_movement(8, 2 + 2);
+					cout << "                                        ";
+				}
+			}
+			else if (choose_pos == 4) {
+				if (data[0].compare(user_set) == 0 && data[1].compare(password_set) == 0) {
+					logint_cnt = 0;
+					break;
+				}
+				else {
+					logint_cnt += 1;
+					data[1] = "";
+					for (int y = 0; y < 3; y++) {
+						cursor_movement(8, 2+y);
+						cout << "                                        ";
+					}
+					cursor_movement(4, 8);
+					cout << "您輸入錯誤" << logint_cnt << "次";
+					if (logint_cnt >= 3) {
+						cursor_movement(4, 9);
+						cout << "請問是否要嘗試忘記密碼?";
+					}
+				}
+			}
+			else {
+				cin >> data[choose_pos - 1];
+			}
 		}
-		if (user.compare("kerong")==0 && password.compare("abc1234")==0) {
-			break;
+		if (key == 'w' || key == 'W') {
+			cursor_movement(0, 1 + choose_pos);
+			printf("  ");
+			choose_pos--;
 		}
-		else {
-			system("CLS");
-			cursor_movement(0, 0);
-			cout << "user : ";
-			cursor_movement(0, 1);
-			cout << "password : ";
-			key = 0;
+		if (key == 's' || key == 'S') {
+			cursor_movement(0, 1 + choose_pos);
+			printf("  ");
+			choose_pos++;
 		}
+		if (choose_pos > 4) {
+			choose_pos = 1;
+		}
+		if (choose_pos < 1) {
+			choose_pos = 4;
+		}
+		cursor_movement(0, 1 + choose_pos);
+		printf(">>");
 	}
 	system("CLS");
 }
@@ -476,11 +546,27 @@ void monster_move(int pos_x,int pos_y) {
 	cout << "敵";
 
 }
+void read_login() {
+	ifstream fin_u("user.txt");
+	ifstream fin_p("password.txt");
+	ifstream fin_f("forgot_hint.txt");
+	while (!fin_u.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+		fin_u >> user_set;
+	}
+	while (!fin_p.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+		fin_p >> password_set;
+	}
+	while (!fin_f.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+		fin_f >> forgot_hint;
+	}
+	//cout << forgot_hint;
+}
 //===================<主要程式>==========================
 int main() {
+	read_login();
 	//modeset(150, 50);					//視窗大小設定
 	string my_profession = "你";
-	//opening_password();				//登入系統
+	opening_password();					//登入系統
 	//opening_animation();				//開始RPG動畫
 
 	int get_job_num = choose_profession(my_profession);	//選擇職業
@@ -504,7 +590,7 @@ int main() {
 	cursor_movement(pos_x, pos_y);
 	SetColor(240);
 	cout << my_profession;
-	char key;
+	int key=0;
 	while (true) {
 		key = _getch();
 		monster_move(pos_x, pos_y);
