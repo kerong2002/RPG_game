@@ -40,7 +40,7 @@ static struct profession {
 	int Lucky;				//幸運值
 	string mark;			//標示
 }
-profession[Profession_size+1] = {
+profession[Profession_size + 1] = {
 	{},
 	{"射手"	 , 150, 200,   5, "射"},
 	{"法師"	 , 200, 100,  20, "法"},
@@ -327,14 +327,14 @@ void Initialize() {
 	CGlobalInfo::map_data->generate_monsters();
 }
 //==================<選擇職業>===========================
-int choose_profession(string & token) {
+int choose_profession(string& token) {
 	system("CLS");
 	system("color 0F");
 	cursor_movement(0, 0);
-	printf("請選擇您的職業：");
+	cout << "請選擇您的職業：";
 	cursor_movement(2, 1);
-	printf("職業   血量    傷害    幸運    圖標");
-	for (int i = 1; i <= Profession_size; i++){
+	cout << "職業   血量    傷害    幸運    圖標";
+	for (int i = 1; i <= Profession_size; i++) {
 		cursor_movement(2, 1 + i);
 		cout << profession[i].name;
 		cursor_movement(6, 1 + i);
@@ -348,18 +348,18 @@ int choose_profession(string & token) {
 	}
 	int choose_pos = 1;
 	cursor_movement(0, 2);
-	printf(">>");
+	cout << ">>";
 	int key = 0;
-	while (key != 13){
+	while (key != 13) {
 		key = _getch();
-		if (key == 'w' || key == 'W'){
+		if (key == 'w' || key == 'W') {
 			cursor_movement(0, 1 + choose_pos);
-			printf("  ");
+			cout << "  ";
 			choose_pos--;
 		}
-		if (key == 's' || key == 'S'){
+		if (key == 's' || key == 'S') {
 			cursor_movement(0, 1 + choose_pos);
-			printf("  ");
+			cout << "  ";
 			choose_pos++;
 		}
 		if (choose_pos > Profession_size) {
@@ -369,7 +369,7 @@ int choose_profession(string & token) {
 			choose_pos = Profession_size;
 		}
 		cursor_movement(0, 1 + choose_pos);
-		printf(">>");
+		cout << ">>";
 	}
 	token.assign(profession[choose_pos].mark);
 	return choose_pos;
@@ -403,7 +403,7 @@ void opening_password() {
 	cursor_movement(2, 5);
 	cout << "<確定登入> ";
 	cursor_movement(0, 2);
-	printf(">>");
+	cout << ">>";
 	int key = 0;
 	while (true) {
 		key = _getch();
@@ -453,7 +453,7 @@ void opening_password() {
 					logint_cnt += 1;
 					data[1] = "";
 					for (int y = 0; y < 3; y++) {
-						cursor_movement(8, 2+y);
+						cursor_movement(8, 2 + y);
 						cout << "                                        ";
 					}
 					cursor_movement(4, 8);
@@ -470,12 +470,12 @@ void opening_password() {
 		}
 		if (key == 'w' || key == 'W') {
 			cursor_movement(0, 1 + choose_pos);
-			printf("  ");
+			cout << "  ";
 			choose_pos--;
 		}
 		if (key == 's' || key == 'S') {
 			cursor_movement(0, 1 + choose_pos);
-			printf("  ");
+			cout << "  ";
 			choose_pos++;
 		}
 		if (choose_pos > 4) {
@@ -485,36 +485,36 @@ void opening_password() {
 			choose_pos = 4;
 		}
 		cursor_movement(0, 1 + choose_pos);
-		printf(">>");
+		cout << ">>";
 	}
 	system("CLS");
 }
 //===================<超出地圖邊界>=======================
-int monster_x = rand() % (map_x_size - 1) + 1;
-int monster_y = rand() % (map_y_size - 1) + 1;
-void out_of_map(){
+int monster_x = rand() % (map_x_size - 2) + 1;
+int monster_y = rand() % (map_y_size - 2) + 1;
+void out_of_map() {
 	cursor_movement(pos_x, pos_y);
 	cout << "  ";
-	reset_pos();
+	//reset_pos();
 	printmap();
-	monster_x = rand() % (map_x_size-1) + 1;
-	monster_y = rand() % (map_y_size-1) + 1;
-	while(monster_x==pos_x && monster_y==pos_y){
-		monster_x = rand() % (map_x_size - 1) + 1;
-		monster_y = rand() % (map_y_size - 1) + 1;
+	monster_x = rand() % (map_x_size - 2) + 1;
+	monster_y = rand() % (map_y_size - 2) + 1;
+	while (monster_x == pos_x && monster_y == pos_y) {
+		monster_x = rand() % (map_x_size - 2) + 1;
+		monster_y = rand() % (map_y_size - 2) + 1;
 	}
 	cursor_movement(monster_x, monster_y);
 	cout << "敵";
 }
 //===================<怪物移動>========================
-void monster_move(int pos_x,int pos_y) {
-	if (pos_x == monster_x && pos_y == monster_y){
+void monster_move(int pos_x, int pos_y) {
+	if (pos_x == monster_x && pos_y == monster_y) {
 		CGlobalInfo::parser->query("meet_monster");
-		monster_x = rand() % (map_x_size - 1) + 1;
-		monster_y = rand() % (map_y_size - 1) + 1;
+		monster_x = rand() % (map_x_size - 2) + 1;
+		monster_y = rand() % (map_y_size - 2) + 1;
 		while (monster_x == pos_x && monster_y == pos_y) {
-			monster_x = rand() % (map_x_size - 1) + 1;
-			monster_y = rand() % (map_y_size - 1) + 1;
+			monster_x = rand() % (map_x_size - 2) + 1;
+			monster_y = rand() % (map_y_size - 2) + 1;
 		}
 		cursor_movement(monster_x, monster_y);
 		cout << "敵";
@@ -531,9 +531,9 @@ void monster_move(int pos_x,int pos_y) {
 		{ 0, 0},
 		{ 0, 0}
 	};
-	int new_pos = rand()%6;
-	while (true){
-		if (monster_x + m_list[new_pos][0] > 0 && monster_x + m_list[new_pos][0] < map_x_size-1 && monster_y + m_list[new_pos][1]>0 && monster_y + m_list[new_pos][1] < map_y_size-1) {
+	int new_pos = rand() % 6;
+	while (true) {
+		if ((monster_x + m_list[new_pos][0]) > 0 && (monster_x + m_list[new_pos][0]) < map_x_size - 2 && (monster_y + m_list[new_pos][1]) > 0 && (monster_y + m_list[new_pos][1]) < map_y_size - 2) {
 			break;
 		}
 		new_pos = rand() % 7 + 1;
@@ -566,13 +566,13 @@ int main() {
 	read_login();
 	//modeset(150, 50);					//視窗大小設定
 	string my_profession = "你";
-	opening_password();					//登入系統
+	//opening_password();					//登入系統
 	//opening_animation();				//開始RPG動畫
 
 	int get_job_num = choose_profession(my_profession);	//選擇職業
 	string filename = "graph_map/map_center.txt";
 	ReadFile_all(filename);
-	
+
 	string active;
 	cursor_movement(-cursor_x_offset, map_y_size / 2 + 10);
 	//建置玩家
@@ -590,7 +590,7 @@ int main() {
 	cursor_movement(pos_x, pos_y);
 	SetColor(240);
 	cout << my_profession;
-	int key=0;
+	int key = 0;
 	while (true) {
 		key = _getch();
 		monster_move(pos_x, pos_y);
@@ -607,7 +607,7 @@ int main() {
 			cursor_movement(map_x_size + 5, map_y_size / 2);
 			cout << "                      ";
 			cursor_movement(map_x_size + 5, map_y_size / 2 + 1);
-			for (int y = 0; y <active.length(); y++) {
+			for (int y = 0; y < active.length(); y++) {
 				cout << "        ";
 			}
 			fighter->show_fighter_detail(fighter);
@@ -617,7 +617,11 @@ int main() {
 		if ((key == 'W' || key == 'w')) {
 			if (pos_x == map_x_size / 2 && pos_y == 1) {
 				CGlobalInfo::parser->query("north");
+				int cur_city = CGlobalInfo::user->get_current_city();
 				//SetColor(15);
+				if (cur_city > 3) {
+					pos_y = map_y_size - 2;
+				}
 				out_of_map();
 				fighter->show_fighter_detail(fighter);
 				//CGlobalInfo::map_data->show_description(cur_city);
@@ -632,7 +636,11 @@ int main() {
 		if ((key == 'S' || key == 's')) {
 			if (pos_x == map_x_size / 2 && pos_y == map_y_size - 2) {
 				CGlobalInfo::parser->query("south");
+				int cur_city = CGlobalInfo::user->get_current_city();
 				//SetColor(15);
+				if (cur_city < 7) {
+					pos_y = 1;
+				}
 				out_of_map();
 				fighter->show_fighter_detail(fighter);
 			}
@@ -645,8 +653,13 @@ int main() {
 		}
 		if ((key == 'A' || key == 'a')) {
 			if (pos_x == 1 && pos_y == map_y_size / 2) {
-				CGlobalInfo::parser->query("west");
+
+				int cur_city = CGlobalInfo::user->get_current_city();
 				//SetColor(15);
+				if (cur_city != 1 && cur_city != 4 && cur_city != 7) {
+					pos_x = map_x_size - 2;
+				}
+				CGlobalInfo::parser->query("west");
 				out_of_map();
 				fighter->show_fighter_detail(fighter);
 				//CGlobalInfo::map_data->show_description(cur_city);
@@ -661,13 +674,17 @@ int main() {
 		if ((key == 'D' || key == 'd')) {
 			if (pos_x == map_x_size - 2 && pos_y == map_y_size / 2) {
 				CGlobalInfo::parser->query("east");
+				int cur_city = CGlobalInfo::user->get_current_city();
 				//SetColor(15);
+				if (cur_city % 3 != 0) {
+					pos_x = 1;
+				}
 				out_of_map();
 				fighter->show_fighter_detail(fighter);
 				//CGlobalInfo::map_data->show_description(cur_city);
 				//break;
 			}
-			else if(pos_x < map_x_size - 2) {
+			else if (pos_x < map_x_size - 2) {
 				cursor_movement(pos_x, pos_y);
 				SetColor(15);
 				cout << "  ";
@@ -707,7 +724,7 @@ int main() {
 			cout << endl << endl << "戰鬥開始" << endl << endl;
 			startfight(m, &fighter);
 			delete m;
-}
+		}
 		else
 			cout << "No monster generated" << endl;
 	}
@@ -715,5 +732,5 @@ int main() {
 #endif
 	system("pause");
 	return 0;
-}
+	}
 

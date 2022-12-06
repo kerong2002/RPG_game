@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 #include <cassert>
 #include <windows.h>
 #include <conio.h>
@@ -60,7 +61,8 @@ int function_next_direction (vector<string> &tokens){
 		CGlobalInfo::map_data->show_description (next_city);		
 	} else {
 		cursor_movement_cmd(0, 21);
-		cout << "那邊沒路喔!!!請換個方向吧" << endl;		
+		cout << "那邊沒路喔!!!請換個方向吧" << endl;	
+		return 1;
 	}
 	return 0;
 }
