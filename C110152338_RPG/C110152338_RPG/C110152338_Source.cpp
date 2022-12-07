@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
-#include <cstdio>
 #include <string>
 #include <iterator>
 #include <sstream>
@@ -42,14 +41,14 @@ static struct profession {
 }
 profession[Profession_size + 1] = {
 	{},
-	{"射手"	 , 150, 200,   5, "射"},
-	{"法師"	 , 200, 100,  20, "法"},
-	{"召喚師", 100, 130,  15, "召"},
+	{"射手"	 , 100, 200,  10, "射"},
+	{"法師"	 , 200, 100,   3, "法"},
+	{"召喚師", 100, 130,   5, "召"},
 	{"戰士"  , 300,  60,  25, "戰"},
 	{"劍士"  ,  50, 300,   1, "劍"},
 	{"坦克"  , 800,   5,  30, "坦"},
-	{"忍者"  , 100, 100,  10, "忍"},
-	{"輔助"  ,  20,  20, 100, "輔"}
+	{"忍者"  , 100, 100,   1, "忍"},
+	{"輔助"  ,  20,   1, 100, "輔"}
 };
 
 //=================<重製位置>==========================
@@ -531,7 +530,7 @@ void monster_move(int pos_x, int pos_y) {
 		{ 0, 0},
 		{ 0, 0}
 	};
-	int new_pos = rand() % 6;
+	int new_pos = rand() % 8;
 	while (true) {
 		if ((monster_x + m_list[new_pos][0]) > 0 && (monster_x + m_list[new_pos][0]) < map_x_size - 2 && (monster_y + m_list[new_pos][1]) > 0 && (monster_y + m_list[new_pos][1]) < map_y_size - 2) {
 			break;
@@ -598,15 +597,15 @@ int main() {
 		system("color 0F");
 		if (key == ' ') {
 			clear_screen();
-			cursor_movement(map_x_size + 5, map_y_size / 2);
+			cursor_movement(map_x_size + 5, map_y_size / 2 + 2);
 			cout << "請輸入指令";
-			cursor_movement(map_x_size + 5, map_y_size / 2 + 1);
+			cursor_movement(map_x_size + 5, map_y_size / 2 + 3);
 			cin >> active;
 			cursor_movement(-cursor_x_offset, map_y_size / 2 + 10);
 			CGlobalInfo::parser->query(active);
-			cursor_movement(map_x_size + 5, map_y_size / 2);
+			cursor_movement(map_x_size + 5, map_y_size / 2 + 2);
 			cout << "                      ";
-			cursor_movement(map_x_size + 5, map_y_size / 2 + 1);
+			cursor_movement(map_x_size + 5, map_y_size / 2 + 3);
 			for (int y = 0; y < active.length(); y++) {
 				cout << "        ";
 			}
@@ -616,8 +615,9 @@ int main() {
 		}
 		if ((key == 'W' || key == 'w')) {
 			if (pos_x == map_x_size / 2 && pos_y == 1) {
-				CGlobalInfo::parser->query("north");
 				int cur_city = CGlobalInfo::user->get_current_city();
+				CGlobalInfo::parser->query("north");
+
 				//SetColor(15);
 				if (cur_city > 3) {
 					pos_y = map_y_size - 2;
@@ -635,8 +635,9 @@ int main() {
 		}
 		if ((key == 'S' || key == 's')) {
 			if (pos_x == map_x_size / 2 && pos_y == map_y_size - 2) {
-				CGlobalInfo::parser->query("south");
 				int cur_city = CGlobalInfo::user->get_current_city();
+				CGlobalInfo::parser->query("south");
+
 				//SetColor(15);
 				if (cur_city < 7) {
 					pos_y = 1;
@@ -673,8 +674,9 @@ int main() {
 		}
 		if ((key == 'D' || key == 'd')) {
 			if (pos_x == map_x_size - 2 && pos_y == map_y_size / 2) {
-				CGlobalInfo::parser->query("east");
 				int cur_city = CGlobalInfo::user->get_current_city();
+				CGlobalInfo::parser->query("east");
+
 				//SetColor(15);
 				if (cur_city % 3 != 0) {
 					pos_x = 1;
@@ -732,5 +734,5 @@ int main() {
 #endif
 	system("pause");
 	return 0;
-	}
+}
 

@@ -4,6 +4,7 @@
 #include "C110152338_food.h"
 #include "C110152338_weapon.h"
 #include "C110152338_Equiment.h"
+#include "C110152338_Skill.h"
 #include "C110152338_ItemData.h"
 #include "C110152338_GlobalInfo.h"
 using namespace std;
@@ -12,6 +13,7 @@ void CItemData::Initialize() {
 	LoadFoodData();
 	LoadWeaponData();
 	LoadEquimentData();
+	LoadSkillData();
 }
 
 int CItemData::totalsize() {
@@ -116,6 +118,27 @@ void CItemData::LoadEquimentData() {
 		fin >> inID >> name >> attack_bonus;
 		equiment = new CEquiment(name, 0, 0, inID, attack_bonus);
 		CGlobalInfo::itm_data->equiment_array.push_back(equiment);
+	}
+	fin.close();
+
+}
+
+void CItemData::LoadSkillData() {
+	ifstream fin("skill.txt");
+	if (!fin) {
+		cout << "ÅªÀÉ¥¢±Ñ: skill.txt" << endl;
+		return;
+	}
+	string name;
+	int attack_bonus;
+	int inID;
+	int skill_cost;
+	int skill_level;
+	CSkill* skill;
+	while (!fin.eof()) {
+		fin >> inID >> name >> attack_bonus >> skill_cost>>skill_level;
+		skill = new CSkill(name, 0, 0, inID, attack_bonus, skill_cost, skill_level);
+		CGlobalInfo::itm_data->skill_array.push_back(skill);
 	}
 	fin.close();
 

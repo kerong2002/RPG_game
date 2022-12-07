@@ -1,5 +1,6 @@
 #include <iostream>
 #include <Windows.h>
+#include <conio.h>
 #include <iomanip>
 #include "C110152338_GlobalInfo.h"
 #include "C110152338_LifeEntity.h"
@@ -11,6 +12,9 @@ CLifeEntity::CLifeEntity(int initHP, int initSP, string initname) {
 	Name = initname;
 	Degree = 1;
 	EXP = 0;
+	Skill_point = 500;
+	magic_power = 300;
+	max_magic_power = 300;
 	weapon = NULL;
 	setMoney(500);				//初始金幣
 }
@@ -25,6 +29,10 @@ void cursor_movement_Life(int x, int y) {
 void CLifeEntity::setInitSPHP(int initHP, int initSP) {
 	maxSP = SP = initSP;
 	maxHP = HP = initHP;
+}
+
+void CLifeEntity::setInitLucky(int initLucky) {
+	Lucky = initLucky;
 }
 
 void CLifeEntity::setMoney(int initMoney) {
@@ -52,8 +60,17 @@ void CLifeEntity::AddEXP(int inexp) {
 void CLifeEntity::AddDegree(int indegree) {
 	Degree += indegree;
 	addSP(indegree*5);
+	AddLucky(indegree);
 	cout << "<等級、傷害提升!!>" << endl;
 	//cout << "加錢";
+}
+
+void CLifeEntity::AddLucky(int inLucky) {
+	Lucky += inLucky;
+}
+
+int CLifeEntity::show_Lucky() {
+	return Lucky;
 }
 
 void CLifeEntity::setHP(int inHP) {
@@ -92,6 +109,18 @@ int  CLifeEntity::getEXP() {
 void  CLifeEntity::subMoney(int  take) {
 	Money -= take;
 }
+
+int  CLifeEntity::showSkill_point() {
+	return Skill_point;
+}
+void  CLifeEntity::AddSkill_point(int initSkill_point) {
+	Skill_point += initSkill_point;
+}
+
+void  CLifeEntity::SubSkill_point(int initSkill_point) {
+	Skill_point -= initSkill_point;
+}
+
 void CLifeEntity::addHP(int inHP) {
 	HP = (inHP + HP) > maxHP ? maxHP : (HP + inHP);
 }
@@ -116,6 +145,25 @@ void CLifeEntity::delMAXHP(int inHP) {
 
 int CLifeEntity::getHP() {
 	return (HP > 0 ? HP : 0);
+}
+
+int CLifeEntity::showMagic_power() {
+	return magic_power;
+}
+void CLifeEntity::addMagic_power(int init_magic_power) {
+	if(magic_power + init_magic_power <= max_magic_power){
+		magic_power += init_magic_power;
+	}
+	else {
+		magic_power = max_magic_power;
+	}
+	
+}
+void CLifeEntity::delMagic_power(int init_magic_power) {
+	magic_power -= init_magic_power;
+	if (magic_power < 0) {
+		magic_power = 0;
+	}
 }
 
 int CLifeEntity::getMAXHP() {
@@ -156,12 +204,65 @@ void set_pos() {
 	}
 	cursor_movement_Life(0, 20);
 }
+void choose_attack() {
+	system("color 0F");
+	cursor_movement_Life(63, 20);
+	cout << "                                                ";
+	cursor_movement_Life(63, 20);
+	cout << "<普通攻擊>";
+	cursor_movement_Life(63, 21);
+	cout << "                                                ";
+	cursor_movement_Life(63, 21);
+	cout << "<技能攻擊>";
+	cursor_movement_Life(60,20);
+	
+	int choose_pos = 0;
+	cout << ">>";
+	cursor_movement_Life(0, 0);
+	int key = 0;
+	while (key != 27) {
+		key = _getch();
+		if (key == 13) {
+			if (choose_pos == 0) {
+				break;
+			}
+			else {
+				cout << "not do";
+			}
+		}
+		if (key == 'w' || key == 'W') {
+			cursor_movement_Life(60, choose_pos + 20);
+			cout << "  ";
+			choose_pos--;
+		}
+		if (key == 's' || key == 'S') {
+			cursor_movement_Life(60, choose_pos + 20);
+			cout << "  ";
+			choose_pos++;
+		}
+		if (choose_pos > 1) {
+			choose_pos = 0;
+		}
+		if (choose_pos < 0) {
+			choose_pos = 1;
+		}
+		cursor_movement_Life(60, choose_pos + 20);
+		cout << ">>";
+	}
+	cursor_movement_Life(60, 20);
+	cout << "                                                      ";
+	cursor_movement_Life(60, 21);
+	cout << "                                                      ";
+}
 bool CLifeEntity::kill(CLifeEntity* enemy) {
 	int f_damage = 0, s_damage = 0;
 	CLifeEntity* first, * second;
 	int whofirst;
 	while (!this->isdead() && !enemy->isdead()) {
+		choose_attack();
 		set_pos();
+		
+		//system("pause");
 		whofirst = rand() % 2;
 		if (whofirst == 0) {
 			cout << "對方搶得先機，先出手傷人" << endl;
@@ -201,6 +302,9 @@ void CLifeEntity::fightstatus(CLifeEntity* f, CLifeEntity* s) {
 
 void  CLifeEntity::set_kill_counter() {
 	kill_counter += 1;
+	if (kill_counter > 6) {
+		kill_counter = 0;
+	}
 }
 
 int  CLifeEntity::show_kill_counter() {

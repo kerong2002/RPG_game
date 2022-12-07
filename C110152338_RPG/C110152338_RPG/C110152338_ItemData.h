@@ -7,6 +7,7 @@ class CFood;
 class CWeapon;
 class CItem;
 class CEquiment;
+class CSkill;
 
 class CItemData {
 public:
@@ -23,10 +24,12 @@ public:
 	vector <CFood *> food_array;	
 	vector <CWeapon *> weapon_array;	
 	vector <CEquiment *> equiment_array;
+	vector <CSkill *> skill_array;
 private:
 	void LoadFoodData ();
 	void LoadWeaponData ();
 	void LoadEquimentData();
+	void LoadSkillData();
 };
 
 #endif

@@ -22,26 +22,32 @@ CFighter::CFighter (int job,int initHP, int initSP, int initLucky, string name, 
 		initLucky = initLucky;
 		setname(name);
 	}*/
-	initHP = initHP;
-	initSP = initSP;
-	initLucky = initLucky;
+	//initHP = initHP;
+	//initSP = initSP;
+	//initLucky = initLucky;
 	get_job_num = job;
 	setname(name);
 	setInitSPHP (initHP,initSP);
-	
 	Lucky = initLucky;
+	setInitLucky(Lucky);
 	cur_city = in_city;
 	bag = new CBag ();
-	cursor_movement_fighter(60, 5);
+	cursor_movement_fighter(60, 4);
 	cout << "產﹀秖" << initHP;
-	cursor_movement_fighter(60, 6);
+	cursor_movement_fighter(60, 5);
 	cout << "產端甡" << initSP;
-	cursor_movement_fighter(60, 7);
+	cursor_movement_fighter(60, 6);
 	cout << "產窥$" << showMoney();
+	cursor_movement_fighter(60, 7);
+	cout << "產┋笲「" << show_Lucky();
 	cursor_movement_fighter(60, 8);
 	cout << "產单<" << getDegree()<<">";
 	cursor_movement_fighter(60, 9);
 	cout << "產竒喷" << setw(2)<<setfill('0')<<getEXP()<<" / 50";
+	cursor_movement_fighter(60, 10);
+	cout << "м翴计" << showSkill_point();
+	cursor_movement_fighter(60, 11);
+	cout << "臸翴计" << setw(3) << setfill('0') << showMagic_power() << " / 300";
 	cursor_movement_fighter(0, 20);			//秸俱村夹竚
 	//cout << "One Fighter is created with (maxHP, maxSP, maxLucky) = (" << initHP << ", " << initSP << ", " << initLucky << ")" <<endl; 
 }
@@ -51,16 +57,22 @@ CFighter::~CFighter (){
 		delete bag;
 }
 void CFighter::show_fighter_detail(CLifeEntity* fighter) {
-	cursor_movement_fighter(60, 5);
+	cursor_movement_fighter(60, 4);
 	show_HP_detail(fighter);
-	cursor_movement_fighter(60, 6);
+	cursor_movement_fighter(60, 5);
 	show_SP_detail(fighter);
-	cursor_movement_fighter(60, 7);
+	cursor_movement_fighter(60, 6);
 	show_Money_detail(fighter); 
+	cursor_movement_fighter(60, 7);
+	cout << "產┋笲「" << show_Lucky();
 	cursor_movement_fighter(60, 8);
 	show_Degree_detail(fighter);
 	cursor_movement_fighter(60, 9);
 	show_EXP_detail(fighter);
+	cursor_movement_fighter(60, 10);
+	cout << "м翴计" << showSkill_point();
+	cursor_movement_fighter(60, 11);
+	cout << "臸翴计" << setw(3) << setfill('0') << showMagic_power() << " / 300";
 }
 int CFighter::get_move_city(int move_city) {
 	cur_city = move_city;

@@ -94,7 +94,7 @@ int function_meet_monster(vector<string>& tokens) {
 		return 0;
 	}*/
 	system("color 0F");
-	for (int y = 0; y < 30; y++) {
+	for (int y = 0; y < 34; y++) {
 		cursor_movement_cmd(0, 17+y);
 		cout << "                                                                                                      ";
 	}
@@ -106,6 +106,7 @@ int function_meet_monster(vector<string>& tokens) {
 	CMonster* monster = cityptr->get_monster_by_engname(monster_engname);
 	if (!monster) {
 		cout << "no such monsters" << endl;
+		cursor_movement_cmd(0, -3);
 		return 0;
 	}
 
@@ -119,6 +120,8 @@ int function_meet_monster(vector<string>& tokens) {
 		usr->AddEXP(take_EXP);
 		usr->AddMoney((rand() % 30 + 30));
 		usr->set_kill_counter();
+		usr->AddSkill_point(rand()%10+10);
+		usr->addMagic_power(rand() % 50 + 50);
 		if (usr->show_kill_counter() >= 6) {
 			//cout << "monser generated";
 			CGlobalInfo::map_data->generate_monsters();
@@ -127,11 +130,13 @@ int function_meet_monster(vector<string>& tokens) {
 		if (usr->isA() == efighter) {
 			((CFighter*)usr)->captureItem(id->getRand());
 		}
+		cursor_movement_cmd(0, -3);
 	}
 	else {
 		cout << "你現在屬於死亡狀態" << endl;
+		cursor_movement_cmd(0, -3);
 	}
-
+	cursor_movement_cmd(0, -3);
 	return 0;
 }
 int function_kill (vector<string> &tokens){	
@@ -150,6 +155,7 @@ int function_kill (vector<string> &tokens){
 	CMonster *monster = cityptr->get_monster_by_engname (monster_engname);
 	if (!monster){
 		cout << "no such monsters" << endl;
+		cursor_movement_cmd(0, -3);
 		return 0;
 	}
 
@@ -163,6 +169,7 @@ int function_kill (vector<string> &tokens){
 		usr->AddEXP(take_EXP);
 		usr->AddMoney((rand() % 30 + 30));
 		usr->set_kill_counter();
+		usr->AddSkill_point(rand() % 10 + 10);
 		if (usr->show_kill_counter()>=6) {
 			//cout << "monser generated";
 			CGlobalInfo::map_data->generate_monsters();
@@ -171,10 +178,12 @@ int function_kill (vector<string> &tokens){
 		if (usr->isA() == efighter){
 			((CFighter *) usr)->captureItem (id->getRand ());				
 		}
+		cursor_movement_cmd(0, -3);
 	} else {
 		cout << "你現在屬於死亡狀態" << endl;
+		cursor_movement_cmd(0, -3);
 	}
-	
+	cursor_movement_cmd(0, -3);
 	return 0;
 }
 
@@ -216,6 +225,101 @@ int function_check_bag (vector<string> &tokens){
 	cin.ignore(1024, '\n');		
 	return 0;
 }
+
+void function_sshop() {
+	system("cls");
+	system("color 0F");
+	cursor_movement_cmd(15, 0);
+	cout << "   <技能解鎖> ";
+	cursor_movement_cmd(8, 2);
+	cout << " 名稱      傷害值      買價      等級";
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CItemData* id = CGlobalInfo::itm_data;
+
+	//((CFighter*)usr)->captureItem(id->getCheck_num(17));//撿到商品
+	for (int i = 0; i <= 7; i++) {
+		cursor_movement_cmd(8, 3 + i);
+		cout << id->skill_array[i]->getName();
+		cursor_movement_cmd(22, 3 + i);
+		cout << id->skill_array[i]->getattackbonus();
+		cursor_movement_cmd(32, 3 + i);
+		if (id->skill_array[i]->get_skill_level() >= 1) {
+			cout << id->skill_array[i]->get_skill_cost() * (id->skill_array[i]->get_skill_level() + 1);
+		}
+		else {
+			cout << id->skill_array[i]->get_skill_cost();
+		}
+		cursor_movement_cmd(42, 3 + i);
+		cout << id->skill_array[i]->get_skill_level();
+	}
+	int choose_pos = 3;
+	cursor_movement_cmd(5, 3);
+	cout << ">>";
+	int key = 0;
+	while (key != 27) {
+		key = _getch();
+		if (key == 13) {
+			int compare_skill_point = usr->showSkill_point();
+			if (compare_skill_point < id->skill_array[choose_pos - 3]->get_skill_cost()) {
+				cursor_movement_cmd(2, 14);
+				cout << "                                       ";
+				cursor_movement_cmd(2, 14);
+				cout << "你沒有足夠的技能點數";
+			}
+			else {
+				usr->SubSkill_point(id->skill_array[choose_pos - 3]->get_skill_cost());
+				cursor_movement_cmd(2, 14);
+				cout << "                                       ";
+				cursor_movement_cmd(2, 14);
+				cout << "您剩下的技能點數為 : " << usr->showSkill_point();
+				id->skill_array[choose_pos - 3]->add_skill_level();
+				for (int i = 0; i <= 7; i++) {
+					cursor_movement_cmd(8, 3 + i);
+					cout << id->skill_array[i]->getName();
+					cursor_movement_cmd(22, 3 + i);
+					cout << id->skill_array[i]->getattackbonus();
+					cursor_movement_cmd(32, 3 + i);
+					if (id->skill_array[i]->get_skill_level() >= 1) {
+						cout << id->skill_array[i]->get_skill_cost() * (id->skill_array[i]->get_skill_level()+1);
+					}
+					else {
+						cout << id->skill_array[i]->get_skill_cost();
+					}
+					cursor_movement_cmd(42, 3 + i);
+					cout << id->skill_array[i]->get_skill_level();
+				}
+				/*
+				cursor_movement_cmd(2, 15);
+				cout << "                                       ";
+				cursor_movement_cmd(2, 15);*/
+				//((CFighter*)usr)->shop_captureItem(id->get_equiment_num(equiment_list[choose_pos - 2]));//撿到商品
+			}
+		}
+		if (key == 'w' || key == 'W') {
+			cursor_movement_cmd(5, choose_pos);
+			cout << "  ";
+			choose_pos--;
+		}
+		if (key == 's' || key == 'S') {
+			cursor_movement_cmd(5, choose_pos);
+			cout << "  ";
+			choose_pos++;
+		}
+		if (choose_pos > 10) {
+			choose_pos = 3;
+		}
+		if (choose_pos < 3) {
+			choose_pos = 10;
+		}
+		cursor_movement_cmd(5, choose_pos);
+		cout << ">>";
+	}
+
+	system("CLS");
+	CFighter* set = (CFighter*)usr;
+	CGlobalInfo::map_data->show_description(set->get_current_city());
+}
+
 void function_eshop() {
 	system("cls");
 	system("color 0F");
@@ -369,21 +473,21 @@ int function_move(vector<string>& tokens){
 	CLifeEntity* usr = CGlobalInfo::user->get_user();
 	CFighter* set = (CFighter*)usr;
 	int go_next;
-	cursor_movement_cmd(62, 9);
+	cursor_movement_cmd(62, 11);
 	cout << "請輸入傳送位置:";
 	cin >> go_next;
-	cursor_movement_cmd(62, 10);
+	cursor_movement_cmd(62, 12);
 	if (go_next > 9 || go_next < 0) {
 		cout << "Out of map!";
-		cursor_movement_cmd(62, 9);
+		cursor_movement_cmd(62, 11);
 		cout << "                              ";
-		cursor_movement_cmd(62, 10);
+		cursor_movement_cmd(62, 12);
 		cout << "                              ";
 		return -1;
 	}
-	cursor_movement_cmd(62, 9);
+	cursor_movement_cmd(62, 11);
 	cout << "                              ";
-	cursor_movement_cmd(62, 10);
+	cursor_movement_cmd(62, 12);
 	cout << "                              ";
 	int next_city = set->get_move_city(go_next);
 	if (next_city) {
@@ -409,8 +513,9 @@ CCmdParser::CCmdParser (){
 	mappingfunc [string("kill")] = function_kill;
 	mappingfunc [string("checkbag")] = function_check_bag;
 	mappingfunc [string("move")] = function_move;
-	mappingfunc [string("wshop")] = function_wshop;
-	mappingfunc [string("eshop")] = function_eshop;
+	mappingfunc [string("wshop")] = function_wshop;			//武器
+	mappingfunc [string("eshop")] = function_eshop;			//裝備
+	mappingfunc [string("sshop")] = function_sshop;			//技能
 	mappingfunc [string("meet_monster")] = function_meet_monster;
 #if 0
 	for (vector<string>::iterator it = tokens.begin (); it != tokens.end (); it++){

@@ -4,6 +4,7 @@
 #include <string>
 #include "C110152338_weapon.h"
 #include "C110152338_Equiment.h"
+#include "C110152338_Skill.h"
 
 #define MAXBLOODBARLEN 40
 using namespace std;
@@ -12,6 +13,7 @@ class CLifeEntity {
 public:
 	CLifeEntity(int initHP = 0, int initSP = 0, string initname = "");
 	void setInitSPHP(int initHP = 0, int initSP = 0);
+	void setInitLucky(int);
 	bool isdead();
 	void setHP(int);
 	void addHP(int);
@@ -24,11 +26,19 @@ public:
 	void setMoney(int);
 	int showMoney();
 	int getMoney();
+	void AddLucky(int);
+	int show_Lucky();
 	void subMoney(int);
 	void AddMoney(int);
 	void addSP(int);
 	void delSP(int);
+	int showMagic_power();
+	void addMagic_power(int);
+	void delMagic_power(int);
 	void AddEXP(int);
+	int showSkill_point();
+	void AddSkill_point(int);
+	void SubSkill_point(int);
 	void AddDegree(int);
 	void addMAXHP(int);
 	void delMAXHP(int);
@@ -58,7 +68,11 @@ private:
 	int EXP;
 	int Degree;
 	int Money;
+	int Lucky;
 	int kill_counter;
+	int Skill_point;
+	int magic_power;
+	int max_magic_power;
 	string Name;
 	CWeapon* weapon;
 	CEquiment* equiment;
