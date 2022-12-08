@@ -4,6 +4,7 @@
 #include <iomanip>
 #include "C110152338_GlobalInfo.h"
 #include "C110152338_LifeEntity.h"
+#include "C110152338_ItemData.h"
 
 CLifeEntity::CLifeEntity(int initHP, int initSP, string initname) {
 	kill_counter = 0;
@@ -13,7 +14,7 @@ CLifeEntity::CLifeEntity(int initHP, int initSP, string initname) {
 	Degree = 1;
 	EXP = 0;
 	Skill_point = 500;
-	magic_power = 300;
+	magic_power = 10;
 	max_magic_power = 300;
 	weapon = NULL;
 	setMoney(500);				//初始金幣
@@ -204,7 +205,76 @@ void set_pos() {
 	}
 	cursor_movement_Life(0, 20);
 }
-void choose_attack() {
+int  CLifeEntity::show_skill_list() {
+	cursor_movement_Life(63, 19);
+	cout << "                                                ";
+	cursor_movement_Life(75, 19);
+	cout << "<技能清單>";
+	cursor_movement_Life(63, 20);
+	cout << "                                                ";
+	cursor_movement_Life(63, 20);
+	cout << " 名稱      傷害值      等級";
+	CItemData* id = CGlobalInfo::itm_data;
+
+	//((CFighter*)usr)->captureItem(id->getCheck_num(17));//撿到商品
+	for (int i = 0; i <= 4; i++) {
+		cursor_movement_Life(63, 21 + i);
+		cout << id->skill_array[i]->getName();
+		cursor_movement_Life(76, 21 + i);
+		cout << id->skill_array[i]->getattackbonus();
+		cursor_movement_Life(88, 21 + i);
+		cout << id->skill_array[i]->get_skill_level();
+	}
+	int choose_pos = 0;
+	cursor_movement_Life(60, 21);
+	cout << ">>";
+	int key = 0;
+	while (key != 27) {
+		key = _getch();
+		if (key == 27) {
+			return 2;
+		}
+		if (key == 13) {
+			int compare_skill_point = id->skill_array[choose_pos]->getattackbonus();
+			if (id->skill_array[choose_pos]->get_skill_level() == 0) {
+				cursor_movement_Life(63, 27);
+				cout << "                                                               ";
+				cursor_movement_Life(63, 27);
+				cout << "玩家尚未學會此技能";
+			}
+			else if (magic_power<compare_skill_point) {
+				cursor_movement_Life(63, 27);
+				cout << "                                                               ";
+				cursor_movement_Life(63, 27);
+				cout << "玩家魔力值不夠施放技能";
+			}
+			else {
+				return choose_pos;
+			}
+		}
+		if (key == 'w' || key == 'W') {
+			cursor_movement_Life(60, 21+choose_pos);
+			cout << "  ";
+			choose_pos--;
+		}
+		if (key == 's' || key == 'S') {
+			cursor_movement_Life(60, 21+choose_pos);
+			cout << "  ";
+			choose_pos++;
+		}
+		if (choose_pos > 4) {
+			choose_pos = 0;
+		}
+		if (choose_pos < 0) {
+			choose_pos = 4;
+		}
+		cursor_movement_Life(60, 21+ choose_pos);
+		cout << ">>";
+	}
+	return -1;
+	
+}
+void CLifeEntity::choose_attack() {
 	system("color 0F");
 	cursor_movement_Life(63, 20);
 	cout << "                                                ";
@@ -220,14 +290,46 @@ void choose_attack() {
 	cout << ">>";
 	cursor_movement_Life(0, 0);
 	int key = 0;
-	while (key != 27) {
+	while (true) {
 		key = _getch();
 		if (key == 13) {
 			if (choose_pos == 0) {
 				break;
 			}
 			else {
-				cout << "not do";
+				int back_get = show_skill_list();
+				if (back_get == -1) {
+					for (int i = 0; i <= 8; i++) {
+						cursor_movement_Life(60, 19 + i);
+						cout << "                                               ";
+					}
+					cursor_movement_Life(63, 20);
+					cout << "                                                ";
+					cursor_movement_Life(63, 20);
+					cout << "<普通攻擊>";
+					cursor_movement_Life(63, 21);
+					cout << "                                                ";
+					cursor_movement_Life(63, 21);
+					cout << "<技能攻擊>";
+					cursor_movement_Life(60, 20);
+				}
+				else {
+					for (int i = 0; i <= 8; i++) {
+						cursor_movement_Life(60, 19 + i);
+						cout << "                                               ";
+					}
+					cursor_movement_Life(63, 20);
+					cout << "                                                ";
+					cursor_movement_Life(63, 20);
+					cout << "<普通攻擊>";
+					cursor_movement_Life(63, 21);
+					cout << "                                                ";
+					cursor_movement_Life(63, 21);
+					cout << "<技能攻擊>";
+					cursor_movement_Life(60, 20);
+					//magic_attack(enemy,back_get);
+				}
+				//cout << "not do";
 			}
 		}
 		if (key == 'w' || key == 'W') {

@@ -44,11 +44,26 @@ int CMonster::attack (CLifeEntity *l){
 	if (damage > l->getHP ())
 		damage = l->getHP ();
 	l->gethurt (damage);
-	
+
 	if (damage > 0){
 		cout << this->getname () << " 突襲而來，造成 " << l->getname () << " " << damage << " 血損失" <<endl;			
 	} else {
 		cout << this->getname () << " 突襲而來，但是 " << l->getname () << " 異常幸運，因此躲避了攻擊" <<endl;
+	}
+	return (damage);
+}
+
+int CMonster::magic_attack(CLifeEntity* l) {
+	int damage = physicaldamage() - l->defense(l);
+	if (damage > l->getHP())
+		damage = l->getHP();
+	l->gethurt(damage);
+
+	if (damage > 0) {
+		cout << this->getname() << " 突襲而來，造成 " << l->getname() << " " << damage << " 血損失" << endl;
+	}
+	else {
+		cout << this->getname() << " 突襲而來，但是 " << l->getname() << " 異常幸運，因此躲避了攻擊" << endl;
 	}
 	return (damage);
 }

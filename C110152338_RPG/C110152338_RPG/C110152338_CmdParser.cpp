@@ -237,7 +237,7 @@ void function_sshop() {
 	CItemData* id = CGlobalInfo::itm_data;
 
 	//((CFighter*)usr)->captureItem(id->getCheck_num(17));//撿到商品
-	for (int i = 0; i <= 7; i++) {
+	for (int i = 0; i <= 4; i++) {
 		cursor_movement_cmd(8, 3 + i);
 		cout << id->skill_array[i]->getName();
 		cursor_movement_cmd(22, 3 + i);
@@ -273,7 +273,7 @@ void function_sshop() {
 				cursor_movement_cmd(2, 14);
 				cout << "您剩下的技能點數為 : " << usr->showSkill_point();
 				id->skill_array[choose_pos - 3]->add_skill_level();
-				for (int i = 0; i <= 7; i++) {
+				for (int i = 0; i <= 4; i++) {
 					cursor_movement_cmd(8, 3 + i);
 					cout << id->skill_array[i]->getName();
 					cursor_movement_cmd(22, 3 + i);
@@ -305,11 +305,11 @@ void function_sshop() {
 			cout << "  ";
 			choose_pos++;
 		}
-		if (choose_pos > 10) {
+		if (choose_pos > 7) {
 			choose_pos = 3;
 		}
 		if (choose_pos < 3) {
-			choose_pos = 10;
+			choose_pos = 7;
 		}
 		cursor_movement_cmd(5, choose_pos);
 		cout << ">>";

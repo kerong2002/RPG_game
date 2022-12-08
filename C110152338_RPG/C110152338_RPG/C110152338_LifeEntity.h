@@ -44,6 +44,8 @@ public:
 	void delMAXHP(int);
 	int gethurt(int hurt);
 	string getname();
+	int  show_skill_list();
+	void choose_attack();
 	void show_Money_detail(CLifeEntity*);
 	void show_HP_detail(CLifeEntity*);
 	void show_SP_detail(CLifeEntity*);
@@ -58,6 +60,7 @@ public:
 	void setWeapon(CWeapon* in_weapon) { weapon = in_weapon; }
 	bool kill(CLifeEntity*);
 	virtual int attack(CLifeEntity*) = 0;
+	//virtual int magic_attack(CLifeEntity*);
 	virtual int defense(CLifeEntity*) = 0;
 	virtual int isA() = 0;
 private:

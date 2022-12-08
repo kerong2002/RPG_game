@@ -11,6 +11,7 @@ public:
 	int getRough ();
 	int physicaldamage ();	
 	virtual int attack (CLifeEntity *);
+	virtual int magic_attack(CLifeEntity*);
 	virtual int defense (CLifeEntity *);
 	virtual int isA ();
 	string get_basic_data ();
