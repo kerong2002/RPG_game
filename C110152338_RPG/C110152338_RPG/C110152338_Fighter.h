@@ -19,7 +19,7 @@ public:
 	//int magic_damage(int);
 	void show_fighter_detail(CLifeEntity*);
 	virtual int attack (CLifeEntity *);
-	//virtual int magic_attack(CLifeEntity*,int);
+	virtual int magic_skill_attack(CLifeEntity*, int );
 	virtual int defense (CLifeEntity *);	
 	virtual int isA ();
 	void captureItem (CItem *);

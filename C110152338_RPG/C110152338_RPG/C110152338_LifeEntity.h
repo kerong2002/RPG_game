@@ -45,7 +45,9 @@ public:
 	int gethurt(int hurt);
 	string getname();
 	int  show_skill_list();
-	void choose_attack();
+	void show_skill_name(int);
+	int get_skill_damage(int);
+	int choose_attack();
 	void show_Money_detail(CLifeEntity*);
 	void show_HP_detail(CLifeEntity*);
 	void show_SP_detail(CLifeEntity*);
@@ -60,6 +62,7 @@ public:
 	void setWeapon(CWeapon* in_weapon) { weapon = in_weapon; }
 	bool kill(CLifeEntity*);
 	virtual int attack(CLifeEntity*) = 0;
+	virtual int magic_skill_attack(CLifeEntity*,int)=0;
 	//virtual int magic_attack(CLifeEntity*);
 	virtual int defense(CLifeEntity*) = 0;
 	virtual int isA() = 0;

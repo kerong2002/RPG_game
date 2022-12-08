@@ -121,7 +121,7 @@ int function_meet_monster(vector<string>& tokens) {
 		usr->AddMoney((rand() % 30 + 30));
 		usr->set_kill_counter();
 		usr->AddSkill_point(rand()%10+10);
-		usr->addMagic_power(rand() % 50 + 50);
+		usr->addMagic_power(rand() % 20 +10);
 		if (usr->show_kill_counter() >= 6) {
 			//cout << "monser generated";
 			CGlobalInfo::map_data->generate_monsters();
@@ -170,6 +170,7 @@ int function_kill (vector<string> &tokens){
 		usr->AddMoney((rand() % 30 + 30));
 		usr->set_kill_counter();
 		usr->AddSkill_point(rand() % 10 + 10);
+		usr->addMagic_power(rand() % 20 + 10);
 		if (usr->show_kill_counter()>=6) {
 			//cout << "monser generated";
 			CGlobalInfo::map_data->generate_monsters();
@@ -241,7 +242,12 @@ void function_sshop() {
 		cursor_movement_cmd(8, 3 + i);
 		cout << id->skill_array[i]->getName();
 		cursor_movement_cmd(22, 3 + i);
-		cout << id->skill_array[i]->getattackbonus();
+		if (id->skill_array[i]->get_skill_level() == 0) {
+			cout << id->skill_array[i]->getattackbonus();
+		}
+		else {
+			cout << id->skill_array[i]->getattackbonus() * id->skill_array[i]->get_skill_level();
+		}
 		cursor_movement_cmd(32, 3 + i);
 		if (id->skill_array[i]->get_skill_level() >= 1) {
 			cout << id->skill_array[i]->get_skill_cost() * (id->skill_array[i]->get_skill_level() + 1);
@@ -277,7 +283,12 @@ void function_sshop() {
 					cursor_movement_cmd(8, 3 + i);
 					cout << id->skill_array[i]->getName();
 					cursor_movement_cmd(22, 3 + i);
-					cout << id->skill_array[i]->getattackbonus();
+					if (id->skill_array[i]->get_skill_level() == 0) {
+						cout << id->skill_array[i]->getattackbonus();
+					}
+					else {
+						cout << id->skill_array[i]->getattackbonus() * id->skill_array[i]->get_skill_level();
+					}
 					cursor_movement_cmd(32, 3 + i);
 					if (id->skill_array[i]->get_skill_level() >= 1) {
 						cout << id->skill_array[i]->get_skill_cost() * (id->skill_array[i]->get_skill_level()+1);

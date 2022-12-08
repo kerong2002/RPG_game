@@ -13,8 +13,8 @@ CLifeEntity::CLifeEntity(int initHP, int initSP, string initname) {
 	Name = initname;
 	Degree = 1;
 	EXP = 0;
-	Skill_point = 500;
-	magic_power = 10;
+	Skill_point = 300;
+	magic_power = 300;
 	max_magic_power = 300;
 	weapon = NULL;
 	setMoney(500);				//初始金幣
@@ -205,6 +205,16 @@ void set_pos() {
 	}
 	cursor_movement_Life(0, 20);
 }
+
+void CLifeEntity::show_skill_name(int pos) {
+	CItemData* id = CGlobalInfo::itm_data;
+	cout << id->skill_array[pos]->getName();
+}
+
+int CLifeEntity::get_skill_damage(int pos) {
+	CItemData* id = CGlobalInfo::itm_data;
+	return id->skill_array[pos]->getattackbonus() * id->skill_array[pos]->get_skill_level();
+}
 int  CLifeEntity::show_skill_list() {
 	cursor_movement_Life(63, 19);
 	cout << "                                                ";
@@ -221,7 +231,12 @@ int  CLifeEntity::show_skill_list() {
 		cursor_movement_Life(63, 21 + i);
 		cout << id->skill_array[i]->getName();
 		cursor_movement_Life(76, 21 + i);
-		cout << id->skill_array[i]->getattackbonus();
+		if (id->skill_array[i]->get_skill_level() == 0) {
+			cout << id->skill_array[i]->getattackbonus() ;
+		}
+		else {
+			cout << id->skill_array[i]->getattackbonus() * id->skill_array[i]->get_skill_level();
+		}
 		cursor_movement_Life(88, 21 + i);
 		cout << id->skill_array[i]->get_skill_level();
 	}
@@ -232,7 +247,7 @@ int  CLifeEntity::show_skill_list() {
 	while (key != 27) {
 		key = _getch();
 		if (key == 27) {
-			return 2;
+			return -3;
 		}
 		if (key == 13) {
 			int compare_skill_point = id->skill_array[choose_pos]->getattackbonus();
@@ -271,10 +286,10 @@ int  CLifeEntity::show_skill_list() {
 		cursor_movement_Life(60, 21+ choose_pos);
 		cout << ">>";
 	}
-	return -1;
+	return -3;
 	
 }
-void CLifeEntity::choose_attack() {
+int CLifeEntity::choose_attack() {
 	system("color 0F");
 	cursor_movement_Life(63, 20);
 	cout << "                                                ";
@@ -298,17 +313,18 @@ void CLifeEntity::choose_attack() {
 			}
 			else {
 				int back_get = show_skill_list();
-				if (back_get == -1) {
+				if (back_get == -3) {
 					for (int i = 0; i <= 8; i++) {
-						cursor_movement_Life(60, 19 + i);
-						cout << "                                               ";
+						cursor_movement_Life(0, 19 + i);
+						cout << "                                                                                               ";
+						cursor_movement_Life(0, 0);
 					}
 					cursor_movement_Life(63, 20);
-					cout << "                                                ";
+					cout << "                                                                          ";
 					cursor_movement_Life(63, 20);
 					cout << "<普通攻擊>";
 					cursor_movement_Life(63, 21);
-					cout << "                                                ";
+					cout << "                                                                           ";
 					cursor_movement_Life(63, 21);
 					cout << "<技能攻擊>";
 					cursor_movement_Life(60, 20);
@@ -316,21 +332,17 @@ void CLifeEntity::choose_attack() {
 				else {
 					for (int i = 0; i <= 8; i++) {
 						cursor_movement_Life(60, 19 + i);
-						cout << "                                               ";
+						cout << "                                                                          ";
 					}
 					cursor_movement_Life(63, 20);
-					cout << "                                                ";
-					cursor_movement_Life(63, 20);
-					cout << "<普通攻擊>";
+					cout << "                                                                          ";
 					cursor_movement_Life(63, 21);
-					cout << "                                                ";
-					cursor_movement_Life(63, 21);
-					cout << "<技能攻擊>";
+					cout << "                                                                           ";
 					cursor_movement_Life(60, 20);
-					//magic_attack(enemy,back_get);
+					return back_get;
 				}
-				//cout << "not do";
 			}
+			//cout << "not do";
 		}
 		if (key == 'w' || key == 'W') {
 			cursor_movement_Life(60, choose_pos + 20);
@@ -355,38 +367,56 @@ void CLifeEntity::choose_attack() {
 	cout << "                                                      ";
 	cursor_movement_Life(60, 21);
 	cout << "                                                      ";
+	return -2;
 }
 bool CLifeEntity::kill(CLifeEntity* enemy) {
 	int f_damage = 0, s_damage = 0;
 	CLifeEntity* first, * second;
+	CItemData* id = CGlobalInfo::itm_data;
 	int whofirst;
 	while (!this->isdead() && !enemy->isdead()) {
-		choose_attack();
+		int get_skill_or_normal = choose_attack();
 		set_pos();
-		
+		//cout << get_skill_or_normal;
 		//system("pause");
-		whofirst = rand() % 2;
-		if (whofirst == 0) {
-			cout << "對方搶得先機，先出手傷人" << endl;
-			first = (CLifeEntity*)enemy;
-			second = (CLifeEntity*)this;
+		if (get_skill_or_normal == -2) {
+			//system("pause");
+			whofirst = rand() % 2;
+			if (whofirst == 0) {
+				cout << "對方搶得先機，先出手傷人" << endl;
+				first = (CLifeEntity*)enemy;
+				second = (CLifeEntity*)this;
+			}
+			else {
+				cout << "你搶得先機，先出手傷人" << endl;
+				first = (CLifeEntity*)this;
+				second = (CLifeEntity*)enemy;
+			}
+			set_pos();
+			s_damage = first->attack(second);
+			fightstatus(enemy, this);
+			if (second->isdead()) {
+				Sleep(1000);
+				break;
+			}
+			set_pos();
+			f_damage = second->attack(first);
+			fightstatus(enemy, this);
+			Sleep(2000);
 		}
 		else {
-			cout << "你搶得先機，先出手傷人" << endl;
-			first = (CLifeEntity*)this;
-			second = (CLifeEntity*)enemy;
+			first = (CLifeEntity*)enemy;
+			second = (CLifeEntity*)this;
+			set_pos();
+			if (second->isdead()) {
+				Sleep(1000);
+				break;
+			}
+			delMagic_power((id->skill_array[get_skill_or_normal]->getattackbonus()));
+			f_damage = second->magic_skill_attack(first, get_skill_or_normal);
+			fightstatus(enemy, this);
+			Sleep(2000);
 		}
-		set_pos();
-		s_damage = first->attack(second);
-		fightstatus(enemy, this);
-		if (second->isdead()) {
-			Sleep(1000);
-			break;
-		}
-		set_pos();
-		f_damage = second->attack(first);
-		fightstatus(enemy, this);
-		Sleep(2000);
 	}
 	if (this->isdead())
 		return 0;

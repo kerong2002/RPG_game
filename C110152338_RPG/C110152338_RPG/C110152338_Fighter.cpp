@@ -100,21 +100,24 @@ int CFighter::attack (CLifeEntity *l){
 	}
 	return (damage > 0 ? damage : 0);
 }
-/*
-int CFighter::attack(CLifeEntity* l) {
-	int damage = physicaldamage() - l->defense(l);
+
+int CFighter::magic_skill_attack(CLifeEntity* l,int pos) {
+	int damage = get_skill_damage(pos) - l->defense(l);
 	if (damage > l->getHP())
 		damage = l->getHP();
 	l->gethurt(damage);
-
 	if (damage > 0) {
-		cout << this->getname() << " 猛力一揮，造成 " << l->getname() << " " << damage << " 血損失" << endl;
+		cout << "使用技能 ";
+		show_skill_name(pos);
+		cout << "，造成 " << l->getname() << " " << damage << " 血損失" << endl;
 	}
 	else {
-		cout << this->getname() << " 猛力一揮，但是 " << l->getname() << " 強力一擋，因此沒有造成任何損失" << endl;
+		cout << "使用技能 ";
+		show_skill_name(pos);
+		cout << " ，但是 " << l->getname() << " 強力一擋，因此沒有造成任何損失" << endl;
 	}
 	return (damage > 0 ? damage : 0);
-}*/
+}
 
 int CFighter::defense (CLifeEntity *l){
 	return 	getLucky();
