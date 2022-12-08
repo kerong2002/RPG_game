@@ -48,6 +48,8 @@ public:
 	void show_skill_name(int);
 	int get_skill_damage(int);
 	int choose_attack();
+	void set_Initjob(int);
+	int get_Initjob();
 	void show_Money_detail(CLifeEntity*);
 	void show_HP_detail(CLifeEntity*);
 	void show_SP_detail(CLifeEntity*);
@@ -79,6 +81,7 @@ private:
 	int Skill_point;
 	int magic_power;
 	int max_magic_power;
+	int job_num;
 	string Name;
 	CWeapon* weapon;
 	CEquiment* equiment;

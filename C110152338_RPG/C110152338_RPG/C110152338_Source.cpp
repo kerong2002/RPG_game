@@ -24,7 +24,7 @@
 #define cursor_y_offset 3		//光標X座標的偏移
 using namespace std;
 
-#define Profession_size 8		//職業數量
+#define Profession_size 5		//職業數量
 #define MAXBARLEN 40
 #define map_y_size 15			//地圖y大小
 #define map_x_size 20			//地圖x大小
@@ -44,10 +44,7 @@ profession[Profession_size + 1] = {
 	{"射手"	 , 100, 200,  10, "射"},
 	{"法師"	 , 200, 100,   3, "法"},
 	{"召喚師", 100, 130,   5, "召"},
-	{"戰士"  , 300,  60,  25, "戰"},
-	{"劍士"  ,  50, 300,   1, "劍"},
-	{"坦克"  , 800,   5,  30, "坦"},
-	{"忍者"  , 100, 100,   1, "忍"},
+	{"戰士"  , 500,  40,  25, "戰"},
 	{"輔助"  ,  20,   1, 100, "輔"}
 };
 

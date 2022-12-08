@@ -26,8 +26,10 @@ CFighter::CFighter (int job,int initHP, int initSP, int initLucky, string name, 
 	//initSP = initSP;
 	//initLucky = initLucky;
 	get_job_num = job;
+	
 	setname(name);
 	setInitSPHP (initHP,initSP);
+	set_Initjob(job);
 	Lucky = initLucky;
 	setInitLucky(Lucky);
 	cur_city = in_city;

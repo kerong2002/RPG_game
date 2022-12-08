@@ -225,7 +225,7 @@ int  CLifeEntity::show_skill_list() {
 	cursor_movement_Life(63, 20);
 	cout << " 名稱      傷害值      等級";
 	CItemData* id = CGlobalInfo::itm_data;
-
+	//cout << get_jo_num;
 	//((CFighter*)usr)->captureItem(id->getCheck_num(17));//撿到商品
 	for (int i = 0; i <= 4; i++) {
 		cursor_movement_Life(63, 21 + i);
@@ -417,12 +417,22 @@ bool CLifeEntity::kill(CLifeEntity* enemy) {
 			fightstatus(enemy, this);
 			Sleep(2000);
 		}
+		cursor_movement_Life(60, 11);
+		cout << "                                                                                 ";
+		cursor_movement_Life(60, 11);
+		cout << "魔力點數：" << setw(3) << setfill('0') << magic_power << " / 300";
 	}
+	cursor_movement_Life(0, 27);
 	if (this->isdead())
 		return 0;
 	return 1;
 }
-
+void CLifeEntity::set_Initjob(int init_job) {
+	job_num = init_job;
+}
+int CLifeEntity::get_Initjob() {
+	return job_num;
+}
 void CLifeEntity::fightstatus(CLifeEntity* f, CLifeEntity* s) {
 	cout << endl << f->getname() << endl;
 	bloodbarshow(string("HP"), f->getMAXHP(), f->getHP());
