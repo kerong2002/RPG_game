@@ -591,7 +591,7 @@ void read_login() {
 
 void attack_among() {
 	cursor_movement_animation(5, 5);
-	for (int x = 0; x < 2; x++) {
+	for (int x = 0; x < 1; x++) {
 		ifstream fin_A1("among_go.txt");
 		string take_animation;
 		int cnt = 1;
@@ -628,7 +628,7 @@ int main() {
 	//modeset(150, 50);					//視窗大小設定
 	string my_profession = "你";
 	//opening_password();					//登入系統
-	//opening_animation();				//開始RPG動畫
+	opening_animation();				//開始RPG動畫
 	//attack_among();
 	int get_job_num = choose_profession(my_profession);	//選擇職業
 	string filename = "graph_map/map_center.txt";
