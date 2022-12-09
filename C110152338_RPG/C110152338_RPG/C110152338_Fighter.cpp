@@ -89,7 +89,42 @@ int CFighter::getLucky (){
 int CFighter::physicaldamage (){
 	return (rand () % getSP ());
 }
-void skill_attack_function() {
+
+
+void skill_1_attack_function() {
+	ifstream fin_A1("Hanzo.txt");
+	string take_animation;
+	int cnt = 1;
+	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+		fin_A1 >> take_animation;
+		for (int y = 0; y < take_animation.length(); y++) {
+			if (take_animation[y] == '@'|| take_animation[y] == '.') {
+				cursor_movement_fighter(60 + y, 11 + cnt);
+				cout << " ";
+			}
+			else {
+				cursor_movement_fighter(60 + y, 11 + cnt);
+				cout << take_animation[y];
+			}
+		}
+		cout << endl;
+		if (cnt % 26 == 0) {
+			cursor_movement_fighter(60, 12);
+			cnt -= 26;
+			//Sleep(40);
+			//system("cls");
+			//for(int yy=0;yy<)
+		}
+		cnt += 1;
+	}
+	for (int y = 0; y < 40; y++) {
+		cursor_movement_fighter(60, 15 + y);
+		cout << "                                                                                                                        ";
+	}
+	cursor_movement_fighter(0, 0);
+}
+
+void skill_2_attack_function() {
 	ifstream fin_A1("among_skill.txt");
 	string take_animation;
 	int cnt = 1;
@@ -121,6 +156,73 @@ void skill_attack_function() {
 	}
 	cursor_movement_fighter(0, 0);
 }
+
+void skill_3_attack_function() {
+	ifstream fin_A1("Pharah.txt");
+	string take_animation;
+	int cnt = 1;
+	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+		fin_A1 >> take_animation;
+		for (int y = 0; y < take_animation.length(); y++) {
+			if (take_animation[y] == '@') {
+				cursor_movement_fighter(60 + y, 11 + cnt);
+				cout << " ";
+			}
+			else {
+				cursor_movement_fighter(60 + y, 11 + cnt);
+				cout << take_animation[y];
+			}
+		}
+		cout << endl;
+		if (cnt % 36 == 0) {
+			cursor_movement_fighter(60, 12);
+			cnt -= 36;
+			//Sleep(40);
+			//system("cls");
+			//for(int yy=0;yy<)
+		}
+		cnt += 1;
+	}
+	for (int y = 0; y < 40; y++) {
+		cursor_movement_fighter(60, 15 + y);
+		cout << "                                                                                                                        ";
+	}
+	cursor_movement_fighter(0, 0);
+}
+
+void skill_4_attack_function() {
+	ifstream fin_A1("Genji.txt");
+	string take_animation;
+	int cnt = 1;
+	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+		fin_A1 >> take_animation;
+		for (int y = 0; y < take_animation.length(); y++) {
+			if (take_animation[y] == '@') {
+				cursor_movement_fighter(60 + y, 11 + cnt);
+				cout << " ";
+			}
+			else {
+				cursor_movement_fighter(60 + y, 11 + cnt);
+				cout << take_animation[y];
+			}
+		}
+		cout << endl;
+		if (cnt % 26 == 0) {
+			cursor_movement_fighter(60, 12);
+			cnt -= 26;
+			//Sleep(40);
+			//system("cls");
+			//for(int yy=0;yy<)
+		}
+		cnt += 1;
+	}
+	for (int y = 0; y < 40; y++) {
+		cursor_movement_fighter(60, 12 + y);
+		cout << "                                                                                                                        ";
+	}
+	cursor_movement_fighter(0, 0);
+}
+
 void attack_function() {
 	ifstream fin_A1("among.txt");
 	string take_animation;
@@ -187,7 +289,18 @@ int CFighter::magic_skill_attack(CLifeEntity* l,int pos) {
 	if (damage > l->getHP())
 		damage = l->getHP();
 	l->gethurt(damage);
-	skill_attack_function();
+	if (pos == 0) {
+		skill_1_attack_function();
+	}
+	else if (pos == 1) {
+		skill_2_attack_function();
+	}
+	else if (pos == 2) {
+		skill_3_attack_function();
+	}
+	else if (pos == 3) {
+		skill_4_attack_function();
+	}
 	cursor_movement_fighter(0, 20);
 	if (damage > 0) {
 		cout << "使用技能 ";

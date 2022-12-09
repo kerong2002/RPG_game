@@ -628,7 +628,7 @@ int main() {
 	//modeset(150, 50);					//視窗大小設定
 	string my_profession = "你";
 	//opening_password();					//登入系統
-	opening_animation();				//開始RPG動畫
+	//opening_animation();				//開始RPG動畫
 	//attack_among();
 	int get_job_num = choose_profession(my_profession);	//選擇職業
 	string filename = "graph_map/map_center.txt";
