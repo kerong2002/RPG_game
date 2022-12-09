@@ -44,5 +44,5 @@ void CSkill::UnUsed(CLifeEntity* le) {
 
 
 int CSkill::isA() {
-	return eequiment;
+	return eskill;
 }

@@ -129,6 +129,7 @@ int function_meet_monster(vector<string>& tokens) {
 		CItemData* id = CGlobalInfo::itm_data;
 		if (usr->isA() == efighter) {
 			((CFighter*)usr)->captureItem(id->getRand());
+			//((CFighter*)usr)->captureItem(id->getCheck_num(12));
 		}
 		cursor_movement_cmd(0, -3);
 	}
@@ -226,7 +227,7 @@ int function_check_bag (vector<string> &tokens){
 	cin.ignore(1024, '\n');		
 	return 0;
 }
-
+//=====================<技能解鎖>=======================
 void function_sshop() {
 	system("cls");
 	system("color 0F");
@@ -330,7 +331,7 @@ void function_sshop() {
 	CFighter* set = (CFighter*)usr;
 	CGlobalInfo::map_data->show_description(set->get_current_city());
 }
-
+//=====================<頭盔>=======================
 void function_eshop() {
 	system("cls");
 	system("color 0F");
@@ -406,6 +407,121 @@ void function_eshop() {
 	CFighter* set = (CFighter*)usr;
 	CGlobalInfo::map_data->show_description(set->get_current_city());
 }
+//=====================<職業限定傳奇盔甲>=======================
+void function_lshop() {
+	system("cls");
+	system("color 0F");
+	cursor_movement_cmd(15, 0);
+	cout << "   <職業限定鎧甲> ";
+	cursor_movement_cmd(8, 2);  
+	cout << " 名稱      血量增量    買價      等級";
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CItemData* id = CGlobalInfo::itm_data;
+
+	//((CFighter*)usr)->captureItem(id->getCheck_num(17));//撿到商品
+	for (int i = 0; i <= 4; i++) {
+		cursor_movement_cmd(8, 3 + i);
+		cout << id->Legend_Armor_array[i]->getName();
+		cursor_movement_cmd(22, 3 + i);
+		if (id->Legend_Armor_array[i]->get_armor_level() == 0) {
+			cout << id->Legend_Armor_array[i]->getattackbonus();
+		}
+		else {
+			cout << id->Legend_Armor_array[i]->getattackbonus() * id->Legend_Armor_array[i]->get_armor_level();
+		}
+		cursor_movement_cmd(32, 3 + i);
+		if (id->Legend_Armor_array[i]->get_armor_level() >= 1) {
+			cout << id->Legend_Armor_array[i]->get_armor_cost() * (id->Legend_Armor_array[i]->get_armor_level() + 1);
+		}
+		else {
+			cout << id->Legend_Armor_array[i]->get_armor_cost();
+		}
+		cursor_movement_cmd(42, 3 + i);
+		cout << id->Legend_Armor_array[i]->get_armor_level();
+	}
+	int choose_pos = 3;
+	cursor_movement_cmd(5, 3);
+	cout << ">>";
+	int key = 0;
+	while (key != 27) {
+		key = _getch();
+		if (key == 13) {
+			int compare_money_cost = usr->getMoney();
+			
+			if (compare_money_cost < id->Legend_Armor_array[choose_pos - 3]->get_armor_cost()) {
+				cursor_movement_cmd(2, 14);
+				cout << "                                                        ";
+				cursor_movement_cmd(2, 14);
+				cout << "您沒有足夠的金錢，解鎖職業限定鎧甲";
+			}
+			else if (usr->get_Initjob() != (choose_pos -2)) {
+				cursor_movement_cmd(2, 15);
+				cout << "                                                       ";
+				cursor_movement_cmd(2, 15);
+				cout << "您不是該職業的角色";
+			}
+			else {
+				usr->subMoney(id->Legend_Armor_array[choose_pos - 3]->get_armor_cost());
+				cursor_movement_cmd(2, 3);
+				cout << "                                                       ";
+				cursor_movement_cmd(2, 13);
+				cout << "您的血量增量："<< id->Legend_Armor_array[choose_pos - 3]->getattackbonus();
+				usr->addMAXHP(id->Legend_Armor_array[choose_pos - 3]->getattackbonus());
+				//id->Legend_Armor_array[choose_pos-3]->getattackbonus();
+				cursor_movement_cmd(2, 14);
+				cout << "                                       ";
+				cursor_movement_cmd(2, 14);
+				cout << "您剩下的金錢為 :$ " << usr->showMoney();
+				cursor_movement_cmd(2, 15);
+				cout << "                                                       ";
+				id->Legend_Armor_array[choose_pos - 3]->add_armor_level();
+				for (int i = 0; i <= 4; i++) {
+					cursor_movement_cmd(8, 3 + i);
+					cout << id->Legend_Armor_array[i]->getName();
+					cursor_movement_cmd(22, 3 + i);
+					if (id->Legend_Armor_array[i]->get_armor_level() == 0) {
+						cout << id->Legend_Armor_array[i]->getattackbonus();
+					}
+					else {
+						cout << id->Legend_Armor_array[i]->getattackbonus() * id->Legend_Armor_array[i]->get_armor_level();
+					}
+					cursor_movement_cmd(32, 3 + i);
+					if (id->Legend_Armor_array[i]->get_armor_level() >= 1) {
+						cout << id->Legend_Armor_array[i]->get_armor_cost() * (id->Legend_Armor_array[i]->get_armor_level() + 1);
+					}
+					else {
+						cout << id->Legend_Armor_array[i]->get_armor_cost();
+					}
+					cursor_movement_cmd(42, 3 + i);
+					cout << id->Legend_Armor_array[i]->get_armor_level();
+				}
+			}
+		}
+		if (key == 'w' || key == 'W') {
+			cursor_movement_cmd(5, choose_pos);
+			cout << "  ";
+			choose_pos--;
+		}
+		if (key == 's' || key == 'S') {
+			cursor_movement_cmd(5, choose_pos);
+			cout << "  ";
+			choose_pos++;
+		}
+		if (choose_pos > 7) {
+			choose_pos = 3;
+		}
+		if (choose_pos < 3) {
+			choose_pos = 7;
+		}
+		cursor_movement_cmd(5, choose_pos);
+		cout << ">>";
+	}
+
+	system("CLS");
+	CFighter* set = (CFighter*)usr;
+	CGlobalInfo::map_data->show_description(set->get_current_city());
+}
+//=====================<武器商店>=======================
 void function_wshop() {
 	system("cls");
 	system("color 0F");
@@ -480,6 +596,76 @@ void function_wshop() {
 	CFighter* set = (CFighter*)usr;
 	CGlobalInfo::map_data->show_description(set->get_current_city());
 }
+
+//=====================<食物商店>=======================
+void function_fshop() {
+	system("cls");
+	system("color 0F");
+	cursor_movement_cmd(15, 0);
+	cout << "   <食品商店>";
+	cursor_movement_cmd(8, 2);
+	cout << " 名稱      增血量      買價";
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CItemData* id = CGlobalInfo::itm_data;
+
+	//((CFighter*)usr)->captureItem(id->getCheck_num(17));//撿到商品
+	for (int i = 0; i < 15; i++) {
+		cursor_movement_cmd(8, 3 + i);
+		cout << id->food_array[i]->getName();
+		cursor_movement_cmd(20, 3 + i);
+		cout << id->food_array[i]->gethpbonus();
+		cursor_movement_cmd(32, 3 + i);
+		cout << id->food_array[i]->gethpbonus() * 2;
+	}
+	int choose_pos = 3;
+	cursor_movement_cmd(5, 3);
+	cout << ">>";
+	int key = 0;
+	while (key != 27) {
+		key = _getch();
+		if (key == 13) {
+			int compare_money = usr->getMoney();
+			if (compare_money < id->food_array[choose_pos-3]->gethpbonus()) {
+				cursor_movement_cmd(2, 19);
+				cout << "                                       ";
+				cursor_movement_cmd(2, 19);
+				cout << "你沒有足夠的錢";
+			}
+			else {
+				usr->subMoney(id->food_array[choose_pos - 3]->gethpbonus());
+				cursor_movement_cmd(2, 20);
+				cout << "                                       ";
+				cursor_movement_cmd(2, 20);
+				cout << "您剩下的金錢為 $" << usr->getMoney();
+				cursor_movement_cmd(2, 21);
+				cout << "                                       ";
+				cursor_movement_cmd(2, 21);
+				((CFighter*)usr)->shop_captureItem(id->getCheck_num(choose_pos-3));//撿到商品
+			}
+		}
+		if (key == 'w' || key == 'W') {
+			cursor_movement_cmd(5, choose_pos);
+			cout << "  ";
+			choose_pos--;
+		}
+		if (key == 's' || key == 'S') {
+			cursor_movement_cmd(5, choose_pos);
+			cout << "  ";
+			choose_pos++;
+		}
+		if (choose_pos > 17) {
+			choose_pos = 3;
+		}
+		if (choose_pos < 3) {
+			choose_pos = 17;
+		}
+		cursor_movement_cmd(5, choose_pos);
+		cout << ">>";
+	}
+	system("CLS");
+	CFighter* set = (CFighter*)usr;
+	CGlobalInfo::map_data->show_description(set->get_current_city());
+}
 int function_move(vector<string>& tokens){
 	CLifeEntity* usr = CGlobalInfo::user->get_user();
 	CFighter* set = (CFighter*)usr;
@@ -523,11 +709,13 @@ CCmdParser::CCmdParser (){
 	mappingfunc [string("ls")] = function_list;
 	mappingfunc [string("kill")] = function_kill;
 	mappingfunc [string("checkbag")] = function_check_bag;
-	mappingfunc [string("move")] = function_move;
-	mappingfunc [string("wshop")] = function_wshop;			//武器
-	mappingfunc [string("eshop")] = function_eshop;			//裝備
-	mappingfunc [string("sshop")] = function_sshop;			//技能
-	mappingfunc [string("meet_monster")] = function_meet_monster;
+	mappingfunc [string("move")] = function_move;						//舜移
+	mappingfunc [string("wshop")] = function_wshop;						//武器
+	mappingfunc [string("eshop")] = function_eshop;						//裝備
+	mappingfunc [string("sshop")] = function_sshop;						//技能
+	mappingfunc [string("lshop")] = function_lshop;						//職業限定裝備
+	mappingfunc [string("fshop")] = function_fshop;						//職業限定裝備
+	mappingfunc [string("meet_monster")] = function_meet_monster;		//遇到自走怪
 #if 0
 	for (vector<string>::iterator it = tokens.begin (); it != tokens.end (); it++){
 		cout << (*it) << endl;			

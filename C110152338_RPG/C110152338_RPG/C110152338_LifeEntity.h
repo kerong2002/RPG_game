@@ -5,6 +5,8 @@
 #include "C110152338_weapon.h"
 #include "C110152338_Equiment.h"
 #include "C110152338_Skill.h"
+#include "C110152338_food.h"
+#include "C110152338_legend_armor.h"
 
 #define MAXBLOODBARLEN 40
 using namespace std;
@@ -58,9 +60,10 @@ public:
 	void setname(string);
 	void set_kill_counter();
 	int show_kill_counter();
-	CEquiment* getEquiment() { return equiment; };
 	void setEquiment(CEquiment* in_equiment) { equiment = in_equiment; }
 	CWeapon* getWeapon() { return weapon; };
+	CFood* getFood() { return food; };
+	CEquiment* getEquiment() { return equiment; };
 	void setWeapon(CWeapon* in_weapon) { weapon = in_weapon; }
 	bool kill(CLifeEntity*);
 	virtual int attack(CLifeEntity*) = 0;
@@ -85,7 +88,7 @@ private:
 	string Name;
 	CWeapon* weapon;
 	CEquiment* equiment;
-
+	CFood* food;
 };
 
 #endif

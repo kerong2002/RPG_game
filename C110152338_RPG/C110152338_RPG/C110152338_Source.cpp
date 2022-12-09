@@ -69,6 +69,14 @@ void cursor_movement(int x, int y) {
 	HANDLE a = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(a, coord);
 }
+//==================<光標移動>=========================
+void cursor_movement_animation(int x, int y) {
+	COORD coord;
+	coord.X = x;
+	coord.Y = y;
+	HANDLE a = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleCursorPosition(a, coord);
+}
 //================<清屏>=============================
 void clear_screen() {
 	for (int y = 0; y < 50; y++) {
@@ -164,7 +172,7 @@ void opening_animation() {
 		for (int y = 0; y < 7; y++) {
 			for (int x = 0; x < 22; x++) {
 				if (gametitle[y][x] == k) {
-					cursor_movement(x, y);							//放置游標位置
+					cursor_movement(x+10, y- cursor_y_offset+1);							//放置游標位置
 					SetColor(70);									//設定放置位置顏色
 					cout << "■";										//放置方塊
 					Sleep(10);										//延遲
@@ -176,7 +184,6 @@ void opening_animation() {
 	Sleep(1000);													//延遲
 	cout << endl;
 	//system("PAUSE");												//停止
-	system("CLS");													//清除
 }
 //==================<繪製地圖>==========================
 void printmap() {
@@ -425,19 +432,43 @@ void opening_password() {
 				}
 			}
 			else if (choose_pos == 3) {
+				cout << "請輸入關鍵詞->";
 				cin >> data[2];
 				if (data[2].compare(forgot_hint) == 0) {
 					cursor_movement(4, 10);
 					cout << "請輸入您想修改的密碼:";
 					ofstream out_f("password.txt");
-					cin >> data[2];
-					out_f << data[2];
+					string get_F_password, get_S_password;
+					while (true) {
+						cursor_movement(4, 11);
+						cout << "                                                   ";
+						cursor_movement(4, 12);
+						cout << "                                                   ";
+						cursor_movement(4, 11);
+						cin >> get_F_password;
+						cursor_movement(4, 12);
+						cin >> get_S_password;
+						if (get_F_password == get_S_password) {
+							break;
+						}
+						else {
+							cursor_movement(4, 13);
+							cout << "兩次輸入的密碼不相符，請重新再試一次";
+						}
+					}
+					out_f << get_F_password;
 					cursor_movement(4, 10);
 					cout << "                                         ";
 				}
 				else {
 					cursor_movement(8, 2 + 2);
 					cout << "                                        ";
+				}
+				cursor_movement(8, 2 + 2);
+				cout << "                                        ";
+				for (int y = 0; y < 5; y++) {
+					cursor_movement(4, 10 + y);
+					cout << "                                         ";
 				}
 			}
 			else if (choose_pos == 4) {
@@ -557,6 +588,40 @@ void read_login() {
 	}
 	//cout << forgot_hint;
 }
+
+void attack_among() {
+	cursor_movement_animation(5, 5);
+	for (int x = 0; x < 2; x++) {
+		ifstream fin_A1("among_go.txt");
+		string take_animation;
+		int cnt = 1;
+		while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+			fin_A1 >> take_animation;
+			for (int y = 0; y < take_animation.length(); y++) {
+				if (take_animation[y] == '@' || take_animation[y] == '=' || take_animation[y] == '.') {
+					cursor_movement_animation(y + 5, 7 + cnt);
+					cout << " ";
+				}
+				else {
+					cursor_movement_animation(y + 5, 7 + cnt);
+					cout << take_animation[y];
+				}
+			}
+			cout << endl;
+			cursor_movement_animation(0,0);
+			if (cnt % 43 == 0) {
+				cnt -= 43;
+				cursor_movement_animation(5, 7);
+				//Sleep(40);
+				//system("cls");
+				//for(int yy=0;yy<)
+			}
+			cnt += 1;
+		}
+	}
+	system("pause");
+	system("cls");
+}
 //===================<主要程式>==========================
 int main() {
 	read_login();
@@ -564,7 +629,7 @@ int main() {
 	string my_profession = "你";
 	//opening_password();					//登入系統
 	//opening_animation();				//開始RPG動畫
-
+	//attack_among();
 	int get_job_num = choose_profession(my_profession);	//選擇職業
 	string filename = "graph_map/map_center.txt";
 	ReadFile_all(filename);

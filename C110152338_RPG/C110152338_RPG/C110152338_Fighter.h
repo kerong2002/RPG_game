@@ -34,6 +34,8 @@ private:
 	int cur_city;
 	int Lucky;
 	int get_job_num;
+	int food_effect;
+	bool food_bonus;
 	CBag *bag;
 };
 

@@ -5,7 +5,9 @@
 enum {
 	efood = 1,
 	eweapon,
-	eequiment
+	eequiment,
+	eskill,
+	earmor
 };
 
 enum {

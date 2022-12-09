@@ -5,6 +5,7 @@
 #include "C110152338_weapon.h"
 #include "C110152338_Equiment.h"
 #include "C110152338_Skill.h"
+#include "C110152338_legend_armor.h"
 #include "C110152338_ItemData.h"
 #include "C110152338_GlobalInfo.h"
 using namespace std;
@@ -14,6 +15,7 @@ void CItemData::Initialize() {
 	LoadWeaponData();
 	LoadEquimentData();
 	LoadSkillData();
+	LoadLegend_Armor();
 }
 
 int CItemData::totalsize() {
@@ -139,6 +141,27 @@ void CItemData::LoadSkillData() {
 		fin >> inID >> name >> attack_bonus >> skill_cost>>skill_level;
 		skill = new CSkill(name, 0, 0, inID, attack_bonus, skill_cost, skill_level);
 		CGlobalInfo::itm_data->skill_array.push_back(skill);
+	}
+	fin.close();
+
+}
+
+void CItemData::LoadLegend_Armor() {
+	ifstream fin("legend_armor.txt");
+	if (!fin) {
+		cout << "ÅªÀÉ¥¢±Ñ: legend_armor.txt" << endl;
+		return;
+	}
+	string name;
+	int attack_bonus;
+	int inID;
+	int Armor_cost;
+	int Armor_level;
+	CLegend_Armor* Armor;
+	while (!fin.eof()) {
+		fin >> inID >> name >> attack_bonus >> Armor_cost >> Armor_level;
+		Armor = new CLegend_Armor(name, 0, 0, inID, attack_bonus, Armor_cost, Armor_level);
+		CGlobalInfo::itm_data->Legend_Armor_array.push_back(Armor);
 	}
 	fin.close();
 

@@ -8,6 +8,7 @@ class CWeapon;
 class CItem;
 class CEquiment;
 class CSkill;
+class CLegend_Armor;
 
 class CItemData {
 public:
@@ -25,11 +26,13 @@ public:
 	vector <CWeapon *> weapon_array;	
 	vector <CEquiment *> equiment_array;
 	vector <CSkill *> skill_array;
+	vector <CLegend_Armor *> Legend_Armor_array;
 private:
 	void LoadFoodData ();
 	void LoadWeaponData ();
 	void LoadEquimentData();
 	void LoadSkillData();
+	void LoadLegend_Armor();
 };
 
 #endif

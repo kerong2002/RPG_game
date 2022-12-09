@@ -8,10 +8,15 @@ using namespace std;
 
 CFood::CFood (string inname, int initSize, int initWeight, int initID, int init_hp) : CItem (inname, initSize, initWeight, initID){	
 	bonus_hp = init_hp;
+	food_ID = initID;
 }
 
 int CFood::gethpbonus (){	
 	return bonus_hp;
+}
+
+int CFood::get_food_ID() {
+	return food_ID;
 }
 
 void CFood::beUsed (CLifeEntity *le){

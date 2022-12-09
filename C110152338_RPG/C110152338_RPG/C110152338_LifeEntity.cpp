@@ -13,7 +13,7 @@ CLifeEntity::CLifeEntity(int initHP, int initSP, string initname) {
 	Name = initname;
 	Degree = 1;
 	EXP = 0;
-	Skill_point = 300;
+	Skill_point = 9900;
 	magic_power = 300;
 	max_magic_power = 300;
 	weapon = NULL;
@@ -219,7 +219,7 @@ int  CLifeEntity::show_skill_list() {
 	cursor_movement_Life(63, 19);
 	cout << "                                                ";
 	cursor_movement_Life(75, 19);
-	cout << "<技能清單>";
+	cout << "<技能清單>" ;
 	cursor_movement_Life(63, 20);
 	cout << "                                                ";
 	cursor_movement_Life(63, 20);
@@ -264,7 +264,15 @@ int  CLifeEntity::show_skill_list() {
 				cout << "玩家魔力值不夠施放技能";
 			}
 			else {
-				return choose_pos;
+				if (get_Initjob() != choose_pos+1) {
+					cursor_movement_Life(63, 27);
+					cout << "                                                              ";
+					cursor_movement_Life(63, 27);
+					cout << "玩家不可施放非此職業的技能";
+				}
+				else {
+					return choose_pos;
+				}
 			}
 		}
 		if (key == 'w' || key == 'W') {
@@ -326,7 +334,7 @@ int CLifeEntity::choose_attack() {
 					cursor_movement_Life(63, 21);
 					cout << "                                                                           ";
 					cursor_movement_Life(63, 21);
-					cout << "<技能攻擊>";
+					cout << "<技能攻擊>" ;
 					cursor_movement_Life(60, 20);
 				}
 				else {
@@ -418,7 +426,7 @@ bool CLifeEntity::kill(CLifeEntity* enemy) {
 			Sleep(2000);
 		}
 		cursor_movement_Life(60, 11);
-		cout << "                                                                                 ";
+		cout << "                                           ";
 		cursor_movement_Life(60, 11);
 		cout << "魔力點數：" << setw(3) << setfill('0') << magic_power << " / 300";
 	}

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 #include "C110152338_Profession.h"
 #include "C110152338_cursor_movement_fighter.h"
 #include "C110152338_Fighter.h"
@@ -26,7 +27,7 @@ CFighter::CFighter (int job,int initHP, int initSP, int initLucky, string name, 
 	//initSP = initSP;
 	//initLucky = initLucky;
 	get_job_num = job;
-	
+	food_effect = 0;
 	setname(name);
 	setInitSPHP (initHP,initSP);
 	set_Initjob(job);
@@ -89,25 +90,74 @@ int CFighter::physicaldamage (){
 	return (rand () % getSP ());
 }
 
+void attack_function() {
+	ifstream fin_A1("among.txt");
+	string take_animation;
+	int cnt = 1;
+	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+		fin_A1 >> take_animation;
+		for (int y = 0; y < take_animation.length(); y++) {
+			if (take_animation[y] == '@') {
+				cursor_movement_fighter(60 + y, 11 + cnt);
+				cout << " ";
+			}
+			else {
+				cursor_movement_fighter(60 + y, 11 + cnt);
+				cout << take_animation[y];
+			}
+		}
+		cout << endl;
+		if (cnt % 37 == 0) {
+			cursor_movement_fighter(60, 12);
+			cnt -= 37;
+			//Sleep(40);
+			//system("cls");
+			//for(int yy=0;yy<)
+		}
+		cnt += 1;
+	}
+	for (int y = 0; y < 40; y++) {
+		cursor_movement_fighter(60, 15 + y);
+		cout << "                                                                                                                        ";
+	}
+	cursor_movement_fighter(0, 0);
+}
 int CFighter::attack (CLifeEntity *l){
 	int damage = physicaldamage () - l->defense (l); 
 	if (damage > l->getHP ())
 		damage = l->getHP ();
 	l->gethurt (damage);
-	
+	attack_function();
+	cursor_movement_fighter(0, 20);
 	if (damage > 0){
 		cout << this->getname () << " 猛力一揮，造成 " << l->getname () << " " << damage << " 血損失" <<endl;			
 	} else {
 		cout << this->getname () << " 猛力一揮，但是 " << l->getname () << " 強力一擋，因此沒有造成任何損失" <<endl;
 	}
+	if (food_effect) {
+		//cout << "<特殊食品，加乘而外傷害200↑> 剩餘：(" << food_effect << ")回合" << endl;
+		food_effect -= 1;
+	}
+	if (food_bonus == true && food_effect == 0) {
+		delSP(200);
+		cursor_movement_fighter(0, 30);
+		cout << "特殊食品，加乘效果消除，扣除200而外傷害" << endl;
+		cursor_movement_fighter(0, 20);
+	}
+	if (food_effect == 0) {
+		food_bonus = false;
+	}
 	return (damage > 0 ? damage : 0);
 }
+
 
 int CFighter::magic_skill_attack(CLifeEntity* l,int pos) {
 	int damage = get_skill_damage(pos) - l->defense(l);
 	if (damage > l->getHP())
 		damage = l->getHP();
 	l->gethurt(damage);
+	attack_function();
+	cursor_movement_fighter(0, 20);
 	if (damage > 0) {
 		cout << "使用技能 ";
 		show_skill_name(pos);
@@ -154,7 +204,16 @@ bool CFighter::useBagItems (int no){
 	if (!ne){		
 		return false;
 	} 
-	if (ne->itm->isA () == eweapon){
+	if (ne->itm->isA() == efood) {
+		if (ne->itm->getID() >= 10) {
+			this->addSP(200);
+			food_effect += 3;
+			food_bonus = true;
+			cout << "<特殊食品，加乘而外傷害200(3回合)↑>" << endl;
+		}
+		
+	}
+	else if (ne->itm->isA () == eweapon){
 		CWeapon *cur_weapon = this->getWeapon ();
 		if (cur_weapon != NULL){			
 			CItem *weapon_item = (CItem *) cur_weapon;
@@ -193,6 +252,7 @@ bool CFighter::useBagItems (int no){
 		cout << "<裝備和武器加乘傷害50↑>" <<endl;
 		//if()
 	}
+
 	ne->itm->beUsed (this);
 	ne->deleteNum ();
 	if (ne->getNum () == 0){
