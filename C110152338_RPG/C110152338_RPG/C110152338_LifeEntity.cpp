@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <Windows.h>
 #include <conio.h>
 #include <iomanip>
@@ -19,18 +20,122 @@ CLifeEntity::CLifeEntity(int initHP, int initSP, string initname) {
 	weapon = NULL;
 	setMoney(500);				//初始金幣
 }
-void CLifeEntity::set_all_thing(string in_name, int in_hp, int in_sp, int in_maxhp, int in_max_sp, int in_degree, int in_skill_point, int in_magic_power, int in_max_magic_power, int in_money,int in_EXP,int in_lucky) {
+void CLifeEntity::set_all_thing(string in_name, int in_hp, int in_sp, int in_maxhp, int in_max_sp, int in_degree, int in_skill_point, int in_magic_power, int in_money,int in_EXP,int in_lucky) {
 	maxSP = SP = in_sp;
 	maxHP = HP = in_hp;
-	Name = in_name;
+	//Name = in_name;
 	Degree = in_degree;
 	EXP = in_EXP;
 	Skill_point = in_skill_point;
 	magic_power = in_magic_power;
-	max_magic_power = in_max_magic_power;
 	setMoney(in_money);
 	setInitLucky(in_lucky);
 }
+void CLifeEntity::set_output_data_num(int pos){
+	out_data_num = pos;
+}
+void  CLifeEntity::file_read_data() {
+	if (out_data_num == 1) {
+		ifstream input_f1("play1.txt");
+		input_f1 >> Name;
+		input_f1 >> HP;
+		input_f1 >> SP;
+		input_f1 >> maxHP;
+		input_f1 >> maxSP;
+		input_f1 >> Degree;
+		input_f1 >> Skill_point;
+		input_f1 >> magic_power;
+		int get_money;
+		input_f1 >> get_money;
+		setMoney(get_money);
+		input_f1 >> EXP;
+		int get_lucky;
+		input_f1 >> get_lucky;
+		setInitLucky(get_lucky);
+	}
+	else if (out_data_num == 2) {
+		ifstream input_f2("play2.txt");
+		input_f2 >> Name;
+		input_f2 >> HP;
+		input_f2 >> SP;
+		input_f2 >> maxHP;
+		input_f2 >> maxSP;
+		input_f2 >> Degree;
+		input_f2 >> Skill_point;
+		input_f2 >> magic_power;
+		int get_money;
+		input_f2 >> get_money;
+		setMoney(get_money);
+		input_f2 >> EXP;
+		int get_lucky;
+		input_f2 >> get_lucky;
+		setInitLucky(get_lucky);
+	}
+	else if (out_data_num == 3) {
+		ifstream input_f3("play3.txt");
+		input_f3 >> Name;
+		input_f3 >> HP;
+		input_f3 >> SP;
+		input_f3 >> maxHP;
+		input_f3 >> maxSP;
+		input_f3 >> Degree;
+		input_f3 >> Skill_point;
+		input_f3 >> magic_power;
+		int get_money;
+		input_f3 >> get_money;
+		setMoney(get_money);
+		input_f3 >> EXP;
+		int get_lucky;
+		input_f3 >> get_lucky;
+		setInitLucky(get_lucky);
+	}
+}
+void CLifeEntity::out_all_thing() {
+	if (out_data_num == 1) {
+		ofstream out_f1("play1.txt");
+		out_f1 << Name << endl;
+		out_f1 << HP << endl;
+		out_f1 << SP << endl;
+		out_f1 << maxHP << endl;
+		out_f1 << maxSP << endl;
+		out_f1 << Degree << endl;
+		out_f1 << Skill_point << endl;
+		out_f1 << magic_power << endl;
+		out_f1 << getMoney() << endl;
+		out_f1 << EXP << endl;
+		out_f1 << show_Lucky() << endl;
+	}
+	else if (out_data_num ==2) {
+		ofstream out_f2("play2.txt");
+		out_f2 << Name << endl;
+		out_f2 << HP << endl;
+		out_f2 << SP << endl;
+		out_f2 << maxHP << endl;
+		out_f2 << maxSP << endl;
+		out_f2 << Degree << endl;
+		out_f2 << Skill_point << endl;
+		out_f2 << magic_power << endl;
+		out_f2 << getMoney() << endl;
+		out_f2 << EXP << endl;
+		out_f2 << show_Lucky() << endl;
+	}
+	else if (out_data_num == 3) {
+		ofstream out_f3("play3.txt");
+		out_f3 << Name << endl;
+		out_f3 << HP << endl;
+		out_f3 << SP << endl;
+		out_f3 << maxHP << endl;
+		out_f3 << maxSP << endl;
+		out_f3 << Degree << endl;
+		out_f3 << Skill_point << endl;
+		out_f3 << magic_power << endl;
+		out_f3 << getMoney() << endl;
+		out_f3 << EXP << endl;
+		out_f3 << show_Lucky() << endl;
+	}
+	
+}
+
 //==================<光標移動>=========================
 void cursor_movement_Life(int x, int y) {
 	COORD coord;

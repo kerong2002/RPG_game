@@ -15,8 +15,11 @@ class CLifeEntity {
 public:
 	CLifeEntity(int initHP = 0, int initSP = 0, string initname = "");
 	void setInitSPHP(int initHP = 0, int initSP = 0);
-	void set_all_thing(string , int, int, int, int, int, int, int, int, int, int, int);
+	void set_all_thing(string , int, int, int, int, int, int, int, int, int, int);
+	void file_read_data();
+	void out_all_thing();
 	void setInitLucky(int);
+	void set_output_data_num(int);
 	bool isdead();
 	void setHP(int);
 	void addHP(int);
@@ -81,6 +84,7 @@ private:
 	int Degree;
 	int Money;
 	int Lucky;
+	int out_data_num;
 	int kill_counter;
 	int Skill_point;
 	int magic_power;

@@ -189,7 +189,59 @@ int function_kill (vector<string> &tokens){
 	return 0;
 }
 
+//=================<獲取物品>================
+int function_get_bag(vector<string>& tokens) {
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CItemData* id = CGlobalInfo::itm_data;
+	ifstream fin_f("house.txt");
+	int no = -1;
+	fin_f >> no;
+	if (no != -1) {
+		((CFighter*)usr)->house_captureItem(id->getCheck_num(no));
+	}
+	string file_name = "house.txt";
+	ofstream file_writer(file_name, ios_base::out);
+	return 0;
+}
+//=================<放置物品>================
+int function_put_bag(vector<string>& tokens) {
+	if (tokens.size() != 1) {
+		for (vector<string>::iterator it = tokens.begin(); it != tokens.end(); it++) {
+			cerr << (*it) << " ";
+		}
+		cerr << " command error" << endl;
+		return 0;
+	}
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	assert(usr);
+	if (usr->isA() == efighter) {
+		CFighter* f = (CFighter*)usr;
+		cout << f->getname() << " 將倉庫打開" << endl;
+		int num = f->showAllBagItems();
+		if (num == 0) {
+			cout << "倉庫空空如也" << endl;
+			cout << f->getname() << "  離開倉庫" << endl;
+			return 0;
+		}
 
+		int selection = 0;
+		cout << "需要什麼物品 (0代表不需要)" << endl;
+		cin >> selection;
+		while (selection > 0) {
+			if (!f->put_storeItems(selection)) {
+				cout << "無此選項存在" << endl;
+			}
+			selection = 0;
+			cout << "需要什麼物品 (0代表不需要)" << endl;
+			cin >> selection;
+		}
+		cout << f->getname() << "  關上背包" << endl;
+	}
+	cin.clear();
+	cin.ignore(1024, '\n');
+	return 0;
+}
+//===============<開啟背包>========================
 int function_check_bag (vector<string> &tokens){	
 	if (tokens.size () != 1){
 		for (vector<string>::iterator it = tokens.begin (); it != tokens.end (); it++){
@@ -777,7 +829,7 @@ void function_all_shop() {
 
 void function_hack() {
 	CLifeEntity* usr = CGlobalInfo::user->get_user();
-	usr->set_all_thing("kerong", 9999, 10, 9999, 9999, 9999, 9999, 9999, 9999, 9999, 9999,9999);
+	usr->set_all_thing("kerong", 9999, 999999, 9999, 9999, 9999, 9999, 9999, 9999, 9999, 9999);
 }
 int function_move(vector<string>& tokens){
 	CLifeEntity* usr = CGlobalInfo::user->get_user();
@@ -808,6 +860,11 @@ int function_move(vector<string>& tokens){
 	}
 	return 0;
 }
+void function_log_out() {
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	usr->out_all_thing();
+	cout << "您的存檔已完成";
+}
 
 CCmdParser::CCmdParser (){
 	mappingfunc [string("exit")] = function_exit;
@@ -830,7 +887,10 @@ CCmdParser::CCmdParser (){
 	mappingfunc [string("fshop")] = function_fshop;						//食品商店
 	mappingfunc [string("fish")] = function_fish;						//釣魚
 	mappingfunc [string("shop")] = function_all_shop;				 	//商城總攬
+	mappingfunc [string("log_out")] = function_log_out;					//登出
 	mappingfunc [string("kerong")] = function_hack;					    //商城總攬
+	mappingfunc [string("putbag")] = function_put_bag;					//放置物品
+	mappingfunc [string("getbag")] = function_get_bag;					//放置物品
 	mappingfunc [string("meet_monster")] = function_meet_monster;		//遇到自走怪
 #if 0
 	for (vector<string>::iterator it = tokens.begin (); it != tokens.end (); it++){

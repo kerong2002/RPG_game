@@ -31,6 +31,7 @@ using namespace std;
 int pos_x = map_x_size / 2;		//玩家座標x
 int pos_y = map_y_size / 2;		//玩家座標y
 char all_map[15][20];
+string my_profession = "你";
 //==================<職業>=====================
 static struct profession {
 	string name;			//名稱
@@ -622,16 +623,169 @@ void attack_among() {
 	system("pause");
 	system("cls");
 }
+int choose_save_data() {
+	system("CLS");
+	system("color 0F");
+	string job1 = "";
+	string job2 = "";
+	string job3 = "";
+	ifstream input_f1("play1.txt");
+	input_f1 >> job1;
+	ifstream input_f2("play2.txt");
+	input_f2 >> job2;
+	ifstream input_f3("play3.txt");
+	input_f3 >> job3;
+	int choose_pos = 1;
+	cursor_movement(2, 2);
+	cout << "存檔編號    <職業> ";
+	cursor_movement(2, 3);
+	cout << "   1        " << job1;
+	cursor_movement(2, 4);
+	cout << "   2        " << job2;
+	cursor_movement(2, 5);
+	cout << "   3        " << job3;
+	cursor_movement(2, 6);
+	cout << " <清空存檔> ";
+	cursor_movement(0, 3);
+	cout << ">>";
+	int key = 0;
+	while (true) {
+		key = _getch();
+		if (key == 13) {
+			if (choose_pos == 1) {
+				if (job1 == "") {
+					return -1;
+				}
+				else {
+					if (job1 == "射手") {
+						my_profession = "射";
+					}
+					else if (job1 == "法師") {
+						my_profession = "法";
+					}
+					else if (job1 == "召喚師") {
+						my_profession = "召";
+					}
+					else if (job1 == "戰士") {
+						my_profession = "戰";
+					}
+					else if (job1 == "輔助") {
+						my_profession = "輔";
+					}
+					return 1;
+				}
+			}
+			else if (choose_pos == 2) {
+				if (job2 == "") {
+					return -2;
+				}
+				else {
+					if (job2 == "射手") {
+						my_profession = "射";
+					}
+					else if (job2 == "法師") {
+						my_profession = "法";
+					}
+					else if (job2 == "召喚師") {
+						my_profession = "召";
+					}
+					else if (job2 == "戰士") {
+						my_profession = "戰";
+					}
+					else if (job2 == "輔助") {
+						my_profession = "輔";
+					}
+					return 2;
+				}
+			}
+			else if (choose_pos == 3) {
+				if (job3 == "") {
+					return -3;
+				}
+				else {
+					if (job3 == "射手") {
+						my_profession = "射";
+					}
+					else if (job3 == "法師") {
+						my_profession = "法";
+					}
+					else if (job3 == "召喚師") {
+						my_profession = "召";
+					}
+					else if (job3 == "戰士") {
+						my_profession = "戰";
+					}
+					else if (job3 == "輔助") {
+						my_profession = "輔";
+					}
+					return 3;
+				}
+			}
+			else if (choose_pos == 4) {
+				cursor_movement(4, 9);
+				cout << "請輸入想清除的存檔編號：";
+				int choose_clear;
+				cin >> choose_clear;
+				if (choose_clear == 1) {
+					string file_name = "play1.txt";
+					ofstream file_writer(file_name, ios_base::out);
+					job1 = "";
+					cursor_movement(7, 2 + choose_clear);
+					cout << "                                      ";
+				}
+				else if (choose_clear == 2) {
+					string file_name = "play2.txt";
+					ofstream file_writer(file_name, ios_base::out);
+					job2 = "";
+					cursor_movement(7, 2 + choose_clear);
+					cout << "                                      ";
+				}
+				else if (choose_clear == 3) {
+					string file_name = "play3.txt";
+					ofstream file_writer(file_name, ios_base::out);
+					job3 = "";
+					cursor_movement(7, 2 + choose_clear);
+					cout << "                                      ";
+				}
+				cursor_movement(4, 9);
+				cout << "                                      ";
+			}
+		}
+		if (key == 'w' || key == 'W') {
+			cursor_movement(0, 2 + choose_pos);
+			cout << "  ";
+			choose_pos--;
+		}
+		if (key == 's' || key == 'S') {
+			cursor_movement(0, 2 + choose_pos);
+			cout << "  ";
+			choose_pos++;
+		}
+		if (choose_pos > 4) {
+			choose_pos = 1;
+		}
+		if (choose_pos < 1) {
+			choose_pos = 4;
+		}
+		cursor_movement(0, 2 + choose_pos);
+		cout << ">>";
+	}
+	system("CLS");
+	return -9;
+}
 //===================<主要程式>==========================
 int main() {
 	read_login();
 	//modeset(150, 50);					//視窗大小設定
-	string my_profession = "你";
-	//opening_password();					//登入系統
-	//opening_animation();				//開始RPG動畫
+	opening_password();					//登入系統
+	opening_animation();				//開始RPG動畫
+	attack_among();
 	//attack_among();
-	//attack_among();
-	int get_job_num = choose_profession(my_profession);	//選擇職業
+	int data_num = choose_save_data();
+	int get_job_num = 0;
+	if (data_num <0) {
+		get_job_num = choose_profession(my_profession);	//選擇職業
+	}
 	string filename = "graph_map/map_center.txt";
 	ReadFile_all(filename);
 
@@ -645,6 +799,15 @@ int main() {
 	CGlobalInfo::user->set_user((CLifeEntity*)fighter);
 	int cur_city = CGlobalInfo::user->get_current_city();
 	CGlobalInfo::map_data->show_description(cur_city);
+	if (data_num >0) {
+		CLifeEntity* usr = CGlobalInfo::user->get_user();
+		usr->set_output_data_num(data_num);
+		usr->file_read_data();
+	}
+	else {
+		CLifeEntity* usr = CGlobalInfo::user->get_user();
+		usr->set_output_data_num(-data_num);
+	}
 	/*while (CGlobalInfo::parser->query() >= 0) {
 		CGlobalInfo::map_data->show_description(cur_city);
 		//	cin >> cur_city;

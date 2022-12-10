@@ -25,8 +25,10 @@ public:
 	void captureItem (CItem *);
 	void shop_captureItem(CItem*);
 	void fish_captureItem(CItem*);
+	void house_captureItem(CItem*);
 	int showAllBagItems ();
 	bool useBagItems (int no);
+	bool put_storeItems(int no);
 	int goto_next_city (int next_dir);
 	int get_current_city ();
 	void set_job(int);

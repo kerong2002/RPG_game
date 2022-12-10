@@ -374,6 +374,16 @@ void CFighter::fish_captureItem(CItem* in_item) {
 	cout << this->getname() << " 從釣魚獲取 " << in_item->getName() << endl;
 }
 
+void CFighter::house_captureItem(CItem* in_item) {
+
+	CBagEntry* entry = bag->item_lookup(in_item->isA(), in_item->getID());
+	if (!entry)
+		bag->item_insert(in_item);
+	else
+		entry->addNum(1);
+	cout << this->getname() << " 從倉庫獲取 " << in_item->getName() << endl;
+}
+
 void CFighter::captureItem (CItem *in_item){
 	
 	CBagEntry *entry = bag->item_lookup (in_item->isA(), in_item->getID ());
@@ -386,6 +396,38 @@ void CFighter::captureItem (CItem *in_item){
 
 int CFighter::showAllBagItems (){	
 	return bag->showAllItems ();	
+}
+
+bool CFighter::put_storeItems(int no) {
+	CBagEntry* ne = bag->item_lookup(no);
+	if (!ne) {
+		return false;
+	}
+	if (ne->itm->isA() == eweapon) {
+		ofstream out_f("house.txt");
+		out_f << ne->itm->getID()+15<<endl;
+		out_f << ne->itm->getName();
+		ne->deleteNum();
+		if (ne->getNum() == 0) {
+			bag->item_delete(ne);
+		}
+		this->showAllBagItems();
+	}
+	else if (ne->itm->isA() == efood) {
+		ofstream out_f("house.txt");
+		out_f << ne->itm->getID()<<endl;
+		out_f << ne->itm->getName();
+		ne->deleteNum();
+		if (ne->getNum() == 0) {
+			bag->item_delete(ne);
+		}
+		this->showAllBagItems();
+	}
+	else {
+		cout << "您的裝備不可放置在倉庫當中"<<endl;
+	}
+	
+	return true;
 }
 
 bool CFighter::useBagItems (int no){
