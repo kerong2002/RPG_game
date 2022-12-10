@@ -13,11 +13,23 @@ CLifeEntity::CLifeEntity(int initHP, int initSP, string initname) {
 	Name = initname;
 	Degree = 1;
 	EXP = 0;
-	Skill_point = 9900;
+	Skill_point = 300;
 	magic_power = 300;
 	max_magic_power = 300;
 	weapon = NULL;
 	setMoney(500);				//初始金幣
+}
+void CLifeEntity::set_all_thing(string in_name, int in_hp, int in_sp, int in_maxhp, int in_max_sp, int in_degree, int in_skill_point, int in_magic_power, int in_max_magic_power, int in_money,int in_EXP,int in_lucky) {
+	maxSP = SP = in_sp;
+	maxHP = HP = in_hp;
+	Name = in_name;
+	Degree = in_degree;
+	EXP = in_EXP;
+	Skill_point = in_skill_point;
+	magic_power = in_magic_power;
+	max_magic_power = in_max_magic_power;
+	setMoney(in_money);
+	setInitLucky(in_lucky);
 }
 //==================<光標移動>=========================
 void cursor_movement_Life(int x, int y) {
@@ -264,6 +276,7 @@ int  CLifeEntity::show_skill_list() {
 				cout << "玩家魔力值不夠施放技能";
 			}
 			else {
+				//return choose_pos;         //改掉職業限定技能
 				if (get_Initjob() != choose_pos+1) {
 					cursor_movement_Life(63, 27);
 					cout << "                                                              ";

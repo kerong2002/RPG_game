@@ -630,6 +630,7 @@ int main() {
 	//opening_password();					//登入系統
 	//opening_animation();				//開始RPG動畫
 	//attack_among();
+	//attack_among();
 	int get_job_num = choose_profession(my_profession);	//選擇職業
 	string filename = "graph_map/map_center.txt";
 	ReadFile_all(filename);

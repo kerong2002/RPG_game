@@ -222,7 +222,40 @@ void skill_4_attack_function() {
 	}
 	cursor_movement_fighter(0, 0);
 }
-
+void skill_5_attack_function() {
+	for (int x = 0; x < 4; x++) {
+		ifstream fin_A1("Beam.txt");
+		string take_animation;
+		int cnt = 1;
+		while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+			fin_A1 >> take_animation;
+			for (int y = 0; y < take_animation.length(); y++) {
+				if (take_animation[y] == '@') {
+					cursor_movement_fighter(60 + y, 11 + cnt);
+					cout << " ";
+				}
+				else {
+					cursor_movement_fighter(60 + y, 11 + cnt);
+					cout << take_animation[y];
+				}
+			}
+			cout << endl;
+			if (cnt % 21 == 0) {
+				cursor_movement_fighter(60, 12);
+				cnt -= 21;
+				//Sleep(40);
+				//system("cls");
+				//for(int yy=0;yy<)
+			}
+			cnt += 1;
+		}
+	}
+	for (int y = 0; y < 40; y++) {
+		cursor_movement_fighter(60, 12 + y);
+		cout << "                                                                                                                        ";
+	}
+	cursor_movement_fighter(0, 0);
+}
 void attack_function() {
 	ifstream fin_A1("among.txt");
 	string take_animation;
@@ -301,6 +334,9 @@ int CFighter::magic_skill_attack(CLifeEntity* l,int pos) {
 	else if (pos == 3) {
 		skill_4_attack_function();
 	}
+	else if (pos == 4) {
+		skill_5_attack_function();
+	}
 	cursor_movement_fighter(0, 20);
 	if (damage > 0) {
 		cout << "使用技能 ";
@@ -326,6 +362,16 @@ void CFighter::shop_captureItem(CItem* in_item) {
 	else
 		entry->addNum(1);
 	cout << this->getname() << " 從商店獲取 " << in_item->getName() << endl;
+}
+
+void CFighter::fish_captureItem(CItem* in_item) {
+
+	CBagEntry* entry = bag->item_lookup(in_item->isA(), in_item->getID());
+	if (!entry)
+		bag->item_insert(in_item);
+	else
+		entry->addNum(1);
+	cout << this->getname() << " 從釣魚獲取 " << in_item->getName() << endl;
 }
 
 void CFighter::captureItem (CItem *in_item){

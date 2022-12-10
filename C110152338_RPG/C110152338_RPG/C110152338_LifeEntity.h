@@ -15,6 +15,7 @@ class CLifeEntity {
 public:
 	CLifeEntity(int initHP = 0, int initSP = 0, string initname = "");
 	void setInitSPHP(int initHP = 0, int initSP = 0);
+	void set_all_thing(string , int, int, int, int, int, int, int, int, int, int, int);
 	void setInitLucky(int);
 	bool isdead();
 	void setHP(int);

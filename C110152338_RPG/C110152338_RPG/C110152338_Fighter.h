@@ -24,6 +24,7 @@ public:
 	virtual int isA ();
 	void captureItem (CItem *);
 	void shop_captureItem(CItem*);
+	void fish_captureItem(CItem*);
 	int showAllBagItems ();
 	bool useBagItems (int no);
 	int goto_next_city (int next_dir);

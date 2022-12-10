@@ -666,6 +666,119 @@ void function_fshop() {
 	CFighter* set = (CFighter*)usr;
 	CGlobalInfo::map_data->show_description(set->get_current_city());
 }
+//=======================<釣魚>=============================
+void function_fish() {
+	ifstream fin_A1("fish.txt");
+	string take_animation;
+	int cnt = 1;
+	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+		fin_A1 >> take_animation;
+		for (int y = 0; y < take_animation.length(); y++) {
+			if (take_animation[y] == '@') {
+				cursor_movement_cmd(60 + y, 8 + cnt);
+				cout << " ";
+			}
+			else {
+				cursor_movement_cmd(60 + y, 8 + cnt);
+				cout << take_animation[y];
+			}
+		}
+		cout << endl;
+		if (cnt % 41 == 0) {
+			cursor_movement_cmd(60, 9);
+			cnt -= 41;
+			//Sleep(40);
+			//system("cls");
+			//for(int yy=0;yy<)
+		}
+		cnt += 1;
+	}
+	for (int y = 0; y < 40; y++) {
+		cursor_movement_cmd(60, 8 + y);
+		cout << "                                                                                                                        ";
+	}
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CItemData* id = CGlobalInfo::itm_data;
+	cursor_movement_cmd(0, 18);
+	((CFighter*)usr)->fish_captureItem(id->getCheck_num(rand() % 4));
+	cursor_movement_cmd(0, -3);
+}
+
+//=====================<商城總攬>=======================
+void function_all_shop() {
+	system("cls");
+	system("color 0F");
+	cursor_movement_cmd(8, 2);
+	cout << "  [商城總攬]";
+	cursor_movement_cmd(8, 3);
+	cout << "  <武器商店>";
+	cursor_movement_cmd(8, 4);
+	cout <<"  <裝備商店>";
+	cursor_movement_cmd(8, 5);
+	cout << "  <技能解鎖>";
+	cursor_movement_cmd(8, 6);
+	cout << "  <傳奇盔甲>";
+	cursor_movement_cmd(8, 7);
+	cout << "  <食品商店>";
+	int choose_pos = 3;
+	cursor_movement_cmd(5, 3);
+	cout << "->";
+	int key = 0;
+	while (key != 27) {
+		key = _getch();
+		if (key == 13) {
+			if (choose_pos == 3) {
+				system("CLS");
+				function_wshop();
+				return;
+			}
+			else if (choose_pos == 4) {
+				system("CLS");
+				function_eshop();
+				return;
+			}
+			else if (choose_pos == 5) {
+				system("CLS");
+				function_sshop();
+				return;
+			}
+			else if (choose_pos == 6) {
+				system("CLS");
+				function_lshop();
+				return;
+			}
+			else if (choose_pos == 7) {
+				system("CLS");
+				function_fshop();
+				return;
+			}
+		}
+		if (key == 'w' || key == 'W') {
+			cursor_movement_cmd(5, choose_pos);
+			cout << "  ";
+			choose_pos--;
+		}
+		if (key == 's' || key == 'S') {
+			cursor_movement_cmd(5, choose_pos);
+			cout << "  ";
+			choose_pos++;
+		}
+		if (choose_pos > 7) {
+			choose_pos = 3;
+		}
+		if (choose_pos < 3) {
+			choose_pos = 7;
+		}
+		cursor_movement_cmd(5, choose_pos);
+		cout << "->";
+	}
+	system("CLS");
+}
+
+void function_hack() {
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	usr->set_all_thing("kerong", 9999, 10, 9999, 9999, 9999, 9999, 9999, 9999, 9999, 9999,9999);
+}
 int function_move(vector<string>& tokens){
 	CLifeEntity* usr = CGlobalInfo::user->get_user();
 	CFighter* set = (CFighter*)usr;
@@ -714,7 +827,10 @@ CCmdParser::CCmdParser (){
 	mappingfunc [string("eshop")] = function_eshop;						//裝備
 	mappingfunc [string("sshop")] = function_sshop;						//技能
 	mappingfunc [string("lshop")] = function_lshop;						//職業限定裝備
-	mappingfunc [string("fshop")] = function_fshop;						//職業限定裝備
+	mappingfunc [string("fshop")] = function_fshop;						//食品商店
+	mappingfunc [string("fish")] = function_fish;						//釣魚
+	mappingfunc [string("shop")] = function_all_shop;				 	//商城總攬
+	mappingfunc [string("kerong")] = function_hack;					    //商城總攬
 	mappingfunc [string("meet_monster")] = function_meet_monster;		//遇到自走怪
 #if 0
 	for (vector<string>::iterator it = tokens.begin (); it != tokens.end (); it++){
