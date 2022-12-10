@@ -786,6 +786,9 @@ int main() {
 	if (data_num <0) {
 		get_job_num = choose_profession(my_profession);	//¿ï¾ÜÂ¾·~
 	}
+	else {
+		get_job_num = data_num;
+	}
 	string filename = "graph_map/map_center.txt";
 	ReadFile_all(filename);
 
