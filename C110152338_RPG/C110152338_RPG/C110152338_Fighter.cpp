@@ -90,7 +90,12 @@ int CFighter::physicaldamage (){
 	return (rand () % getSP ());
 }
 
-
+//==================<建立顏色>==========================
+void SetColor_fighter(int color = 7) {
+	HANDLE hConsole;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, color);
+}
 void skill_1_attack_function() {
 	ifstream fin_A1("Hanzo.txt");
 	string take_animation;
@@ -99,10 +104,12 @@ void skill_1_attack_function() {
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
 			if (take_animation[y] == '@'|| take_animation[y] == '.') {
+				SetColor_fighter();
 				cursor_movement_fighter(60 + y, 11 + cnt);
 				cout << " ";
 			}
 			else {
+				SetColor_fighter(176);
 				cursor_movement_fighter(60 + y, 11 + cnt);
 				cout << take_animation[y];
 			}
@@ -121,6 +128,7 @@ void skill_1_attack_function() {
 		cursor_movement_fighter(60, 15 + y);
 		cout << "                                                                                                                        ";
 	}
+	system("color 0F");
 	cursor_movement_fighter(0, 0);
 }
 
@@ -132,10 +140,12 @@ void skill_2_attack_function() {
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
 			if (take_animation[y] == '@') {
+				SetColor_fighter();
 				cursor_movement_fighter(60 + y, 11 + cnt);
 				cout << " ";
 			}
 			else {
+				SetColor_fighter(192);
 				cursor_movement_fighter(60 + y, 11 + cnt);
 				cout << take_animation[y];
 			}
@@ -154,6 +164,7 @@ void skill_2_attack_function() {
 		cursor_movement_fighter(60, 15 + y);
 		cout << "                                                                                                                        ";
 	}
+	system("color 0F");
 	cursor_movement_fighter(0, 0);
 }
 
@@ -165,10 +176,12 @@ void skill_3_attack_function() {
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
 			if (take_animation[y] == '@') {
+				SetColor_fighter();
 				cursor_movement_fighter(60 + y, 11 + cnt);
 				cout << " ";
 			}
 			else {
+				SetColor_fighter(157);
 				cursor_movement_fighter(60 + y, 11 + cnt);
 				cout << take_animation[y];
 			}
@@ -187,6 +200,7 @@ void skill_3_attack_function() {
 		cursor_movement_fighter(60, 15 + y);
 		cout << "                                                                                                                        ";
 	}
+	system("color 0F");
 	cursor_movement_fighter(0, 0);
 }
 
@@ -198,10 +212,12 @@ void skill_4_attack_function() {
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
 			if (take_animation[y] == '@') {
+				SetColor_fighter();
 				cursor_movement_fighter(60 + y, 11 + cnt);
 				cout << " ";
 			}
 			else {
+				SetColor_fighter(172);
 				cursor_movement_fighter(60 + y, 11 + cnt);
 				cout << take_animation[y];
 			}
@@ -220,6 +236,7 @@ void skill_4_attack_function() {
 		cursor_movement_fighter(60, 12 + y);
 		cout << "                                                                                                                        ";
 	}
+	system("color 0F");
 	cursor_movement_fighter(0, 0);
 }
 void skill_5_attack_function() {
@@ -231,10 +248,12 @@ void skill_5_attack_function() {
 			fin_A1 >> take_animation;
 			for (int y = 0; y < take_animation.length(); y++) {
 				if (take_animation[y] == '@') {
+					SetColor_fighter();
 					cursor_movement_fighter(60 + y, 11 + cnt);
 					cout << " ";
 				}
 				else {
+					SetColor_fighter(214);
 					cursor_movement_fighter(60 + y, 11 + cnt);
 					cout << take_animation[y];
 				}
@@ -254,6 +273,7 @@ void skill_5_attack_function() {
 		cursor_movement_fighter(60, 12 + y);
 		cout << "                                                                                                                        ";
 	}
+	system("color 0F");
 	cursor_movement_fighter(0, 0);
 }
 void attack_function() {
@@ -394,6 +414,16 @@ void CFighter::captureItem (CItem *in_item){
 	cout << this->getname () << " 從地上撿起 " << in_item->getName () << endl;
 }
 
+void CFighter::save_captureItem(CItem* in_item,int total) {
+
+	CBagEntry* entry = bag->item_lookup(in_item->isA(), in_item->getID());
+	if (!entry)
+		bag->item_insert(in_item);
+	else
+		entry->addNum(total);
+	//cout << this->getname() << " 從地上撿起 " << in_item->getName() << endl;
+}
+
 int CFighter::showAllBagItems (){	
 	return bag->showAllItems ();	
 }
@@ -427,6 +457,459 @@ bool CFighter::put_storeItems(int no) {
 		cout << "您的裝備不可放置在倉庫當中"<<endl;
 	}
 	
+	return true;
+}
+
+bool CFighter::put_houseItems(int no) {
+	CBagEntry* ne = bag->item_lookup(no);
+	if (!ne) {
+		return false;
+	}
+	int cnt = 0;
+	ifstream fin_h("house.txt");
+	vector<int> ID;
+	vector<int> amout;
+	int take_ID;
+	int take_amout;
+	while (fin_h >> take_ID) {
+		fin_h >> take_amout;
+		cnt += 1;
+		ID.push_back(take_ID);
+		amout.push_back(take_amout);
+	}
+	if (ne->itm->isA() == eweapon) {
+		int search = -1;
+		for (int x = 0; x < cnt; x++) {
+			if (ID[x] == ne->itm->getID()+15) {
+				search = x;
+				break;
+			}
+		}
+		if (search == -1) {
+			ID.push_back(ne->itm->getID() + 15);
+			amout.push_back(1);
+			cnt += 1;
+		}
+		else {
+			amout[search] += 1;
+		}
+		ne->deleteNum();
+		if (ne->getNum() == 0) {
+			bag->item_delete(ne);
+		}
+		this->showAllBagItems();
+		ofstream fout_h("house.txt");
+		for (int y = 0; y < cnt; y++) {
+			fout_h << ID[y] << endl << amout[y] << endl;
+		}
+	}
+	else if (ne->itm->isA() == efood) {
+		int search = -1;
+		for (int x = 0; x < cnt; x++) {
+			if (ID[x] == ne->itm->getID()){
+				search = x;
+				break;
+			}
+		}
+		if (search == -1) {
+			ID.push_back(ne->itm->getID());
+			amout.push_back(1);
+			cnt += 1;
+		}
+		else {
+			amout[search] += 1;
+		}
+		ofstream fout_h("house.txt");
+		for (int y = 0; y < cnt; y++) {
+			fout_h << ID[y] << endl << amout[y] << endl;
+		}
+		ne->deleteNum();
+		if (ne->getNum() == 0) {
+			bag->item_delete(ne);
+		}
+		this->showAllBagItems();
+	}
+	else {
+		cout << "您的裝備不可放置在倉庫當中" << endl;
+	}
+
+	return true;
+}
+
+bool CFighter::save_bag_Items(int no,int data_save) {
+	CBagEntry* ne = bag->item_lookup(no);
+	if (!ne) {
+		return false;
+	}
+	if (data_save == 1) {
+		int cnt = 0;
+		ifstream fin_h("save_bag1.txt");
+		vector<int> ID;
+		vector<int> amout;
+		int take_ID;
+		int take_amout;
+		while (fin_h >> take_ID) {
+			fin_h >> take_amout;
+			cnt += 1;
+			ID.push_back(take_ID);
+			amout.push_back(take_amout);
+		}
+		if (ne->itm->isA() == eweapon) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == ne->itm->getID() + 15) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(ne->itm->getID() + 15);
+				amout.push_back(ne->getNum());
+				cnt += 1;
+			}
+			else {
+				amout[search] += ne->getNum();
+			}
+			ofstream fout_h("save_bag1.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+		else if (ne->itm->isA() == efood) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == ne->itm->getID()) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(ne->itm->getID());
+				amout.push_back(ne->getNum());
+				cnt += 1;
+			}
+			else {
+				amout[search] += ne->getNum();
+			}
+			ofstream fout_h("save_bag1.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+		else if (ne->itm->isA() == eequiment) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == ne->itm->getID() + 33) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(ne->itm->getID() + 33);
+				amout.push_back(ne->getNum());
+				cnt += 1;
+			}
+			else {
+				amout[search] += ne->getNum();
+			}
+			ofstream fout_h("save_bag1.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+		CWeapon* cur_weapon = this->getWeapon();
+		if (cur_weapon != NULL) {
+			int take_weapon_ID = cur_weapon->getID()+15;
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == take_weapon_ID) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(take_weapon_ID);
+				amout.push_back(1);
+				cnt += 1;
+			}
+			else {
+				amout[search] += 1;
+			}
+			ofstream fout_h("save_bag1.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+		CEquiment* cur_equiment = this->getEquiment();
+		if (cur_equiment != NULL) {
+			int take_equiment_ID = cur_weapon->getID() + 33;
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == take_equiment_ID) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(take_equiment_ID);
+				amout.push_back(1);
+				cnt += 1;
+			}
+			else {
+				amout[search] += 1;
+			}
+			ofstream fout_h("save_bag1.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+	}
+	else if (data_save == 2) {
+		int cnt = 0;
+		ifstream fin_h("save_bag2.txt");
+		vector<int> ID;
+		vector<int> amout;
+		int take_ID;
+		int take_amout;
+		while (fin_h >> take_ID) {
+			fin_h >> take_amout;
+			cnt += 1;
+			ID.push_back(take_ID);
+			amout.push_back(take_amout);
+		}
+		if (ne->itm->isA() == eweapon) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == ne->itm->getID() + 15) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(ne->itm->getID() + 15);
+				amout.push_back(ne->getNum());
+				cnt += 1;
+			}
+			else {
+				amout[search] += ne->getNum();
+			}
+			ofstream fout_h("save_bag2.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+		else if (ne->itm->isA() == efood) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == ne->itm->getID()) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(ne->itm->getID());
+				amout.push_back(ne->getNum());
+				cnt += 1;
+			}
+			else {
+				amout[search] += ne->getNum();
+			}
+			ofstream fout_h("save_bag2.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+		else if(ne->itm->isA()==eequiment) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == ne->itm->getID() + 33) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(ne->itm->getID()+33);
+				amout.push_back(ne->getNum());
+				cnt += 1;
+			}
+			else {
+				amout[search] += ne->getNum();
+			}
+			ofstream fout_h("save_bag2.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+		CWeapon* cur_weapon = this->getWeapon();
+		if (cur_weapon != NULL) {
+			int take_weapon_ID = cur_weapon->getID() + 15;
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == take_weapon_ID) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(take_weapon_ID);
+				amout.push_back(1);
+				cnt += 1;
+			}
+			else {
+				amout[search] += 1;
+			}
+			ofstream fout_h("save_bag1.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+		CEquiment* cur_equiment = this->getEquiment();
+		if (cur_equiment != NULL) {
+			int take_equiment_ID = cur_weapon->getID() + 33;
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == take_equiment_ID) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(take_equiment_ID);
+				amout.push_back(1);
+				cnt += 1;
+			}
+			else {
+				amout[search] += 1;
+			}
+			ofstream fout_h("save_bag2.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+	}
+	else if (data_save == 3) {
+		int cnt = 0;
+		ifstream fin_h("save_bag3.txt");
+		vector<int> ID;
+		vector<int> amout;
+		int take_ID;
+		int take_amout;
+		while (fin_h >> take_ID) {
+			fin_h >> take_amout;
+			cnt += 1;
+			ID.push_back(take_ID);
+			amout.push_back(take_amout);
+		}
+		if (ne->itm->isA() == eweapon) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == ne->itm->getID() + 15) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(ne->itm->getID() + 15);
+				amout.push_back(ne->getNum());
+				cnt += 1;
+			}
+			else {
+				amout[search] += ne->getNum();
+			}
+			ofstream fout_h("save_bag3.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+		else if (ne->itm->isA() == efood) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == ne->itm->getID()) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(ne->itm->getID());
+				amout.push_back(ne->getNum());
+				cnt += 1;
+			}
+			else {
+				amout[search] += ne->getNum();
+			}
+			ofstream fout_h("save_bag3.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+		else if (ne->itm->isA() == eequiment) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == ne->itm->getID() + 33) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(ne->itm->getID() + 33);
+				amout.push_back(ne->getNum());
+				cnt += 1;
+			}
+			else {
+				amout[search] += ne->getNum();
+			}
+			ofstream fout_h("save_bag3.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+		CWeapon* cur_weapon = this->getWeapon();
+		if (cur_weapon != NULL) {
+			int take_weapon_ID = cur_weapon->getID() + 15;
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == take_weapon_ID) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(take_weapon_ID);
+				amout.push_back(1);
+				cnt += 1;
+			}
+			else {
+				amout[search] += 1;
+			}
+			ofstream fout_h("save_bag1.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+		CEquiment* cur_equiment = this->getEquiment();
+		if (cur_equiment != NULL) {
+			int take_equiment_ID = cur_weapon->getID() + 33;
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == take_equiment_ID) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(take_equiment_ID);
+				amout.push_back(1);
+				cnt += 1;
+			}
+			else {
+				amout[search] += 1;
+			}
+			ofstream fout_h("save_bag3.txt");
+			for (int y = 0; y < cnt; y++) {
+				fout_h << ID[y] << endl << amout[y] << endl;
+			}
+		}
+	}
 	return true;
 }
 

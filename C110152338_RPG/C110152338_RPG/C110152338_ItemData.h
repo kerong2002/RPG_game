@@ -14,7 +14,7 @@ class CItemData {
 public:
 	CItemData (){};
 	~CItemData ();
-	void Initialize ();
+	void Initialize (int);
 	int totalsize ();
 	int weapon_array_size();
 	int equiment_array_size();
@@ -31,8 +31,8 @@ private:
 	void LoadFoodData ();
 	void LoadWeaponData ();
 	void LoadEquimentData();
-	void LoadSkillData();
-	void LoadLegend_Armor();
+	void LoadSkillData(int);
+	void LoadLegend_Armor(int);
 };
 
 #endif

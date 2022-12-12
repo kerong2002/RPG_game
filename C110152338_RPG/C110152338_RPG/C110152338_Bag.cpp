@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <vector>
 #include "C110152338_Bag.h"
 #include "C110152338_Item.h"
 

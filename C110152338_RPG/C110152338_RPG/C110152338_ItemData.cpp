@@ -10,12 +10,12 @@
 #include "C110152338_GlobalInfo.h"
 using namespace std;
 
-void CItemData::Initialize() {
+void CItemData::Initialize(int save) {
 	LoadFoodData();
 	LoadWeaponData();
 	LoadEquimentData();
-	LoadSkillData();
-	LoadLegend_Armor();
+	LoadSkillData(save);
+	LoadLegend_Armor(save);
 }
 
 int CItemData::totalsize() {
@@ -45,6 +45,22 @@ CItem* CItemData::getCheck_num(int pick) {
 	if (pick < weapon_array.size()) {
 		return weapon_array[pick];
 	}
+	pick -= weapon_array.size();
+	if (pick < equiment_array.size()) {
+		return equiment_array[pick];
+	}
+	/*
+	if (pick < food_array.size()) {
+		return food_array[pick];
+	}
+	else {
+		if (pick > weapon_array.size() + 15) {
+			return equiment_array[pick - 33];
+		}
+		else {
+			return weapon_array[pick - 15];
+		}
+	}*/
 	return NULL;
 }
 
@@ -125,44 +141,160 @@ void CItemData::LoadEquimentData() {
 
 }
 
-void CItemData::LoadSkillData() {
-	ifstream fin("skill.txt");
-	if (!fin) {
-		cout << "ÅªÀÉ¥¢±Ñ: skill.txt" << endl;
-		return;
+void CItemData::LoadSkillData(int save) {
+	if (save <=0) {
+		ifstream fin("skill_0.txt");
+		if (!fin) {
+			cout << "ÅªÀÉ¥¢±Ñ: skill.txt" << endl;
+			return;
+		}
+		string name;
+		int attack_bonus;
+		int inID;
+		int skill_cost;
+		int skill_level;
+		CSkill* skill;
+		while (!fin.eof()) {
+			fin >> inID >> name >> attack_bonus >> skill_cost >> skill_level;
+			skill = new CSkill(name, 0, 0, inID, attack_bonus, skill_cost, skill_level);
+			CGlobalInfo::itm_data->skill_array.push_back(skill);
+		}
+		fin.close();
 	}
-	string name;
-	int attack_bonus;
-	int inID;
-	int skill_cost;
-	int skill_level;
-	CSkill* skill;
-	while (!fin.eof()) {
-		fin >> inID >> name >> attack_bonus >> skill_cost>>skill_level;
-		skill = new CSkill(name, 0, 0, inID, attack_bonus, skill_cost, skill_level);
-		CGlobalInfo::itm_data->skill_array.push_back(skill);
+	else if (save == 1) {
+		ifstream fin("skill_1.txt");
+		if (!fin) {
+			cout << "ÅªÀÉ¥¢±Ñ: skill.txt" << endl;
+			return;
+		}
+		string name;
+		int attack_bonus;
+		int inID;
+		int skill_cost;
+		int skill_level;
+		CSkill* skill;
+		while (!fin.eof()) {
+			fin >> inID >> name >> attack_bonus >> skill_cost >> skill_level;
+			skill = new CSkill(name, 0, 0, inID, attack_bonus, skill_cost, skill_level);
+			CGlobalInfo::itm_data->skill_array.push_back(skill);
+		}
+		fin.close();
 	}
-	fin.close();
-
+	else if (save == 2) {
+		ifstream fin("skill_2.txt");
+		if (!fin) {
+			cout << "ÅªÀÉ¥¢±Ñ: skill.txt" << endl;
+			return;
+		}
+		string name;
+		int attack_bonus;
+		int inID;
+		int skill_cost;
+		int skill_level;
+		CSkill* skill;
+		while (!fin.eof()) {
+			fin >> inID >> name >> attack_bonus >> skill_cost >> skill_level;
+			skill = new CSkill(name, 0, 0, inID, attack_bonus, skill_cost, skill_level);
+			CGlobalInfo::itm_data->skill_array.push_back(skill);
+		}
+		fin.close();
+	}
+	else if (save == 3) {
+		ifstream fin("skill_3.txt");
+		if (!fin) {
+			cout << "ÅªÀÉ¥¢±Ñ: skill.txt" << endl;
+			return;
+		}
+		string name;
+		int attack_bonus;
+		int inID;
+		int skill_cost;
+		int skill_level;
+		CSkill* skill;
+		while (!fin.eof()) {
+			fin >> inID >> name >> attack_bonus >> skill_cost >> skill_level;
+			skill = new CSkill(name, 0, 0, inID, attack_bonus, skill_cost, skill_level);
+			CGlobalInfo::itm_data->skill_array.push_back(skill);
+		}
+		fin.close();
+	}
 }
 
-void CItemData::LoadLegend_Armor() {
-	ifstream fin("legend_armor.txt");
-	if (!fin) {
-		cout << "ÅªÀÉ¥¢±Ñ: legend_armor.txt" << endl;
-		return;
+void CItemData::LoadLegend_Armor(int save) {
+	if (save <= 0) {
+		ifstream fin("legend_armor_0.txt");
+		if (!fin) {
+			cout << "ÅªÀÉ¥¢±Ñ: legend_armor.txt" << endl;
+			return;
+		}
+		string name;
+		int attack_bonus;
+		int inID;
+		int Armor_cost;
+		int Armor_level;
+		CLegend_Armor* Armor;
+		while (!fin.eof()) {
+			fin >> inID >> name >> attack_bonus >> Armor_cost >> Armor_level;
+			Armor = new CLegend_Armor(name, 0, 0, inID, attack_bonus, Armor_cost, Armor_level);
+			CGlobalInfo::itm_data->Legend_Armor_array.push_back(Armor);
+		}
+		fin.close();
 	}
-	string name;
-	int attack_bonus;
-	int inID;
-	int Armor_cost;
-	int Armor_level;
-	CLegend_Armor* Armor;
-	while (!fin.eof()) {
-		fin >> inID >> name >> attack_bonus >> Armor_cost >> Armor_level;
-		Armor = new CLegend_Armor(name, 0, 0, inID, attack_bonus, Armor_cost, Armor_level);
-		CGlobalInfo::itm_data->Legend_Armor_array.push_back(Armor);
+	else if (save == 1) {
+		ifstream fin("legend_armor_1.txt");
+		if (!fin) {
+			cout << "ÅªÀÉ¥¢±Ñ: legend_armor.txt" << endl;
+			return;
+		}
+		string name;
+		int attack_bonus;
+		int inID;
+		int Armor_cost;
+		int Armor_level;
+		CLegend_Armor* Armor;
+		while (!fin.eof()) {
+			fin >> inID >> name >> attack_bonus >> Armor_cost >> Armor_level;
+			Armor = new CLegend_Armor(name, 0, 0, inID, attack_bonus, Armor_cost, Armor_level);
+			CGlobalInfo::itm_data->Legend_Armor_array.push_back(Armor);
+		}
+		fin.close();
 	}
-	fin.close();
-
+	else if (save == 2) {
+		ifstream fin("legend_armor_2.txt");
+		if (!fin) {
+			cout << "ÅªÀÉ¥¢±Ñ: legend_armor.txt" << endl;
+			return;
+		}
+		string name;
+		int attack_bonus;
+		int inID;
+		int Armor_cost;
+		int Armor_level;
+		CLegend_Armor* Armor;
+		while (!fin.eof()) {
+			fin >> inID >> name >> attack_bonus >> Armor_cost >> Armor_level;
+			Armor = new CLegend_Armor(name, 0, 0, inID, attack_bonus, Armor_cost, Armor_level);
+			CGlobalInfo::itm_data->Legend_Armor_array.push_back(Armor);
+		}
+		fin.close();
+	}
+	else if (save == 3) {
+		ifstream fin("legend_armor_3.txt");
+		if (!fin) {
+			cout << "ÅªÀÉ¥¢±Ñ: legend_armor.txt" << endl;
+			return;
+		}
+		string name;
+		int attack_bonus;
+		int inID;
+		int Armor_cost;
+		int Armor_level;
+		CLegend_Armor* Armor;
+		while (!fin.eof()) {
+			fin >> inID >> name >> attack_bonus >> Armor_cost >> Armor_level;
+			Armor = new CLegend_Armor(name, 0, 0, inID, attack_bonus, Armor_cost, Armor_level);
+			CGlobalInfo::itm_data->Legend_Armor_array.push_back(Armor);
+		}
+		fin.close();
+	}
 }

@@ -34,6 +34,9 @@ void CLifeEntity::set_all_thing(string in_name, int in_hp, int in_sp, int in_max
 void CLifeEntity::set_output_data_num(int pos){
 	out_data_num = pos;
 }
+int  CLifeEntity::show_output_data_num() {
+	return out_data_num;
+}
 void  CLifeEntity::file_read_data() {
 	if (out_data_num == 1) {
 		ifstream input_f1("play1.txt");

@@ -189,7 +189,7 @@ int function_kill (vector<string> &tokens){
 	return 0;
 }
 
-//=================<獲取物品>================
+//=================<取走一樣物品>================
 int function_get_bag(vector<string>& tokens) {
 	CLifeEntity* usr = CGlobalInfo::user->get_user();
 	CItemData* id = CGlobalInfo::itm_data;
@@ -203,7 +203,7 @@ int function_get_bag(vector<string>& tokens) {
 	ofstream file_writer(file_name, ios_base::out);
 	return 0;
 }
-//=================<放置物品>================
+//=================<放置一樣物品>================
 int function_put_bag(vector<string>& tokens) {
 	if (tokens.size() != 1) {
 		for (vector<string>::iterator it = tokens.begin(); it != tokens.end(); it++) {
@@ -241,6 +241,118 @@ int function_put_bag(vector<string>& tokens) {
 	cin.ignore(1024, '\n');
 	return 0;
 }
+
+//===============<放置倉庫>========================
+int function_put_house(vector<string>& tokens) {
+	if (tokens.size() != 1) {
+		for (vector<string>::iterator it = tokens.begin(); it != tokens.end(); it++) {
+			cerr << (*it) << " ";
+		}
+		cerr << " command error" << endl;
+		return 0;
+	}
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	assert(usr);
+	if (usr->isA() == efighter) {
+		CFighter* f = (CFighter*)usr;
+		cout << f->getname() << " 將倉庫打開" << endl;
+		int num = f->showAllBagItems();
+		if (num == 0) {
+			cout << "倉庫空空如也" << endl;
+			cout << f->getname() << "  離開倉庫" << endl;
+			return 0;
+		}
+
+		int selection = 0;
+		cout << "需要什麼物品 (0代表不需要)" << endl;
+		cin >> selection;
+		while (selection > 0) {
+			if (!f->put_houseItems(selection)) {
+				cout << "無此選項存在" << endl;
+			}
+			selection = 0;
+			cout << "需要什麼物品 (0代表不需要)" << endl;
+			cin >> selection;
+		}
+		cout << f->getname() << "  關上背包" << endl;
+	}
+	cin.clear();
+	cin.ignore(1024, '\n');
+	return 0;
+}
+
+//===============<開啟倉庫>========================
+int function_check_house(vector<string>& tokens) {
+	int cnt = 0;
+	ifstream fin_h("house.txt");
+	vector<int> ID;
+	vector<int> amout;
+	int take_ID;
+	int take_amout;
+	while (fin_h >> take_ID) {
+		fin_h >> take_amout;
+		cnt += 1;
+		ID.push_back(take_ID);
+		amout.push_back(take_amout);
+	}
+	if (cnt == 0) {
+		cout << "倉庫空空如也" << endl;
+		return 0;
+	}
+	CItemData* id = CGlobalInfo::itm_data;
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	assert(usr);
+	if (usr->isA() == efighter) {
+		CFighter* f = (CFighter*)usr;
+		cout << f->getname() << " 將倉庫打開" << endl;
+		for (int x = 0; x < cnt; x++) {
+			cout << "(" << x+1<< ")" << id->getCheck_num(ID[x])->getName() << " 數量：" << amout[x] << endl;
+		}
+		int selection = 0;
+		cout << "需要什麼物品 (0代表不需要)" << endl;
+		while (cin >> selection) {
+			if (selection == 0) {
+				break;
+			}
+			cout << "需要什麼物品 (0代表不需要)" << endl;
+			
+			if (selection <= cnt && amout[selection-1]>=1) {
+				((CFighter*)usr)->house_captureItem(id->getCheck_num(ID[selection-1]));
+				if (amout[selection - 1] == 1) {
+					ofstream fout_h("house.txt");
+					amout[selection - 1] -= 1;
+					for (int y = 0; y < cnt; y++) {
+						if (amout[y] > 0) {
+							fout_h <<ID[y] <<endl<< amout[y] << endl;
+						}
+					}
+				}
+				else {
+					ofstream fout_h("house.txt");
+					amout[selection - 1] -= 1;
+					for (int y = 0; y < cnt; y++) {
+						if (amout[y] > 0) {
+							fout_h << ID[y] << endl << amout[y] << endl;
+						}
+					}
+				}
+			}
+			else {
+				cout << "超出倉庫存取範圍" << endl;
+			}
+			for (int x = 0; x < cnt; x++) {
+				if (amout[x] > 0) {
+					cout << "(" << x + 1 << ")" << id->getCheck_num(ID[x])->getName() << " 數量：" << amout[x] << endl;
+				}
+			}
+		}
+		cout << f->getname() << "  關上倉庫" << endl;
+	}
+	cin.clear();
+	cin.ignore(1024, '\n');
+	return cnt;
+
+}	
 //===============<開啟背包>========================
 int function_check_bag (vector<string> &tokens){	
 	if (tokens.size () != 1){
@@ -862,7 +974,67 @@ int function_move(vector<string>& tokens){
 }
 void function_log_out() {
 	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CItemData* id = CGlobalInfo::itm_data;
 	usr->out_all_thing();
+	int get_save = usr->show_output_data_num();
+	if (get_save == 1) {
+		CLifeEntity* usr = CGlobalInfo::user->get_user();
+		assert(usr);
+		if (usr->isA() == efighter) {
+			CFighter* f = (CFighter*)usr;
+			int num = f->showAllBagItems();
+			if (num > 0) {
+				for (int y = num; y >=0; y--) {
+					f->save_bag_Items(y,get_save);
+				}
+			}
+		}
+		ofstream fout_s1("skill_1.txt");
+		ofstream fout_L1("legend_armor_1.txt");
+		for (int y = 1; y <= 5; y++) {
+			fout_s1 << y << "\t" << id->skill_array[y - 1]->getName() << "\t" << id->skill_array[y - 1]->getattackbonus() << "\t" << id->skill_array[y - 1]->get_skill_cost() << "\t" << id->skill_array[y - 1]->get_skill_level()<<endl;
+			fout_L1 << y << "\t" << id->Legend_Armor_array[y - 1]->getName() << "\t" << id->Legend_Armor_array[y - 1]->getattackbonus() << "\t" << id->Legend_Armor_array[y - 1]->get_armor_cost() << "\t" << id->Legend_Armor_array[y - 1]->get_armor_level() << endl;
+		}
+	}
+	else if (get_save == 2) {
+		CLifeEntity* usr = CGlobalInfo::user->get_user();
+		assert(usr);
+		if (usr->isA() == efighter) {
+			CFighter* f = (CFighter*)usr;
+			int num = f->showAllBagItems();
+			if (num > 0) {
+				for (int y = num; y >= 0; y--) {
+					f->save_bag_Items(y, get_save);
+				}
+			}
+		}
+		ofstream fout_s2("skill_2.txt");
+		ofstream fout_L2("legend_armor_2.txt");
+		for (int y = 1; y <= 5; y++) {
+			fout_s2 << y << "\t" << id->skill_array[y - 1]->getName() << "\t" << id->skill_array[y - 1]->getattackbonus() << "\t" << id->skill_array[y - 1]->get_skill_cost() << "\t" << id->skill_array[y - 1]->get_skill_level() << endl;
+			fout_L2 << y << "\t" << id->Legend_Armor_array[y - 1]->getName() << "\t" << id->Legend_Armor_array[y - 1]->getattackbonus() << "\t" << id->Legend_Armor_array[y - 1]->get_armor_cost() << "\t" << id->Legend_Armor_array[y - 1]->get_armor_level() << endl;
+		}
+	}
+	else if (get_save == 3) {
+		CLifeEntity* usr = CGlobalInfo::user->get_user();
+		assert(usr);
+		if (usr->isA() == efighter) {
+			CFighter* f = (CFighter*)usr;
+			int num = f->showAllBagItems();
+			if (num > 0) {
+				for (int y = num; y >= 0; y--) {
+					f->save_bag_Items(y, get_save);
+				}
+			}
+		}
+		ofstream fout_s3("skill_3.txt");
+		ofstream fout_L3("legend_armor_3.txt");
+		for (int y = 1; y <= 5; y++) {
+			fout_s3 << y << "\t" << id->skill_array[y - 1]->getName() << "\t" << id->skill_array[y - 1]->getattackbonus() << "\t" << id->skill_array[y - 1]->get_skill_cost() << "\t" << id->skill_array[y - 1]->get_skill_level() << endl;
+			fout_L3 << y << "\t" << id->Legend_Armor_array[y - 1]->getName() << "\t" << id->Legend_Armor_array[y - 1]->getattackbonus() << "\t" << id->Legend_Armor_array[y - 1]->get_armor_cost() << "\t" << id->Legend_Armor_array[y - 1]->get_armor_level() << endl;
+		}
+	}
+	
 	cout << "您的存檔已完成";
 }
 
@@ -878,7 +1050,9 @@ CCmdParser::CCmdParser (){
 	mappingfunc [string("south")] = function_next_direction;
 	mappingfunc [string("ls")] = function_list;
 	mappingfunc [string("kill")] = function_kill;
-	mappingfunc [string("checkbag")] = function_check_bag;
+	mappingfunc [string("checkbag")] = function_check_bag;			
+	mappingfunc [string("puthouse")] = function_put_house;				//放置倉庫
+	mappingfunc [string("checkhouse")] = function_check_house;			//檢測倉庫
 	mappingfunc [string("move")] = function_move;						//舜移
 	mappingfunc [string("wshop")] = function_wshop;						//武器
 	mappingfunc [string("eshop")] = function_eshop;						//裝備
@@ -889,8 +1063,8 @@ CCmdParser::CCmdParser (){
 	mappingfunc [string("shop")] = function_all_shop;				 	//商城總攬
 	mappingfunc [string("log_out")] = function_log_out;					//登出
 	mappingfunc [string("kerong")] = function_hack;					    //商城總攬
-	mappingfunc [string("putbag")] = function_put_bag;					//放置物品
-	mappingfunc [string("getbag")] = function_get_bag;					//放置物品
+	//mappingfunc [string("putbag")] = function_put_bag;					//放置一樣物品
+	//mappingfunc [string("getbag")] = function_get_bag;					//取走一樣物品
 	mappingfunc [string("meet_monster")] = function_meet_monster;		//遇到自走怪
 #if 0
 	for (vector<string>::iterator it = tokens.begin (); it != tokens.end (); it++){

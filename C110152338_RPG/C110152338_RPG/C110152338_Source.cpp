@@ -173,7 +173,7 @@ void opening_animation() {
 		for (int y = 0; y < 7; y++) {
 			for (int x = 0; x < 22; x++) {
 				if (gametitle[y][x] == k) {
-					cursor_movement(x+10, y- cursor_y_offset+1);							//放置游標位置
+					cursor_movement(x + 10, y - cursor_y_offset + 1);							//放置游標位置
 					SetColor(70);									//設定放置位置顏色
 					cout << "■";										//放置方塊
 					Sleep(10);										//延遲
@@ -325,9 +325,9 @@ CMonsterData* CGlobalInfo::monster_data = new CMonsterData;
 
 int CMonster::counter_for_monster_id = 0;
 
-void Initialize() {
+void Initialize(int pos) {
 	srand((unsigned int)time(NULL));
-	CGlobalInfo::itm_data->Initialize();
+	CGlobalInfo::itm_data->Initialize(pos);
 	CGlobalInfo::map_data->generate_monsters();
 }
 //==================<選擇職業>===========================
@@ -589,27 +589,65 @@ void read_login() {
 	}
 	//cout << forgot_hint;
 }
-
-void attack_among() {
+/*
+void ow2_animation() {
 	cursor_movement_animation(5, 5);
 	for (int x = 0; x < 1; x++) {
+		ifstream fin_A1("ow2.txt");
+		string take_animation;
+		int cnt = 1;
+		while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+			fin_A1 >> take_animation;
+			for (int y = 0; y < take_animation.length(); y++) {
+				if (take_animation[y] == '@') {
+					SetColor(1);
+					cursor_movement_animation(y + 5, 7 + cnt);
+					cout << " ";
+				}
+				else {
+					SetColor(177);
+					cursor_movement_animation(y + 5, 7 + cnt);
+					cout << take_animation[y];
+				}
+			}
+			cout << endl;
+			cursor_movement_animation(0, 0);
+			if (cnt % 45 == 0) {
+				cnt -= 45;
+				cursor_movement_animation(5, 7);
+				//Sleep(40);
+				//system("cls");
+				//for(int yy=0;yy<)
+			}
+			cnt += 1;
+		}
+	}
+	system("pause");
+	system("color 0F");
+	system("cls");
+}*/
+void attack_among() {
+	cursor_movement_animation(5, 5);
+	for (int x = 0; x < 2; x++) {
 		ifstream fin_A1("among_go.txt");
 		string take_animation;
 		int cnt = 1;
 		while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
 			fin_A1 >> take_animation;
 			for (int y = 0; y < take_animation.length(); y++) {
-				if (take_animation[y] == '@' || take_animation[y] == '=' || take_animation[y] == '.') {
+				if (take_animation[y] == '@' || take_animation[y] == '=') {
+					SetColor(1);
 					cursor_movement_animation(y + 5, 7 + cnt);
 					cout << " ";
 				}
 				else {
+					SetColor(177);
 					cursor_movement_animation(y + 5, 7 + cnt);
 					cout << take_animation[y];
 				}
 			}
 			cout << endl;
-			cursor_movement_animation(0,0);
+			cursor_movement_animation(0, 0);
 			if (cnt % 43 == 0) {
 				cnt -= 43;
 				cursor_movement_animation(5, 7);
@@ -621,6 +659,7 @@ void attack_among() {
 		}
 	}
 	system("pause");
+	system("color 0F");
 	system("cls");
 }
 int choose_save_data() {
@@ -729,6 +768,8 @@ int choose_save_data() {
 				if (choose_clear == 1) {
 					string file_name = "play1.txt";
 					ofstream file_writer(file_name, ios_base::out);
+					string file_save = "save_bag1.txt";
+					ofstream file_writer1(file_save, ios_base::out);
 					job1 = "";
 					cursor_movement(7, 2 + choose_clear);
 					cout << "                                      ";
@@ -736,6 +777,8 @@ int choose_save_data() {
 				else if (choose_clear == 2) {
 					string file_name = "play2.txt";
 					ofstream file_writer(file_name, ios_base::out);
+					string file_save = "save_bag2.txt";
+					ofstream file_writer1(file_save, ios_base::out);
 					job2 = "";
 					cursor_movement(7, 2 + choose_clear);
 					cout << "                                      ";
@@ -743,6 +786,8 @@ int choose_save_data() {
 				else if (choose_clear == 3) {
 					string file_name = "play3.txt";
 					ofstream file_writer(file_name, ios_base::out);
+					string file_save = "save_bag3.txt";
+					ofstream file_writer1(file_save, ios_base::out);
 					job3 = "";
 					cursor_movement(7, 2 + choose_clear);
 					cout << "                                      ";
@@ -780,10 +825,12 @@ int main() {
 	opening_password();					//登入系統
 	opening_animation();				//開始RPG動畫
 	attack_among();
+	//ow2_animation();
 	//attack_among();
 	int data_num = choose_save_data();
+	//system("pause");
 	int get_job_num = 0;
-	if (data_num <0) {
+	if (data_num < 0) {
 		get_job_num = choose_profession(my_profession);	//選擇職業
 	}
 	else {
@@ -794,18 +841,71 @@ int main() {
 
 	string active;
 	cursor_movement(-cursor_x_offset, map_y_size / 2 + 10);
+	Initialize(data_num);												//初始化設定
 	//建置玩家
 	CFighter* fighter = new CFighter(get_job_num, profession[get_job_num].HP, profession[get_job_num].Damage, profession[get_job_num].Lucky, profession[get_job_num].name, 1);
-	Initialize();												//初始化設定
+
 	//system("CLS");
 	printmap();
 	CGlobalInfo::user->set_user((CLifeEntity*)fighter);
 	int cur_city = CGlobalInfo::user->get_current_city();
 	CGlobalInfo::map_data->show_description(cur_city);
-	if (data_num >0) {
+	if (data_num > 0) {
 		CLifeEntity* usr = CGlobalInfo::user->get_user();
 		usr->set_output_data_num(data_num);
 		usr->file_read_data();
+		CItemData* id = CGlobalInfo::itm_data;
+		if (data_num == 1) {
+			int cnt = 0;
+			ifstream fin_h("save_bag1.txt");
+			vector<int> ID;
+			vector<int> amout;
+			int take_ID;
+			int take_amout;
+			while (fin_h >> take_ID) {
+				fin_h >> take_amout;
+				cnt += 1;
+				ID.push_back(take_ID);
+				amout.push_back(take_amout);
+			}
+			for (int y = 0; y < cnt; y++) {
+				((CFighter*)usr)->save_captureItem(id->getCheck_num(ID[y]), amout[y]);
+			}
+		}
+		else if (data_num == 2) {
+			int cnt = 0;
+			ifstream fin_h("save_bag2.txt");
+			vector<int> ID;
+			vector<int> amout;
+			int take_ID;
+			int take_amout;
+			while (fin_h >> take_ID) {
+				fin_h >> take_amout;
+				cnt += 1;
+				ID.push_back(take_ID);
+				amout.push_back(take_amout);
+			}
+			for (int y = 0; y < cnt; y++) {
+				((CFighter*)usr)->save_captureItem(id->getCheck_num(ID[y]), amout[y]);
+			}
+		}
+		else if (data_num == 3) {
+			int cnt = 0;
+			ifstream fin_h("save_bag3.txt");
+			vector<int> ID;
+			vector<int> amout;
+			int take_ID;
+			int take_amout;
+			while (fin_h >> take_ID) {
+				fin_h >> take_amout;
+				cnt += 1;
+				ID.push_back(take_ID);
+				amout.push_back(take_amout);
+			}
+			for (int y = 0; y < cnt; y++) {
+				((CFighter*)usr)->save_captureItem(id->getCheck_num(ID[y]), amout[y]);
+			}
+		}
 	}
 	else {
 		CLifeEntity* usr = CGlobalInfo::user->get_user();
@@ -830,6 +930,9 @@ int main() {
 			cout << "請輸入指令";
 			cursor_movement(map_x_size + 5, map_y_size / 2 + 3);
 			cin >> active;
+			if (active == "exit") {
+				break;
+			}
 			cursor_movement(-cursor_x_offset, map_y_size / 2 + 10);
 			CGlobalInfo::parser->query(active);
 			cursor_movement(map_x_size + 5, map_y_size / 2 + 2);
@@ -941,7 +1044,7 @@ int main() {
 	system("CLS");
 	system("color 0F");											//黑底白字
 	//SetColor(15);
-	cout << "out";
+	cout << "遊戲結束" << endl;
 	/*while (CGlobalInfo::parser->query() >= 0) {
 		CGlobalInfo::map_data->show_description(cur_city);
 		//	cin >> cur_city;
@@ -955,7 +1058,7 @@ int main() {
 			cout << endl << endl << "戰鬥開始" << endl << endl;
 			startfight(m, &fighter);
 			delete m;
-		}
+}
 		else
 			cout << "No monster generated" << endl;
 	}

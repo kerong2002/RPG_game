@@ -20,6 +20,7 @@ public:
 	void out_all_thing();
 	void setInitLucky(int);
 	void set_output_data_num(int);
+	int show_output_data_num();
 	bool isdead();
 	void setHP(int);
 	void addHP(int);

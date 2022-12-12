@@ -66,6 +66,21 @@
     <ClInclude Include="C110152338_weapon.h">
       <Filter>標頭檔</Filter>
     </ClInclude>
+    <ClInclude Include="C110152338_cursor_movement_fighter.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="C110152338_Profession.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="C110152338_Equiment.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="C110152338_Skill.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="C110152338_legend_armor.h">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C110152338_Bag.cpp">
@@ -108,6 +123,18 @@
       <Filter>來源檔案</Filter>
     </ClCompile>
     <ClCompile Include="C110152338_weapon.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="C110152338_Profession.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="C110152338_Equiment.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="C110152338_Skill.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="C110152338_legend_armor.cpp">
       <Filter>來源檔案</Filter>
     </ClCompile>
   </ItemGroup>
