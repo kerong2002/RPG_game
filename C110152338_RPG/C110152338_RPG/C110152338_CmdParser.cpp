@@ -14,6 +14,25 @@
 #include "C110152338_ItemData.h"
 
 int function_exit (vector<string> &tokens){	
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CItemData* id = CGlobalInfo::itm_data;
+	CFighter* f = (CFighter*)usr;
+	int get_w_ID = f->show_wear_weapon_ID();
+	int get_e_ID = f->show_wear_eauiment_ID();
+	int cnt = 0;
+	if (get_w_ID > 15 && get_w_ID <= 33) {
+		cnt += 1;
+		f->delSP(id->weapon_array[get_w_ID - 16]->getattackbonus());
+	}
+	if (get_e_ID > 33) {
+		cnt += 1;
+		f->delMAXHP(id->equiment_array[get_e_ID - 34]->getattackbonus());
+		cout << id->equiment_array[get_e_ID - 34]->getattackbonus();
+	}
+	if (cnt == 2) {
+		f->delSP(50);
+	}
+	usr->out_all_thing();
 	return -1;
 }
 //==================<光標移動>=========================
@@ -987,7 +1006,6 @@ int function_move(vector<string>& tokens){
 void function_log_out() {
 	CLifeEntity* usr = CGlobalInfo::user->get_user();
 	CItemData* id = CGlobalInfo::itm_data;
-	usr->out_all_thing();
 	int get_save = usr->show_output_data_num();
 	if (get_save == 1) {
 		CLifeEntity* usr = CGlobalInfo::user->get_user();
@@ -1003,6 +1021,23 @@ void function_log_out() {
 				}
 			}
 			f->save_wear(get_save);
+			/*
+			int get_w_ID = f->show_wear_weapon_ID();
+			int get_e_ID = f->show_wear_eauiment_ID();
+			int cnt = 0;
+			if (get_w_ID > 15 && get_w_ID <= 33) {
+				cnt += 1;
+				f->delSP(id->weapon_array[get_w_ID - 16]->getattackbonus());
+				//cout << id->weapon_array[get_w_ID - 16]->getattackbonus()<<"@@@";
+			}
+			if (get_e_ID > 33) {
+				cnt += 1;
+				f->delMAXHP(id->equiment_array[get_e_ID - 33]->getattackbonus());
+				cout << id->equiment_array[get_e_ID - 33]->getattackbonus();
+			}
+			if (cnt == 2) {
+				f->delSP(50);
+			}*/
 		}
 		ofstream fout_s1("skill_1.txt");
 		ofstream fout_L1("legend_armor_1.txt");
@@ -1056,7 +1091,7 @@ void function_log_out() {
 			fout_L3 << y << "\t" << id->Legend_Armor_array[y - 1]->getName() << "\t" << id->Legend_Armor_array[y - 1]->getattackbonus() << "\t" << id->Legend_Armor_array[y - 1]->get_armor_cost() << "\t" << id->Legend_Armor_array[y - 1]->get_armor_level() << endl;
 		}
 	}
-	
+	usr->out_all_thing();
 	cout << "您的存檔已完成";
 }
 
