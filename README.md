@@ -1,6 +1,17 @@
 # RPG_game
 ## 爆肝RPG game挑戰
 ## 靈感來自 Minecraft Dungeon  
+
+| 功能\\指令 | 輸入 | 功能\\指令 | 輸入  |
+|:-:|:-:|:-:|:-:|
+| 列出怪獸 | ls | 商店總攬 | shop  |
+| 打開背包 | checkbag | 武器商店 | wshop  |
+| 放置到倉庫 | puthouse | 裝備商店 | eshop  |
+| 從倉庫拿東西 | checkhouse | 食品商店 | fshop  |
+| 舜移 | move | 技能解鎖 | sshop  |
+| 釣魚 | fish | 傳奇鎧甲 | lshop  |
+| 保存 | log_out | 離開 | exit  |
+
 ## 2022/11/07
 ![image](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/RPG_TITLE.png)
 - 1 建立好資料檔案
