@@ -21,6 +21,8 @@ public:
 	CItem *getRand ();
 	CItem* getCheck_num(int);
 	CItem* get_equiment_num(int);
+	CItem* get_f_num(int);
+	CItem* get_w_num(int);
 	void showWeaponData();
 	vector <CFood *> food_array;	
 	vector <CWeapon *> weapon_array;	

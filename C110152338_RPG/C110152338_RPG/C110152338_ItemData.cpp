@@ -30,6 +30,19 @@ int CItemData::equiment_array_size() {
 	return equiment_array.size();
 }
 
+CItem* CItemData::get_f_num(int pick) {
+	if (pick < food_array.size()) {
+		return food_array[pick];
+	}
+	return NULL;
+}
+
+CItem* CItemData::get_w_num(int pick) {
+	if (pick < weapon_array.size()) {
+		return weapon_array[pick];
+	}
+	return NULL;
+}
 CItem* CItemData::get_equiment_num(int pick) {
 	if (pick < equiment_array.size()) {
 		return equiment_array[pick];
@@ -38,16 +51,16 @@ CItem* CItemData::get_equiment_num(int pick) {
 }
 
 CItem* CItemData::getCheck_num(int pick) {
-	if (pick < food_array.size()) {
-		return food_array[pick];
+	if (pick >= 1 && pick <= food_array.size()) {
+		return food_array[pick-1];
 	}
 	pick -= food_array.size();
-	if (pick < weapon_array.size()) {
-		return weapon_array[pick];
+	if (pick <= weapon_array.size()) {
+		return weapon_array[pick-1];
 	}
 	pick -= weapon_array.size();
-	if (pick < equiment_array.size()) {
-		return equiment_array[pick];
+	if (pick <= equiment_array.size()) {
+		return equiment_array[pick-1];
 	}
 	/*
 	if (pick < food_array.size()) {

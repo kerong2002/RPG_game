@@ -822,9 +822,9 @@ int choose_save_data() {
 int main() {
 	read_login();
 	//modeset(150, 50);					//視窗大小設定
-	opening_password();					//登入系統
-	opening_animation();				//開始RPG動畫
-	attack_among();
+	//opening_password();					//登入系統
+	//opening_animation();				//開始RPG動畫
+	//attack_among();
 	//ow2_animation();
 	//attack_among();
 	int data_num = choose_save_data();
@@ -869,8 +869,13 @@ int main() {
 				amout.push_back(take_amout);
 			}
 			for (int y = 0; y < cnt; y++) {
-				((CFighter*)usr)->save_captureItem(id->getCheck_num(ID[y]), amout[y]);
+				for (int x = 0; x < amout[y]; x++) {
+					((CFighter*)usr)->save_captureItem(id->getCheck_num(ID[y]));
+				}
 			}
+			//system("pasue");
+			ID.clear();
+			amout.clear();
 		}
 		else if (data_num == 2) {
 			int cnt = 0;
@@ -886,8 +891,12 @@ int main() {
 				amout.push_back(take_amout);
 			}
 			for (int y = 0; y < cnt; y++) {
-				((CFighter*)usr)->save_captureItem(id->getCheck_num(ID[y]), amout[y]);
+				for (int x = 0; x < amout[y]; x++) {
+					((CFighter*)usr)->save_captureItem(id->getCheck_num(ID[y]));
+				}
 			}
+			ID.clear();
+			amout.clear();
 		}
 		else if (data_num == 3) {
 			int cnt = 0;
@@ -903,8 +912,12 @@ int main() {
 				amout.push_back(take_amout);
 			}
 			for (int y = 0; y < cnt; y++) {
-				((CFighter*)usr)->save_captureItem(id->getCheck_num(ID[y]), amout[y]);
+				for (int x = 0; x < amout[y]; x++) {
+					((CFighter*)usr)->save_captureItem(id->getCheck_num(ID[y]));
+				}
 			}
+			ID.clear();
+			amout.clear();
 		}
 	}
 	else {

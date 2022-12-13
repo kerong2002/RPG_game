@@ -16,6 +16,8 @@ public:
 	CLifeEntity(int initHP = 0, int initSP = 0, string initname = "");
 	void setInitSPHP(int initHP = 0, int initSP = 0);
 	void set_all_thing(string , int, int, int, int, int, int, int, int, int, int);
+	void read_hack_data();
+	void out_hack_data();
 	void file_read_data();
 	void out_all_thing();
 	void setInitLucky(int);

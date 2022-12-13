@@ -26,7 +26,7 @@ public:
 	void shop_captureItem(CItem*);
 	void fish_captureItem(CItem*);
 	void house_captureItem(CItem*);
-	void save_captureItem(CItem* , int);
+	void save_captureItem(CItem* );
 	int showAllBagItems ();
 	bool useBagItems (int no);
 	bool put_storeItems(int no);

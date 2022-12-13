@@ -348,6 +348,8 @@ int function_check_house(vector<string>& tokens) {
 		}
 		cout << f->getname() << "  關上倉庫" << endl;
 	}
+	ID.clear();
+	amout.clear();
 	cin.clear();
 	cin.ignore(1024, '\n');
 	return cnt;
@@ -733,7 +735,7 @@ void function_wshop() {
 				cursor_movement_cmd(2, 11);
 				cout << "                                       ";
 				cursor_movement_cmd(2, 11);
-				((CFighter*)usr)->shop_captureItem(id->getCheck_num(weapon_list[choose_pos - 2] + id->food_array.size()));//撿到商品
+				((CFighter*)usr)->shop_captureItem(id->getCheck_num(weapon_list[choose_pos - 2] + id->food_array.size()+1));//撿到商品
 			}
 			//
 		}
@@ -804,7 +806,7 @@ void function_fshop() {
 				cursor_movement_cmd(2, 21);
 				cout << "                                       ";
 				cursor_movement_cmd(2, 21);
-				((CFighter*)usr)->shop_captureItem(id->getCheck_num(choose_pos-3));//撿到商品
+				((CFighter*)usr)->shop_captureItem(id->getCheck_num(choose_pos-2));//撿到商品
 			}
 		}
 		if (key == 'w' || key == 'W') {
@@ -864,7 +866,7 @@ void function_fish() {
 	CLifeEntity* usr = CGlobalInfo::user->get_user();
 	CItemData* id = CGlobalInfo::itm_data;
 	cursor_movement_cmd(0, 18);
-	((CFighter*)usr)->fish_captureItem(id->getCheck_num(rand() % 4));
+	((CFighter*)usr)->fish_captureItem(id->getCheck_num(rand() % 4+1));
 	cursor_movement_cmd(0, -3);
 }
 
@@ -940,8 +942,18 @@ void function_all_shop() {
 }
 
 void function_hack() {
-	CLifeEntity* usr = CGlobalInfo::user->get_user();
-	usr->set_all_thing("kerong", 9999, 999999, 9999, 9999, 9999, 9999, 9999, 9999, 9999, 9999);
+	static bool hack_check = false;
+	if (hack_check == false) {
+		hack_check = true;
+		CLifeEntity* usr = CGlobalInfo::user->get_user();
+		usr->out_hack_data();
+		usr->set_all_thing("kerong", 9999, 999999, 9999, 9999, 9999, 9999, 9999, 9999, 9999, 9999);
+	}
+	else {
+		CLifeEntity* usr = CGlobalInfo::user->get_user();
+		usr->read_hack_data();
+		hack_check = false;
+	}
 }
 int function_move(vector<string>& tokens){
 	CLifeEntity* usr = CGlobalInfo::user->get_user();

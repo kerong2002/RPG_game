@@ -61,19 +61,35 @@ CFighter::~CFighter (){
 }
 void CFighter::show_fighter_detail(CLifeEntity* fighter) {
 	cursor_movement_fighter(60, 4);
+	cout << "                                       ";
+	cursor_movement_fighter(60, 4);
 	show_HP_detail(fighter);
+	cursor_movement_fighter(60, 5);
+	cout << "                                       ";
 	cursor_movement_fighter(60, 5);
 	show_SP_detail(fighter);
 	cursor_movement_fighter(60, 6);
+	cout << "                                       ";
+	cursor_movement_fighter(60, 6);
 	show_Money_detail(fighter); 
+	cursor_movement_fighter(60, 7);
+	cout << "                                       ";
 	cursor_movement_fighter(60, 7);
 	cout << "產┋笲「" << show_Lucky();
 	cursor_movement_fighter(60, 8);
+	cout << "                                       ";
+	cursor_movement_fighter(60, 8);
 	show_Degree_detail(fighter);
+	cursor_movement_fighter(60, 9);
+	cout << "                                       ";
 	cursor_movement_fighter(60, 9);
 	show_EXP_detail(fighter);
 	cursor_movement_fighter(60, 10);
+	cout << "                                       ";
+	cursor_movement_fighter(60, 10);
 	cout << "м翴计" << showSkill_point();
+	cursor_movement_fighter(60, 11);
+	cout << "                                       ";
 	cursor_movement_fighter(60, 11);
 	cout << "臸翴计" << setw(3) << setfill('0') << showMagic_power() << " / 300";
 }
@@ -414,13 +430,13 @@ void CFighter::captureItem (CItem *in_item){
 	cout << this->getname () << " 眖具癬 " << in_item->getName () << endl;
 }
 
-void CFighter::save_captureItem(CItem* in_item,int total) {
+void CFighter::save_captureItem(CItem* in_item) {
 
 	CBagEntry* entry = bag->item_lookup(in_item->isA(), in_item->getID());
 	if (!entry)
 		bag->item_insert(in_item);
 	else
-		entry->addNum(total);
+		entry->addNum(1);
 	//cout << this->getname() << " 眖具癬 " << in_item->getName() << endl;
 }
 
@@ -532,7 +548,8 @@ bool CFighter::put_houseItems(int no) {
 	else {
 		cout << "眤杆称ぃ竚畐讽い" << endl;
 	}
-
+	ID.clear();
+	amout.clear();
 	return true;
 }
 
@@ -617,52 +634,8 @@ bool CFighter::save_bag_Items(int no,int data_save) {
 				fout_h << ID[y] << endl << amout[y] << endl;
 			}
 		}
-		CWeapon* cur_weapon = this->getWeapon();
-		if (cur_weapon != NULL) {
-			int take_weapon_ID = cur_weapon->getID()+15;
-			int search = -1;
-			for (int x = 0; x < cnt; x++) {
-				if (ID[x] == take_weapon_ID) {
-					search = x;
-					break;
-				}
-			}
-			if (search == -1) {
-				ID.push_back(take_weapon_ID);
-				amout.push_back(1);
-				cnt += 1;
-			}
-			else {
-				amout[search] += 1;
-			}
-			ofstream fout_h("save_bag1.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
-			}
-		}
-		CEquiment* cur_equiment = this->getEquiment();
-		if (cur_equiment != NULL) {
-			int take_equiment_ID = cur_weapon->getID() + 33;
-			int search = -1;
-			for (int x = 0; x < cnt; x++) {
-				if (ID[x] == take_equiment_ID) {
-					search = x;
-					break;
-				}
-			}
-			if (search == -1) {
-				ID.push_back(take_equiment_ID);
-				amout.push_back(1);
-				cnt += 1;
-			}
-			else {
-				amout[search] += 1;
-			}
-			ofstream fout_h("save_bag1.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
-			}
-		}
+		ID.clear();
+		amout.clear();
 	}
 	else if (data_save == 2) {
 		int cnt = 0;
@@ -740,52 +713,8 @@ bool CFighter::save_bag_Items(int no,int data_save) {
 				fout_h << ID[y] << endl << amout[y] << endl;
 			}
 		}
-		CWeapon* cur_weapon = this->getWeapon();
-		if (cur_weapon != NULL) {
-			int take_weapon_ID = cur_weapon->getID() + 15;
-			int search = -1;
-			for (int x = 0; x < cnt; x++) {
-				if (ID[x] == take_weapon_ID) {
-					search = x;
-					break;
-				}
-			}
-			if (search == -1) {
-				ID.push_back(take_weapon_ID);
-				amout.push_back(1);
-				cnt += 1;
-			}
-			else {
-				amout[search] += 1;
-			}
-			ofstream fout_h("save_bag1.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
-			}
-		}
-		CEquiment* cur_equiment = this->getEquiment();
-		if (cur_equiment != NULL) {
-			int take_equiment_ID = cur_weapon->getID() + 33;
-			int search = -1;
-			for (int x = 0; x < cnt; x++) {
-				if (ID[x] == take_equiment_ID) {
-					search = x;
-					break;
-				}
-			}
-			if (search == -1) {
-				ID.push_back(take_equiment_ID);
-				amout.push_back(1);
-				cnt += 1;
-			}
-			else {
-				amout[search] += 1;
-			}
-			ofstream fout_h("save_bag2.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
-			}
-		}
+		ID.clear();
+		amout.clear();
 	}
 	else if (data_save == 3) {
 		int cnt = 0;
@@ -863,52 +792,9 @@ bool CFighter::save_bag_Items(int no,int data_save) {
 				fout_h << ID[y] << endl << amout[y] << endl;
 			}
 		}
-		CWeapon* cur_weapon = this->getWeapon();
-		if (cur_weapon != NULL) {
-			int take_weapon_ID = cur_weapon->getID() + 15;
-			int search = -1;
-			for (int x = 0; x < cnt; x++) {
-				if (ID[x] == take_weapon_ID) {
-					search = x;
-					break;
-				}
-			}
-			if (search == -1) {
-				ID.push_back(take_weapon_ID);
-				amout.push_back(1);
-				cnt += 1;
-			}
-			else {
-				amout[search] += 1;
-			}
-			ofstream fout_h("save_bag1.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
-			}
-		}
-		CEquiment* cur_equiment = this->getEquiment();
-		if (cur_equiment != NULL) {
-			int take_equiment_ID = cur_weapon->getID() + 33;
-			int search = -1;
-			for (int x = 0; x < cnt; x++) {
-				if (ID[x] == take_equiment_ID) {
-					search = x;
-					break;
-				}
-			}
-			if (search == -1) {
-				ID.push_back(take_equiment_ID);
-				amout.push_back(1);
-				cnt += 1;
-			}
-			else {
-				amout[search] += 1;
-			}
-			ofstream fout_h("save_bag3.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
-			}
-		}
+
+		ID.clear();
+		amout.clear();
 	}
 	return true;
 }

@@ -31,6 +31,41 @@ void CLifeEntity::set_all_thing(string in_name, int in_hp, int in_sp, int in_max
 	setMoney(in_money);
 	setInitLucky(in_lucky);
 }
+
+void CLifeEntity::read_hack_data() {
+	ifstream input_f1("hack.txt");
+	input_f1 >> Name;
+	input_f1 >> HP;
+	input_f1 >> SP;
+	input_f1 >> maxHP;
+	input_f1 >> maxSP;
+	input_f1 >> Degree;
+	input_f1 >> Skill_point;
+	input_f1 >> magic_power;
+	int get_money;
+	input_f1 >> get_money;
+	setMoney(get_money);
+	input_f1 >> EXP;
+	int get_lucky;
+	input_f1 >> get_lucky;
+	setInitLucky(get_lucky);
+}
+
+void CLifeEntity::out_hack_data() {
+	ofstream out_f1("hack.txt");
+	out_f1 << Name << endl;
+	out_f1 << HP << endl;
+	out_f1 << SP << endl;
+	out_f1 << maxHP << endl;
+	out_f1 << maxSP << endl;
+	out_f1 << Degree << endl;
+	out_f1 << Skill_point << endl;
+	out_f1 << magic_power << endl;
+	out_f1 << getMoney() << endl;
+	out_f1 << EXP << endl;
+	out_f1 << show_Lucky() << endl;
+}
+
 void CLifeEntity::set_output_data_num(int pos){
 	out_data_num = pos;
 }
