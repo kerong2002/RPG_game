@@ -992,6 +992,8 @@ void function_log_out() {
 	if (get_save == 1) {
 		CLifeEntity* usr = CGlobalInfo::user->get_user();
 		assert(usr);
+		string file_name = "save_bag1.txt";
+		ofstream file_writer(file_name, ios_base::out);
 		if (usr->isA() == efighter) {
 			CFighter* f = (CFighter*)usr;
 			int num = f->showAllBagItems();
@@ -1000,6 +1002,7 @@ void function_log_out() {
 					f->save_bag_Items(y,get_save);
 				}
 			}
+			f->save_wear(get_save);
 		}
 		ofstream fout_s1("skill_1.txt");
 		ofstream fout_L1("legend_armor_1.txt");
@@ -1011,6 +1014,8 @@ void function_log_out() {
 	else if (get_save == 2) {
 		CLifeEntity* usr = CGlobalInfo::user->get_user();
 		assert(usr);
+		string file_name = "save_bag2.txt";
+		ofstream file_writer(file_name, ios_base::out);
 		if (usr->isA() == efighter) {
 			CFighter* f = (CFighter*)usr;
 			int num = f->showAllBagItems();
@@ -1019,6 +1024,7 @@ void function_log_out() {
 					f->save_bag_Items(y, get_save);
 				}
 			}
+			f->save_wear(get_save);
 		}
 		ofstream fout_s2("skill_2.txt");
 		ofstream fout_L2("legend_armor_2.txt");
@@ -1030,6 +1036,9 @@ void function_log_out() {
 	else if (get_save == 3) {
 		CLifeEntity* usr = CGlobalInfo::user->get_user();
 		assert(usr);
+		string file_name = "save_bag3.txt";
+		ofstream file_writer(file_name, ios_base::out);
+		
 		if (usr->isA() == efighter) {
 			CFighter* f = (CFighter*)usr;
 			int num = f->showAllBagItems();
@@ -1038,6 +1047,7 @@ void function_log_out() {
 					f->save_bag_Items(y, get_save);
 				}
 			}
+			f->save_wear(get_save);
 		}
 		ofstream fout_s3("skill_3.txt");
 		ofstream fout_L3("legend_armor_3.txt");

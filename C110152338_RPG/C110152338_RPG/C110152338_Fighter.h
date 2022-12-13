@@ -18,6 +18,10 @@ public:
 	int physicaldamage ();	
 	//int magic_damage(int);
 	void show_fighter_detail(CLifeEntity*);
+	void set_wear_weapon_ID(int);
+	void set_wear_equiment_ID(int);
+	int show_wear_weapon_ID();
+	int show_wear_eauiment_ID();
 	virtual int attack (CLifeEntity *);
 	virtual int magic_skill_attack(CLifeEntity*, int );
 	virtual int defense (CLifeEntity *);	
@@ -31,6 +35,7 @@ public:
 	bool useBagItems (int no);
 	bool put_storeItems(int no);
 	bool save_bag_Items(int no, int data_save);
+	bool save_wear(int data_save);
 	bool put_houseItems(int no);
 	int goto_next_city (int next_dir);
 	int get_current_city ();
@@ -42,6 +47,8 @@ private:
 	int get_job_num;
 	int food_effect;
 	bool food_bonus;
+	int save_wear_weapon_ID;
+	int save_wear_equiment_ID;
 	CBag *bag;
 };
 

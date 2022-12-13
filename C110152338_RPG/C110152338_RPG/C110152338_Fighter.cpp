@@ -16,7 +16,7 @@
 
 using namespace std;
 
-CFighter::CFighter (int job,int initHP, int initSP, int initLucky, string name, int in_city) {
+CFighter::CFighter(int job, int initHP, int initSP, int initLucky, string name, int in_city) {
 	/*if (initHP == 0 && initSP == 0 && initLucky == 0) {
 		initHP =initHP;
 		initSP = initSP;
@@ -29,12 +29,12 @@ CFighter::CFighter (int job,int initHP, int initSP, int initLucky, string name, 
 	get_job_num = job;
 	food_effect = 0;
 	setname(name);
-	setInitSPHP (initHP,initSP);
+	setInitSPHP(initHP, initSP);
 	set_Initjob(job);
 	Lucky = initLucky;
 	setInitLucky(Lucky);
 	cur_city = in_city;
-	bag = new CBag ();
+	bag = new CBag();
 	cursor_movement_fighter(60, 4);
 	cout << "玩家血量：" << initHP;
 	cursor_movement_fighter(60, 5);
@@ -44,9 +44,9 @@ CFighter::CFighter (int job,int initHP, int initSP, int initLucky, string name, 
 	cursor_movement_fighter(60, 7);
 	cout << "玩家幸運：☆" << show_Lucky();
 	cursor_movement_fighter(60, 8);
-	cout << "玩家等級：<" << getDegree()<<">";
+	cout << "玩家等級：<" << getDegree() << ">";
 	cursor_movement_fighter(60, 9);
-	cout << "玩家經驗：" << setw(2)<<setfill('0')<<getEXP()<<" / 50";
+	cout << "玩家經驗：" << setw(2) << setfill('0') << getEXP() << " / 50";
 	cursor_movement_fighter(60, 10);
 	cout << "技能點數：" << showSkill_point();
 	cursor_movement_fighter(60, 11);
@@ -55,9 +55,22 @@ CFighter::CFighter (int job,int initHP, int initSP, int initLucky, string name, 
 	//cout << "One Fighter is created with (maxHP, maxSP, maxLucky) = (" << initHP << ", " << initSP << ", " << initLucky << ")" <<endl; 
 }
 
-CFighter::~CFighter (){
+CFighter::~CFighter() {
 	if (bag)
 		delete bag;
+}
+
+void CFighter::set_wear_weapon_ID(int pos) {
+	save_wear_weapon_ID = pos + 15;
+}
+void CFighter::set_wear_equiment_ID(int pos) {
+	save_wear_equiment_ID = pos + 33;
+}
+int CFighter::show_wear_weapon_ID() {
+	return save_wear_weapon_ID;
+}
+int CFighter::show_wear_eauiment_ID() {
+	return save_wear_equiment_ID;
 }
 void CFighter::show_fighter_detail(CLifeEntity* fighter) {
 	cursor_movement_fighter(60, 4);
@@ -71,7 +84,7 @@ void CFighter::show_fighter_detail(CLifeEntity* fighter) {
 	cursor_movement_fighter(60, 6);
 	cout << "                                       ";
 	cursor_movement_fighter(60, 6);
-	show_Money_detail(fighter); 
+	show_Money_detail(fighter);
 	cursor_movement_fighter(60, 7);
 	cout << "                                       ";
 	cursor_movement_fighter(60, 7);
@@ -98,12 +111,12 @@ int CFighter::get_move_city(int move_city) {
 	return cur_city;
 }
 
-int CFighter::getLucky (){
+int CFighter::getLucky() {
 	return Lucky;
 }
 
-int CFighter::physicaldamage (){
-	return (rand () % getSP ());
+int CFighter::physicaldamage() {
+	return (rand() % getSP());
 }
 
 //==================<建立顏色>==========================
@@ -119,7 +132,7 @@ void skill_1_attack_function() {
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
-			if (take_animation[y] == '@'|| take_animation[y] == '.') {
+			if (take_animation[y] == '@' || take_animation[y] == '.') {
 				SetColor_fighter();
 				cursor_movement_fighter(60 + y, 11 + cnt);
 				cout << " ";
@@ -324,17 +337,18 @@ void attack_function() {
 	}
 	cursor_movement_fighter(0, 0);
 }
-int CFighter::attack (CLifeEntity *l){
-	int damage = physicaldamage () - l->defense (l); 
-	if (damage > l->getHP ())
-		damage = l->getHP ();
-	l->gethurt (damage);
+int CFighter::attack(CLifeEntity* l) {
+	int damage = physicaldamage() - l->defense(l);
+	if (damage > l->getHP())
+		damage = l->getHP();
+	l->gethurt(damage);
 	attack_function();
 	cursor_movement_fighter(0, 20);
-	if (damage > 0){
-		cout << this->getname () << " 猛力一揮，造成 " << l->getname () << " " << damage << " 血損失" <<endl;			
-	} else {
-		cout << this->getname () << " 猛力一揮，但是 " << l->getname () << " 強力一擋，因此沒有造成任何損失" <<endl;
+	if (damage > 0) {
+		cout << this->getname() << " 猛力一揮，造成 " << l->getname() << " " << damage << " 血損失" << endl;
+	}
+	else {
+		cout << this->getname() << " 猛力一揮，但是 " << l->getname() << " 強力一擋，因此沒有造成任何損失" << endl;
 	}
 	if (food_effect) {
 		//cout << "<特殊食品，加乘而外傷害200↑> 剩餘：(" << food_effect << ")回合" << endl;
@@ -353,7 +367,7 @@ int CFighter::attack (CLifeEntity *l){
 }
 
 
-int CFighter::magic_skill_attack(CLifeEntity* l,int pos) {
+int CFighter::magic_skill_attack(CLifeEntity* l, int pos) {
 	int damage = get_skill_damage(pos) - l->defense(l);
 	if (damage > l->getHP())
 		damage = l->getHP();
@@ -387,7 +401,7 @@ int CFighter::magic_skill_attack(CLifeEntity* l,int pos) {
 	return (damage > 0 ? damage : 0);
 }
 
-int CFighter::defense (CLifeEntity *l){
+int CFighter::defense(CLifeEntity* l) {
 	return 	getLucky();
 }
 void CFighter::shop_captureItem(CItem* in_item) {
@@ -420,14 +434,14 @@ void CFighter::house_captureItem(CItem* in_item) {
 	cout << this->getname() << " 從倉庫獲取 " << in_item->getName() << endl;
 }
 
-void CFighter::captureItem (CItem *in_item){
-	
-	CBagEntry *entry = bag->item_lookup (in_item->isA(), in_item->getID ());
+void CFighter::captureItem(CItem* in_item) {
+
+	CBagEntry* entry = bag->item_lookup(in_item->isA(), in_item->getID());
 	if (!entry)
-		bag->item_insert (in_item);
+		bag->item_insert(in_item);
 	else
-		entry->addNum (1);	
-	cout << this->getname () << " 從地上撿起 " << in_item->getName () << endl;
+		entry->addNum(1);
+	cout << this->getname() << " 從地上撿起 " << in_item->getName() << endl;
 }
 
 void CFighter::save_captureItem(CItem* in_item) {
@@ -440,8 +454,8 @@ void CFighter::save_captureItem(CItem* in_item) {
 	//cout << this->getname() << " 從地上撿起 " << in_item->getName() << endl;
 }
 
-int CFighter::showAllBagItems (){	
-	return bag->showAllItems ();	
+int CFighter::showAllBagItems() {
+	return bag->showAllItems();
 }
 
 bool CFighter::put_storeItems(int no) {
@@ -451,7 +465,7 @@ bool CFighter::put_storeItems(int no) {
 	}
 	if (ne->itm->isA() == eweapon) {
 		ofstream out_f("house.txt");
-		out_f << ne->itm->getID()+15<<endl;
+		out_f << ne->itm->getID() + 15 << endl;
 		out_f << ne->itm->getName();
 		ne->deleteNum();
 		if (ne->getNum() == 0) {
@@ -461,7 +475,7 @@ bool CFighter::put_storeItems(int no) {
 	}
 	else if (ne->itm->isA() == efood) {
 		ofstream out_f("house.txt");
-		out_f << ne->itm->getID()<<endl;
+		out_f << ne->itm->getID() << endl;
 		out_f << ne->itm->getName();
 		ne->deleteNum();
 		if (ne->getNum() == 0) {
@@ -470,9 +484,9 @@ bool CFighter::put_storeItems(int no) {
 		this->showAllBagItems();
 	}
 	else {
-		cout << "您的裝備不可放置在倉庫當中"<<endl;
+		cout << "您的裝備不可放置在倉庫當中" << endl;
 	}
-	
+
 	return true;
 }
 
@@ -496,7 +510,7 @@ bool CFighter::put_houseItems(int no) {
 	if (ne->itm->isA() == eweapon) {
 		int search = -1;
 		for (int x = 0; x < cnt; x++) {
-			if (ID[x] == ne->itm->getID()+15) {
+			if (ID[x] == ne->itm->getID() + 15) {
 				search = x;
 				break;
 			}
@@ -522,7 +536,7 @@ bool CFighter::put_houseItems(int no) {
 	else if (ne->itm->isA() == efood) {
 		int search = -1;
 		for (int x = 0; x < cnt; x++) {
-			if (ID[x] == ne->itm->getID()){
+			if (ID[x] == ne->itm->getID()) {
 				search = x;
 				break;
 			}
@@ -553,24 +567,154 @@ bool CFighter::put_houseItems(int no) {
 	return true;
 }
 
-bool CFighter::save_bag_Items(int no,int data_save) {
+bool CFighter::save_wear(int data_save) {
+	if (data_save == 1) {
+		int cnt = 0;
+		vector<int> ID;
+		vector<int> amout;
+		int weapon_ID = show_wear_weapon_ID();
+		int equiment_ID = show_wear_eauiment_ID();
+		if (weapon_ID > 15 && weapon_ID <= 33) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == weapon_ID) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(weapon_ID);
+				amout.push_back(1);
+				cnt += 1;
+			}
+			else {
+				amout[search] += 1;
+			}
+		}
+		if (equiment_ID > 33) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == equiment_ID) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(equiment_ID);
+				amout.push_back(1);
+				cnt += 1;
+			}
+			else {
+				amout[search] += 1;
+			}
+		}
+		ofstream fout_h("save_bag1.txt", ios::app);
+		for (int y = 0; y < cnt; y++) {
+			fout_h << ID[y] << endl << amout[y] << endl;
+		}
+	}
+	else if (data_save == 2) {
+		int cnt = 0;
+		vector<int> ID;
+		vector<int> amout;
+		int weapon_ID = show_wear_weapon_ID();
+		int equiment_ID = show_wear_eauiment_ID();
+		if (weapon_ID > 15 && weapon_ID <= 33) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == weapon_ID) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(weapon_ID);
+				amout.push_back(1);
+				cnt += 1;
+			}
+			else {
+				amout[search] += 1;
+			}
+		}
+		if (equiment_ID > 33) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == equiment_ID) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(equiment_ID);
+				amout.push_back(1);
+				cnt += 1;
+			}
+			else {
+				amout[search] += 1;
+			}
+		}
+		ofstream fout_h("save_bag2.txt", ios::app);
+		for (int y = 0; y < cnt; y++) {
+			fout_h << ID[y] << endl << amout[y] << endl;
+		}
+	}
+	else if (data_save == 3) {
+		int cnt = 0;
+		vector<int> ID;
+		vector<int> amout;
+		int weapon_ID = show_wear_weapon_ID();
+		int equiment_ID = show_wear_eauiment_ID();
+		if (weapon_ID > 15 && weapon_ID <= 33) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == weapon_ID) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(weapon_ID);
+				amout.push_back(1);
+				cnt += 1;
+			}
+			else {
+				amout[search] += 1;
+			}
+		}
+		if (equiment_ID > 33) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == equiment_ID) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(equiment_ID);
+				amout.push_back(1);
+				cnt += 1;
+			}
+			else {
+				amout[search] += 1;
+			}
+		}
+		ofstream fout_h("save_bag3.txt", ios::app);
+		for (int y = 0; y < cnt; y++) {
+			fout_h << ID[y] << endl << amout[y] << endl;
+		}
+	}
+	return true;
+}
+
+bool CFighter::save_bag_Items(int no, int data_save) {
 	CBagEntry* ne = bag->item_lookup(no);
 	if (!ne) {
 		return false;
 	}
 	if (data_save == 1) {
 		int cnt = 0;
-		ifstream fin_h("save_bag1.txt");
 		vector<int> ID;
 		vector<int> amout;
-		int take_ID;
-		int take_amout;
-		while (fin_h >> take_ID) {
-			fin_h >> take_amout;
-			cnt += 1;
-			ID.push_back(take_ID);
-			amout.push_back(take_amout);
-		}
 		if (ne->itm->isA() == eweapon) {
 			int search = -1;
 			for (int x = 0; x < cnt; x++) {
@@ -586,10 +730,6 @@ bool CFighter::save_bag_Items(int no,int data_save) {
 			}
 			else {
 				amout[search] += ne->getNum();
-			}
-			ofstream fout_h("save_bag1.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
 			}
 		}
 		else if (ne->itm->isA() == efood) {
@@ -608,10 +748,6 @@ bool CFighter::save_bag_Items(int no,int data_save) {
 			else {
 				amout[search] += ne->getNum();
 			}
-			ofstream fout_h("save_bag1.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
-			}
 		}
 		else if (ne->itm->isA() == eequiment) {
 			int search = -1;
@@ -629,27 +765,16 @@ bool CFighter::save_bag_Items(int no,int data_save) {
 			else {
 				amout[search] += ne->getNum();
 			}
-			ofstream fout_h("save_bag1.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
-			}
 		}
-		ID.clear();
-		amout.clear();
+		ofstream fout_h("save_bag1.txt", ios::app);
+		for (int y = 0; y < cnt; y++) {
+			fout_h << ID[y] << endl << amout[y] << endl;
+		}
 	}
 	else if (data_save == 2) {
 		int cnt = 0;
-		ifstream fin_h("save_bag2.txt");
 		vector<int> ID;
 		vector<int> amout;
-		int take_ID;
-		int take_amout;
-		while (fin_h >> take_ID) {
-			fin_h >> take_amout;
-			cnt += 1;
-			ID.push_back(take_ID);
-			amout.push_back(take_amout);
-		}
 		if (ne->itm->isA() == eweapon) {
 			int search = -1;
 			for (int x = 0; x < cnt; x++) {
@@ -665,10 +790,6 @@ bool CFighter::save_bag_Items(int no,int data_save) {
 			}
 			else {
 				amout[search] += ne->getNum();
-			}
-			ofstream fout_h("save_bag2.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
 			}
 		}
 		else if (ne->itm->isA() == efood) {
@@ -686,89 +807,6 @@ bool CFighter::save_bag_Items(int no,int data_save) {
 			}
 			else {
 				amout[search] += ne->getNum();
-			}
-			ofstream fout_h("save_bag2.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
-			}
-		}
-		else if(ne->itm->isA()==eequiment) {
-			int search = -1;
-			for (int x = 0; x < cnt; x++) {
-				if (ID[x] == ne->itm->getID() + 33) {
-					search = x;
-					break;
-				}
-			}
-			if (search == -1) {
-				ID.push_back(ne->itm->getID()+33);
-				amout.push_back(ne->getNum());
-				cnt += 1;
-			}
-			else {
-				amout[search] += ne->getNum();
-			}
-			ofstream fout_h("save_bag2.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
-			}
-		}
-		ID.clear();
-		amout.clear();
-	}
-	else if (data_save == 3) {
-		int cnt = 0;
-		ifstream fin_h("save_bag3.txt");
-		vector<int> ID;
-		vector<int> amout;
-		int take_ID;
-		int take_amout;
-		while (fin_h >> take_ID) {
-			fin_h >> take_amout;
-			cnt += 1;
-			ID.push_back(take_ID);
-			amout.push_back(take_amout);
-		}
-		if (ne->itm->isA() == eweapon) {
-			int search = -1;
-			for (int x = 0; x < cnt; x++) {
-				if (ID[x] == ne->itm->getID() + 15) {
-					search = x;
-					break;
-				}
-			}
-			if (search == -1) {
-				ID.push_back(ne->itm->getID() + 15);
-				amout.push_back(ne->getNum());
-				cnt += 1;
-			}
-			else {
-				amout[search] += ne->getNum();
-			}
-			ofstream fout_h("save_bag3.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
-			}
-		}
-		else if (ne->itm->isA() == efood) {
-			int search = -1;
-			for (int x = 0; x < cnt; x++) {
-				if (ID[x] == ne->itm->getID()) {
-					search = x;
-					break;
-				}
-			}
-			if (search == -1) {
-				ID.push_back(ne->itm->getID());
-				amout.push_back(ne->getNum());
-				cnt += 1;
-			}
-			else {
-				amout[search] += ne->getNum();
-			}
-			ofstream fout_h("save_bag3.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
 			}
 		}
 		else if (ne->itm->isA() == eequiment) {
@@ -787,24 +825,81 @@ bool CFighter::save_bag_Items(int no,int data_save) {
 			else {
 				amout[search] += ne->getNum();
 			}
-			ofstream fout_h("save_bag3.txt");
-			for (int y = 0; y < cnt; y++) {
-				fout_h << ID[y] << endl << amout[y] << endl;
+		}
+		ofstream fout_h("save_bag2.txt", ios::app);
+		for (int y = 0; y < cnt; y++) {
+			fout_h << ID[y] << endl << amout[y] << endl;
+		}
+	}
+	else if (data_save == 3) {
+		int cnt = 0;
+		vector<int> ID;
+		vector<int> amout;
+		if (ne->itm->isA() == eweapon) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == ne->itm->getID() + 15) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(ne->itm->getID() + 15);
+				amout.push_back(ne->getNum());
+				cnt += 1;
+			}
+			else {
+				amout[search] += ne->getNum();
 			}
 		}
-
-		ID.clear();
-		amout.clear();
+		else if (ne->itm->isA() == efood) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == ne->itm->getID()) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(ne->itm->getID());
+				amout.push_back(ne->getNum());
+				cnt += 1;
+			}
+			else {
+				amout[search] += ne->getNum();
+			}
+		}
+		else if (ne->itm->isA() == eequiment) {
+			int search = -1;
+			for (int x = 0; x < cnt; x++) {
+				if (ID[x] == ne->itm->getID() + 33) {
+					search = x;
+					break;
+				}
+			}
+			if (search == -1) {
+				ID.push_back(ne->itm->getID() + 33);
+				amout.push_back(ne->getNum());
+				cnt += 1;
+			}
+			else {
+				amout[search] += ne->getNum();
+			}
+		}
+		ofstream fout_h("save_bag3.txt", ios::app);
+		for (int y = 0; y < cnt; y++) {
+			fout_h << ID[y] << endl << amout[y] << endl;
+		}
 	}
 	return true;
 }
 
-bool CFighter::useBagItems (int no){
-	CBagEntry* ne = bag->item_lookup (no);
+bool CFighter::useBagItems(int no) {
+	CBagEntry* ne = bag->item_lookup(no);
 	static int take_armor = 0;
-	if (!ne){		
+	if (!ne) {
 		return false;
-	} 
+	}
 	if (ne->itm->isA() == efood) {
 		if (ne->itm->getID() >= 10) {
 			this->addSP(200);
@@ -812,24 +907,25 @@ bool CFighter::useBagItems (int no){
 			food_bonus = true;
 			cout << "<特殊食品，加乘而外傷害200(3回合)↑>" << endl;
 		}
-		
+
 	}
-	else if (ne->itm->isA () == eweapon){
-		CWeapon *cur_weapon = this->getWeapon ();
-		if (cur_weapon != NULL){			
-			CItem *weapon_item = (CItem *) cur_weapon;
-			CBagEntry *entry = bag->item_lookup (weapon_item->isA(), weapon_item->getID ());
+	else if (ne->itm->isA() == eweapon) {
+		CWeapon* cur_weapon = this->getWeapon();
+		if (cur_weapon != NULL) {
+			CItem* weapon_item = (CItem*)cur_weapon;
+			CBagEntry* entry = bag->item_lookup(weapon_item->isA(), weapon_item->getID());
 			if (!entry)
-				bag->item_insert (weapon_item);
+				bag->item_insert(weapon_item);
 			else
-				entry->addNum (1);	
-			cout << this->getname () << " 將手上武器 " << weapon_item->getName () << " 放回背包中" << endl;
-			weapon_item->UnUsed (this);			
+				entry->addNum(1);
+			cout << this->getname() << " 將手上武器 " << weapon_item->getName() << " 放回背包中" << endl;
+			weapon_item->UnUsed(this);
 		}
 		else {
 			take_armor += 1;
 		}
-		this->setWeapon ((CWeapon *) ne->itm);				
+		this->setWeapon((CWeapon*)ne->itm);
+		set_wear_weapon_ID(ne->itm->getID());
 	}
 	else if (ne->itm->isA() == eequiment) {
 		CEquiment* cur_equiment = this->getEquiment();
@@ -847,35 +943,36 @@ bool CFighter::useBagItems (int no){
 			take_armor += 1;
 		}
 		this->setEquiment((CEquiment*)ne->itm);
+		set_wear_equiment_ID(ne->itm->getID());
 	}
 	if (take_armor == 2) {
 		this->addSP(50);
-		cout << "<裝備和武器加乘傷害50↑>" <<endl;
+		cout << "<裝備和武器加乘傷害50↑>" << endl;
 		//if()
 	}
 
-	ne->itm->beUsed (this);
-	ne->deleteNum ();
-	if (ne->getNum () == 0){
-		bag->item_delete (ne);
+	ne->itm->beUsed(this);
+	ne->deleteNum();
+	if (ne->getNum() == 0) {
+		bag->item_delete(ne);
 	}
-	this->showAllBagItems ();
+	this->showAllBagItems();
 	return true;
 }
 
-int CFighter::isA (){
+int CFighter::isA() {
 	return efighter;
 }
 
-int CFighter::goto_next_city (int next_dir){
-	int next_city = CGlobalInfo::map_data->next_city (cur_city, next_dir);	
-	if (next_city){
+int CFighter::goto_next_city(int next_dir) {
+	int next_city = CGlobalInfo::map_data->next_city(cur_city, next_dir);
+	if (next_city) {
 		cur_city = next_city;
 		return cur_city;
 	}
 	return 0;
 }
 
-int CFighter::get_current_city (){
-	return cur_city;	
+int CFighter::get_current_city() {
+	return cur_city;
 }

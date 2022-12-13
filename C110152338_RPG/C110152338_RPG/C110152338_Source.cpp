@@ -822,9 +822,9 @@ int choose_save_data() {
 int main() {
 	read_login();
 	//modeset(150, 50);					//視窗大小設定
-	//opening_password();					//登入系統
-	//opening_animation();				//開始RPG動畫
-	//attack_among();
+	opening_password();					//登入系統
+	opening_animation();				//開始RPG動畫
+	attack_among();
 	//ow2_animation();
 	//attack_among();
 	int data_num = choose_save_data();
