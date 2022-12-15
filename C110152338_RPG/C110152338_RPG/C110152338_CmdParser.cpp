@@ -13,28 +13,7 @@
 #include "C110152338_def.h"
 #include "C110152338_ItemData.h"
 
-int function_exit (vector<string> &tokens){	
-	CLifeEntity* usr = CGlobalInfo::user->get_user();
-	CItemData* id = CGlobalInfo::itm_data;
-	CFighter* f = (CFighter*)usr;
-	int get_w_ID = f->show_wear_weapon_ID();
-	int get_e_ID = f->show_wear_eauiment_ID();
-	int cnt = 0;
-	if (get_w_ID > 15 && get_w_ID <= 33) {
-		cnt += 1;
-		f->delSP(id->weapon_array[get_w_ID - 16]->getattackbonus());
-	}
-	if (get_e_ID > 33) {
-		cnt += 1;
-		f->delMAXHP(id->equiment_array[get_e_ID - 34]->getattackbonus());
-		cout << id->equiment_array[get_e_ID - 34]->getattackbonus();
-	}
-	if (cnt == 2) {
-		f->delSP(50);
-	}
-	usr->out_all_thing();
-	return -1;
-}
+
 //==================<光標移動>=========================
 void cursor_movement_cmd(int x, int y) {
 	COORD coord;
@@ -1094,7 +1073,30 @@ void function_log_out() {
 	usr->out_all_thing();
 	cout << "您的存檔已完成";
 }
-
+//====================<登出>=========================
+int function_exit(vector<string>& tokens) {
+	function_log_out();
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CItemData* id = CGlobalInfo::itm_data;
+	CFighter* f = (CFighter*)usr;
+	int get_w_ID = f->show_wear_weapon_ID();
+	int get_e_ID = f->show_wear_eauiment_ID();
+	int cnt = 0;
+	if (get_w_ID > 15 && get_w_ID <= 33) {
+		cnt += 1;
+		f->delSP(id->weapon_array[get_w_ID - 16]->getattackbonus());
+	}
+	if (get_e_ID > 33) {
+		cnt += 1;
+		f->delMAXHP(id->equiment_array[get_e_ID - 34]->getattackbonus());
+		cout << id->equiment_array[get_e_ID - 34]->getattackbonus();
+	}
+	if (cnt == 2) {
+		f->delSP(50);
+	}
+	usr->out_all_thing();
+	return -1;
+}
 CCmdParser::CCmdParser (){
 	mappingfunc [string("exit")] = function_exit;
 	mappingfunc [string("east")] = function_next_direction;
