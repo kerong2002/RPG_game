@@ -19,6 +19,7 @@
 #include "C110152338_User.h"
 #include "C110152338_MonsterData.h"
 #include <limits>
+#pragma comment(lib, "Winmm.lib")
 
 #define cursor_x_offset 6		//光標X座標的偏移
 #define cursor_y_offset 3		//光標X座標的偏移
@@ -628,7 +629,8 @@ void ow2_animation() {
 }*/
 void attack_among() {
 	cursor_movement_animation(5, 5);
-	for (int x = 0; x < 2; x++) {
+	PlaySound(TEXT("among_start.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	for (int x = 0; x < 4; x++) {
 		ifstream fin_A1("among_go.txt");
 		string take_animation;
 		int cnt = 1;
@@ -658,6 +660,7 @@ void attack_among() {
 			cnt += 1;
 		}
 	}
+	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	system("pause");
 	system("color 0F");
 	system("cls");

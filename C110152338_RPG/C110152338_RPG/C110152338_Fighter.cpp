@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <windows.h>
+#pragma comment(lib, "Winmm.lib")
 #include "C110152338_Profession.h"
 #include "C110152338_cursor_movement_fighter.h"
 #include "C110152338_Fighter.h"
@@ -129,6 +131,7 @@ void skill_1_attack_function() {
 	ifstream fin_A1("Hanzo.txt");
 	string take_animation;
 	int cnt = 1;
+	PlaySound(TEXT("skill_1_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
@@ -157,6 +160,7 @@ void skill_1_attack_function() {
 		cursor_movement_fighter(60, 15 + y);
 		cout << "                                                                                                                        ";
 	}
+	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	system("color 0F");
 	cursor_movement_fighter(0, 0);
 }
@@ -165,6 +169,7 @@ void skill_2_attack_function() {
 	ifstream fin_A1("among_skill.txt");
 	string take_animation;
 	int cnt = 1;
+	PlaySound(TEXT("skill_2_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
@@ -193,6 +198,7 @@ void skill_2_attack_function() {
 		cursor_movement_fighter(60, 15 + y);
 		cout << "                                                                                                                        ";
 	}
+	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	system("color 0F");
 	cursor_movement_fighter(0, 0);
 }
@@ -201,6 +207,7 @@ void skill_3_attack_function() {
 	ifstream fin_A1("Pharah.txt");
 	string take_animation;
 	int cnt = 1;
+	PlaySound(TEXT("skill_3_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
@@ -229,6 +236,7 @@ void skill_3_attack_function() {
 		cursor_movement_fighter(60, 15 + y);
 		cout << "                                                                                                                        ";
 	}
+	PlaySound(NULL , NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	system("color 0F");
 	cursor_movement_fighter(0, 0);
 }
@@ -237,6 +245,8 @@ void skill_4_attack_function() {
 	ifstream fin_A1("Genji.txt");
 	string take_animation;
 	int cnt = 1;
+	
+	PlaySound(TEXT("skill_4_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
@@ -261,6 +271,7 @@ void skill_4_attack_function() {
 		}
 		cnt += 1;
 	}
+	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	for (int y = 0; y < 40; y++) {
 		cursor_movement_fighter(60, 12 + y);
 		cout << "                                                                                                                        ";
@@ -269,10 +280,12 @@ void skill_4_attack_function() {
 	cursor_movement_fighter(0, 0);
 }
 void skill_5_attack_function() {
+	PlaySound(TEXT("skill_5_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	for (int x = 0; x < 4; x++) {
 		ifstream fin_A1("Beam.txt");
 		string take_animation;
 		int cnt = 1;
+		
 		while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
 			fin_A1 >> take_animation;
 			for (int y = 0; y < take_animation.length(); y++) {
@@ -302,6 +315,7 @@ void skill_5_attack_function() {
 		cursor_movement_fighter(60, 12 + y);
 		cout << "                                                                                                                        ";
 	}
+	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	system("color 0F");
 	cursor_movement_fighter(0, 0);
 }
@@ -309,6 +323,7 @@ void attack_function() {
 	ifstream fin_A1("among.txt");
 	string take_animation;
 	int cnt = 1;
+	PlaySound(TEXT("among_kill.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
@@ -335,6 +350,7 @@ void attack_function() {
 		cursor_movement_fighter(60, 15 + y);
 		cout << "                                                                                                                        ";
 	}
+	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	cursor_movement_fighter(0, 0);
 }
 int CFighter::attack(CLifeEntity* l) {
