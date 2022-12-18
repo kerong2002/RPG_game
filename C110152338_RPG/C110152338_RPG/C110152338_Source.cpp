@@ -821,8 +821,20 @@ int choose_save_data() {
 	system("CLS");
 	return -9;
 }
+void max_window() {
+	HANDLE HOUT = GetStdHandle(STD_OUTPUT_HANDLE);   
+	COORD NewSize = GetLargestConsoleWindowSize(HOUT);
+
+	SMALL_RECT DisplayArea = { 0,0,0,0 };
+	DisplayArea.Right = NewSize.X;
+	DisplayArea.Bottom = NewSize.Y;
+	SetConsoleWindowInfo(HOUT, TRUE, &DisplayArea);   
+	HWND hwnd = GetConsoleWindow();
+	ShowWindow(hwnd, SW_MAXIMIZE);   
+}
 //===================<主要程式>==========================
 int main() {
+	max_window();
 	read_login();
 	//modeset(150, 50);					//視窗大小設定
 	opening_password();					//登入系統
