@@ -22,6 +22,14 @@ void cursor_movement_cmd(int x, int y) {
 	HANDLE a = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(a, coord);
 }
+
+//==================<建立顏色>==========================
+void SetColor_cmd(int color = 7) {
+	HANDLE hConsole;
+	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, color);
+}
+
 int function_next_direction (vector<string> &tokens){	
 	if (tokens.size () != 1){
 		for (vector<string>::iterator it = tokens.begin (); it != tokens.end (); it++){
@@ -1100,6 +1108,114 @@ int function_exit(vector<string>& tokens) {
 	usr->out_all_thing();
 	return -1;
 }
+void function_skip_animation() {
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CItemData* id = CGlobalInfo::itm_data;
+	CFighter* f = (CFighter*)usr;
+	f->set_skip();
+	bool take = f->get_skip();
+	if (take) {
+		cout << "<<跳過動畫>>" << endl;
+	}
+	else {
+		cout << "<<開啟動畫>>" << endl;
+	}
+}
+
+void function_christmas() {
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CFighter* f = (CFighter*)usr;
+	int get_now_degree = f->getDegree();
+	if (get_now_degree % 12 == 0 || get_now_degree % 25 == 0) {
+		usr->addHP(usr->getMAXHP());
+		cout << "\t\t\\聖誕節快樂!/" << "獲取禮物->恢復滿您的血量" << endl;
+		PlaySound(TEXT("christmas.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+		for (int x = 0; x < 62; x++) {
+			ifstream fin_A1("tree.txt");
+			string take_animation;
+			int cnt = 1;
+			while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+				fin_A1 >> take_animation;
+				int get_rand_1 = rand() % 255 + 1;
+				int get_rand_2 = rand() % 255 + 1;
+				for (int y = 0; y < take_animation.length(); y++) {
+					if (take_animation[y] == '@') {
+						SetColor_cmd();
+						cursor_movement_cmd(60 + y, 8 + cnt);
+						cout << " ";
+					}
+					else if (take_animation[y] == 'J') {
+						SetColor_cmd(get_rand_1);
+						cursor_movement_cmd(60 + y, 8 + cnt);
+						cout << take_animation[y];
+					}
+					else if (take_animation[y] == 'o') {
+						SetColor_cmd(get_rand_2);
+						cursor_movement_cmd(60 + y, 8 + cnt);
+						cout << take_animation[y];
+					}
+					else if (take_animation[y] == '9') {
+						SetColor_cmd(205);
+						cursor_movement_cmd(60 + y, 8 + cnt);
+						cout << take_animation[y];
+					}
+					else if (take_animation[y] == '9') {
+						SetColor_cmd(205);
+						cursor_movement_cmd(60 + y, 8 + cnt);
+						cout << take_animation[y];
+					}
+					else if (take_animation[y] == '\\' || take_animation[y] == '/') {
+						SetColor_cmd(163);
+						cursor_movement_cmd(60 + y, 8 + cnt);
+						cout << take_animation[y];
+					}
+					else if (take_animation[y] == '~') {
+						SetColor_cmd(236);
+						cursor_movement_cmd(60 + y, 8 + cnt);
+						cout << take_animation[y];
+					}
+					else if (take_animation[y] == '7') {
+						SetColor_cmd(64);
+						cursor_movement_cmd(60 + y, 8 + cnt);
+						cout << take_animation[y];
+					}
+					else if (take_animation[y] == '#') {
+						SetColor_cmd(170);
+						cursor_movement_cmd(60 + y, 8 + cnt);
+						cout << take_animation[y];
+					}
+					else if (take_animation[y] == '-' || take_animation[y] == '|' || take_animation[y] == '&' || take_animation[y] == '^' || take_animation[y] == '(' || take_animation[y] == ')') {
+						SetColor_cmd(252);
+						cursor_movement_cmd(60 + y, 8 + cnt);
+						cout << take_animation[y];
+					}
+					else {
+						SetColor_cmd();
+						cursor_movement_cmd(60 + y, 8 + cnt);
+						cout << take_animation[y];
+					}
+				}
+				cout << endl;
+				if (cnt % 34 == 0) {
+					cursor_movement_cmd(60, 9);
+					cnt -= 34;
+					//Sleep(40);
+					//system("cls");
+					//for(int yy=0;yy<)
+				}
+				cnt += 1;
+			}
+			Sleep(100);
+		}
+		PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+		for (int y = 0; y < 40; y++) {
+			cursor_movement_cmd(60, 8 + y);
+			cout << "                                                                                                                        ";
+		}
+		cursor_movement_cmd(0, -3);
+	}
+}
+
 CCmdParser::CCmdParser (){
 	mappingfunc [string("exit")] = function_exit;
 	mappingfunc [string("east")] = function_next_direction;
@@ -1112,7 +1228,9 @@ CCmdParser::CCmdParser (){
 	mappingfunc [string("south")] = function_next_direction;
 	mappingfunc [string("ls")] = function_list;
 	mappingfunc [string("kill")] = function_kill;
-	mappingfunc [string("checkbag")] = function_check_bag;			
+	mappingfunc [string("checkbag")] = function_check_bag;		
+	mappingfunc [string("christmas")] = function_christmas;             //彩蛋
+	mappingfunc [string("skip")] = function_skip_animation;             //跳過動畫
 	mappingfunc [string("puthouse")] = function_put_house;				//放置倉庫
 	mappingfunc [string("checkhouse")] = function_check_house;			//檢測倉庫
 	mappingfunc [string("move")] = function_move;						//舜移

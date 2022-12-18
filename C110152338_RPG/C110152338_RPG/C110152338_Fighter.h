@@ -40,6 +40,8 @@ public:
 	int goto_next_city (int next_dir);
 	int get_current_city ();
 	void set_job(int);
+	void set_skip();
+	bool get_skip();
 	int get_move_city(int move_city);
 private:
 	int cur_city;
@@ -49,6 +51,7 @@ private:
 	bool food_bonus;
 	int save_wear_weapon_ID;
 	int save_wear_equiment_ID;
+	bool skip_animation;
 	CBag *bag;
 };
 

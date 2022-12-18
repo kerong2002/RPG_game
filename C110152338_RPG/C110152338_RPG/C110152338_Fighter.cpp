@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <fstream>
 #include <windows.h>
+#include <conio.h>
 #pragma comment(lib, "Winmm.lib")
 #include "C110152338_Profession.h"
 #include "C110152338_cursor_movement_fighter.h"
@@ -61,6 +62,15 @@ CFighter::~CFighter() {
 	if (bag)
 		delete bag;
 }
+
+void CFighter::set_skip() {
+	skip_animation = skip_animation ? false : true;
+}
+
+bool CFighter::get_skip() {
+	return skip_animation;
+}
+
 
 void CFighter::set_wear_weapon_ID(int pos) {
 	save_wear_weapon_ID = pos + 15;
@@ -133,6 +143,9 @@ void skill_1_attack_function() {
 	int cnt = 1;
 	PlaySound(TEXT("skill_1_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+		if (_kbhit()) {
+			break;
+		}
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
 			if (take_animation[y] == '@' || take_animation[y] == '.') {
@@ -156,8 +169,9 @@ void skill_1_attack_function() {
 		}
 		cnt += 1;
 	}
+	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	for (int y = 0; y < 40; y++) {
-		cursor_movement_fighter(60, 15 + y);
+		cursor_movement_fighter(60, 12 + y);
 		cout << "                                                                                                                        ";
 	}
 	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
@@ -171,6 +185,9 @@ void skill_2_attack_function() {
 	int cnt = 1;
 	PlaySound(TEXT("skill_2_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+		if (_kbhit()) {
+			break;
+		}
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
 			if (take_animation[y] == '@') {
@@ -194,8 +211,9 @@ void skill_2_attack_function() {
 		}
 		cnt += 1;
 	}
+	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	for (int y = 0; y < 40; y++) {
-		cursor_movement_fighter(60, 15 + y);
+		cursor_movement_fighter(60, 12 + y);
 		cout << "                                                                                                                        ";
 	}
 	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
@@ -209,6 +227,9 @@ void skill_3_attack_function() {
 	int cnt = 1;
 	PlaySound(TEXT("skill_3_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+		if (_kbhit()) {
+			break;
+		}
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
 			if (take_animation[y] == '@') {
@@ -232,8 +253,9 @@ void skill_3_attack_function() {
 		}
 		cnt += 1;
 	}
+	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	for (int y = 0; y < 40; y++) {
-		cursor_movement_fighter(60, 15 + y);
+		cursor_movement_fighter(60, 12 + y);
 		cout << "                                                                                                                        ";
 	}
 	PlaySound(NULL , NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
@@ -248,6 +270,9 @@ void skill_4_attack_function() {
 	
 	PlaySound(TEXT("skill_4_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+		if (_kbhit()) {
+			break;
+		}
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
 			if (take_animation[y] == '@') {
@@ -271,6 +296,7 @@ void skill_4_attack_function() {
 		}
 		cnt += 1;
 	}
+	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	for (int y = 0; y < 40; y++) {
 		cursor_movement_fighter(60, 12 + y);
@@ -287,6 +313,9 @@ void skill_5_attack_function() {
 		int cnt = 1;
 		
 		while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+			if (_kbhit()) {
+				break;
+			}
 			fin_A1 >> take_animation;
 			for (int y = 0; y < take_animation.length(); y++) {
 				if (take_animation[y] == '@') {
@@ -311,6 +340,7 @@ void skill_5_attack_function() {
 			cnt += 1;
 		}
 	}
+	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	for (int y = 0; y < 40; y++) {
 		cursor_movement_fighter(60, 12 + y);
 		cout << "                                                                                                                        ";
@@ -319,12 +349,15 @@ void skill_5_attack_function() {
 	system("color 0F");
 	cursor_movement_fighter(0, 0);
 }
-void attack_function() {
+void attack_function(bool skip) {
 	ifstream fin_A1("among.txt");
 	string take_animation;
 	int cnt = 1;
 	PlaySound(TEXT("among_kill.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+		if (skip || _kbhit()) {
+			break;
+		}
 		fin_A1 >> take_animation;
 		for (int y = 0; y < take_animation.length(); y++) {
 			if (take_animation[y] == '@') {
@@ -346,8 +379,9 @@ void attack_function() {
 		}
 		cnt += 1;
 	}
+	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	for (int y = 0; y < 40; y++) {
-		cursor_movement_fighter(60, 15 + y);
+		cursor_movement_fighter(60, 12 + y);
 		cout << "                                                                                                                        ";
 	}
 	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
@@ -358,7 +392,7 @@ int CFighter::attack(CLifeEntity* l) {
 	if (damage > l->getHP())
 		damage = l->getHP();
 	l->gethurt(damage);
-	attack_function();
+	attack_function(skip_animation);
 	cursor_movement_fighter(0, 20);
 	if (damage > 0) {
 		cout << this->getname() << " 猛力一揮，造成 " << l->getname() << " " << damage << " 血損失" << endl;
@@ -388,20 +422,22 @@ int CFighter::magic_skill_attack(CLifeEntity* l, int pos) {
 	if (damage > l->getHP())
 		damage = l->getHP();
 	l->gethurt(damage);
-	if (pos == 0) {
-		skill_1_attack_function();
-	}
-	else if (pos == 1) {
-		skill_2_attack_function();
-	}
-	else if (pos == 2) {
-		skill_3_attack_function();
-	}
-	else if (pos == 3) {
-		skill_4_attack_function();
-	}
-	else if (pos == 4) {
-		skill_5_attack_function();
+	if (get_skip() == false) {
+		if (pos == 0) {
+			skill_1_attack_function();
+		}
+		else if (pos == 1) {
+			skill_2_attack_function();
+		}
+		else if (pos == 2) {
+			skill_3_attack_function();
+		}
+		else if (pos == 3) {
+			skill_4_attack_function();
+		}
+		else if (pos == 4) {
+			skill_5_attack_function();
+		}
 	}
 	cursor_movement_fighter(0, 20);
 	if (damage > 0) {

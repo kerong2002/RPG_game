@@ -434,7 +434,7 @@ void opening_password() {
 				}
 			}
 			else if (choose_pos == 3) {
-				cout << "請輸入關鍵詞->";
+				cout << "請輸入密語->";
 				cin >> data[2];
 				if (data[2].compare(forgot_hint) == 0) {
 					cursor_movement(4, 10);
@@ -635,6 +635,9 @@ void attack_among() {
 		string take_animation;
 		int cnt = 1;
 		while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+			if (_kbhit()) {
+				break;
+			}
 			fin_A1 >> take_animation;
 			for (int y = 0; y < take_animation.length(); y++) {
 				if (take_animation[y] == '@' || take_animation[y] == '=') {
@@ -835,11 +838,11 @@ void max_window() {
 //===================<主要程式>==========================
 int main() {
 	max_window();
-	read_login();
+	//read_login();
 	//modeset(150, 50);					//視窗大小設定
-	opening_password();					//登入系統
-	opening_animation();				//開始RPG動畫
-	attack_among();
+	//opening_password();					//登入系統
+	//opening_animation();				//開始RPG動畫
+	//attack_among();
 	//ow2_animation();
 	//attack_among();
 	int data_num = choose_save_data();
