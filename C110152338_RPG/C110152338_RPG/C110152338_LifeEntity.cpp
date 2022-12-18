@@ -20,7 +20,7 @@ CLifeEntity::CLifeEntity(int initHP, int initSP, string initname) {
 	weapon = NULL;
 	setMoney(500);				//初始金幣
 }
-void CLifeEntity::set_all_thing(string in_name, int in_hp, int in_sp, int in_maxhp, int in_max_sp, int in_degree, int in_skill_point, int in_magic_power, int in_money,int in_EXP,int in_lucky) {
+void CLifeEntity::set_all_thing(string in_name, int in_hp, int in_sp, int in_maxhp, int in_max_sp, int in_degree, int in_skill_point, int in_magic_power, int in_money, int in_EXP, int in_lucky) {
 	maxSP = SP = in_sp;
 	maxHP = HP = in_hp;
 	//Name = in_name;
@@ -66,7 +66,7 @@ void CLifeEntity::out_hack_data() {
 	out_f1 << show_Lucky() << endl;
 }
 
-void CLifeEntity::set_output_data_num(int pos){
+void CLifeEntity::set_output_data_num(int pos) {
 	out_data_num = pos;
 }
 int  CLifeEntity::show_output_data_num() {
@@ -143,7 +143,7 @@ void CLifeEntity::out_all_thing() {
 		out_f1 << EXP << endl;
 		out_f1 << show_Lucky() << endl;
 	}
-	else if (out_data_num ==2) {
+	else if (out_data_num == 2) {
 		ofstream out_f2("play2.txt");
 		out_f2 << Name << endl;
 		out_f2 << HP << endl;
@@ -171,7 +171,7 @@ void CLifeEntity::out_all_thing() {
 		out_f3 << EXP << endl;
 		out_f3 << show_Lucky() << endl;
 	}
-	
+
 }
 
 //==================<光標移動>=========================
@@ -215,7 +215,7 @@ void CLifeEntity::AddEXP(int inexp) {
 
 void CLifeEntity::AddDegree(int indegree) {
 	Degree += indegree;
-	addSP(indegree*5);
+	addSP(indegree * 5);
 	AddLucky(indegree);
 	cout << "<等級、傷害提升!!>" << endl;
 	//cout << "加錢";
@@ -233,21 +233,21 @@ void CLifeEntity::setHP(int inHP) {
 	HP = inHP > maxHP ? maxHP : inHP;
 }
 
-void  CLifeEntity::show_HP_detail(CLifeEntity*fighter) {
-	cout << "玩家血量：" << fighter->getHP();
+void  CLifeEntity::show_HP_detail(CLifeEntity* fighter) {
+	cout << "玩家血量：" << fighter->getHP() << "/" << fighter->showMAXHP();
 	//cout << "玩家幸運值：" << initLucky;
 }
-void  CLifeEntity::show_SP_detail(CLifeEntity*fighter) {
+void  CLifeEntity::show_SP_detail(CLifeEntity* fighter) {
 	cout << "玩家傷害：" << fighter->getSP();
 }
 void  CLifeEntity::show_Money_detail(CLifeEntity* fighter) {
 	cout << "玩家金錢：$" << fighter->getMoney();
 }
 void  CLifeEntity::show_Degree_detail(CLifeEntity* fighter) {
-	cout << "玩家等級：<" << fighter->getDegree()<<">";
+	cout << "玩家等級：<" << fighter->getDegree() << ">";
 }
 void  CLifeEntity::show_EXP_detail(CLifeEntity* fighter) {
-	cout << "玩家經驗：" << setw(2) << setfill('0')<<fighter->getEXP() << " / 50";
+	cout << "玩家經驗：" << setw(2) << setfill('0') << fighter->getEXP() << " / 50";
 }
 
 int  CLifeEntity::getMoney() {
@@ -291,12 +291,16 @@ void CLifeEntity::delSP(int inSP) {
 
 void CLifeEntity::addMAXHP(int inHP) {
 	maxHP = inHP + maxHP;
-	HP = maxHP;
+	HP = inHP + HP;
+}
+
+int CLifeEntity::showMAXHP() {
+	return maxHP;
 }
 
 void CLifeEntity::delMAXHP(int inHP) {
 	maxHP -= inHP;
-	HP = maxHP;
+	HP -= inHP;
 }
 
 int CLifeEntity::getHP() {
@@ -307,13 +311,13 @@ int CLifeEntity::showMagic_power() {
 	return magic_power;
 }
 void CLifeEntity::addMagic_power(int init_magic_power) {
-	if(magic_power + init_magic_power <= max_magic_power){
+	if (magic_power + init_magic_power <= max_magic_power) {
 		magic_power += init_magic_power;
 	}
 	else {
 		magic_power = max_magic_power;
 	}
-	
+
 }
 void CLifeEntity::delMagic_power(int init_magic_power) {
 	magic_power -= init_magic_power;
@@ -374,7 +378,7 @@ int  CLifeEntity::show_skill_list() {
 	cursor_movement_Life(63, 19);
 	cout << "                                                ";
 	cursor_movement_Life(75, 19);
-	cout << "<技能清單>" ;
+	cout << "<技能清單>";
 	cursor_movement_Life(63, 20);
 	cout << "                                                ";
 	cursor_movement_Life(63, 20);
@@ -387,7 +391,7 @@ int  CLifeEntity::show_skill_list() {
 		cout << id->skill_array[i]->getName();
 		cursor_movement_Life(76, 21 + i);
 		if (id->skill_array[i]->get_skill_level() == 0) {
-			cout << id->skill_array[i]->getattackbonus() ;
+			cout << id->skill_array[i]->getattackbonus();
 		}
 		else {
 			cout << id->skill_array[i]->getattackbonus() * id->skill_array[i]->get_skill_level();
@@ -412,7 +416,7 @@ int  CLifeEntity::show_skill_list() {
 				cursor_movement_Life(63, 27);
 				cout << "玩家尚未學會此技能";
 			}
-			else if (magic_power<compare_skill_point) {
+			else if (magic_power < compare_skill_point) {
 				cursor_movement_Life(63, 27);
 				cout << "                                                               ";
 				cursor_movement_Life(63, 27);
@@ -420,7 +424,7 @@ int  CLifeEntity::show_skill_list() {
 			}
 			else {
 				//return choose_pos;         //改掉職業限定技能
-				if (get_Initjob() != choose_pos+1) {
+				if (get_Initjob() != choose_pos + 1) {
 					cursor_movement_Life(63, 27);
 					cout << "                                                              ";
 					cursor_movement_Life(63, 27);
@@ -432,12 +436,12 @@ int  CLifeEntity::show_skill_list() {
 			}
 		}
 		if (key == 'w' || key == 'W') {
-			cursor_movement_Life(60, 21+choose_pos);
+			cursor_movement_Life(60, 21 + choose_pos);
 			cout << "  ";
 			choose_pos--;
 		}
 		if (key == 's' || key == 'S') {
-			cursor_movement_Life(60, 21+choose_pos);
+			cursor_movement_Life(60, 21 + choose_pos);
 			cout << "  ";
 			choose_pos++;
 		}
@@ -447,11 +451,11 @@ int  CLifeEntity::show_skill_list() {
 		if (choose_pos < 0) {
 			choose_pos = 4;
 		}
-		cursor_movement_Life(60, 21+ choose_pos);
+		cursor_movement_Life(60, 21 + choose_pos);
 		cout << ">>";
 	}
 	return -3;
-	
+
 }
 int CLifeEntity::choose_attack() {
 	system("color 0F");
@@ -463,8 +467,8 @@ int CLifeEntity::choose_attack() {
 	cout << "                                                ";
 	cursor_movement_Life(63, 21);
 	cout << "<技能攻擊>";
-	cursor_movement_Life(60,20);
-	
+	cursor_movement_Life(60, 20);
+
 	int choose_pos = 0;
 	cout << ">>";
 	cursor_movement_Life(0, 0);
@@ -490,7 +494,7 @@ int CLifeEntity::choose_attack() {
 					cursor_movement_Life(63, 21);
 					cout << "                                                                           ";
 					cursor_movement_Life(63, 21);
-					cout << "<技能攻擊>" ;
+					cout << "<技能攻擊>";
 					cursor_movement_Life(60, 20);
 				}
 				else {
@@ -581,8 +585,36 @@ bool CLifeEntity::kill(CLifeEntity* enemy) {
 			fightstatus(enemy, this);
 			Sleep(2000);
 		}
+		cursor_movement_Life(60, 4);
+		cout << "                                       ";
+		cursor_movement_Life(60, 4);
+		cout << "玩家血量：" << HP << "/" << maxHP;
+		cursor_movement_Life(60, 5);
+		cout << "                                       ";
+		cursor_movement_Life(60, 5);
+		cout << "玩家傷害：" << SP;
+		cursor_movement_Life(60, 6);
+		cout << "                                       ";
+		cursor_movement_Life(60, 6);
+		cout << "玩家金錢：$" << Money;
+		cursor_movement_Life(60, 7);
+		cout << "                                       ";
+		cursor_movement_Life(60, 7);
+		cout << "玩家幸運：☆" << Lucky;
+		cursor_movement_Life(60, 8);
+		cout << "                                       ";
+		cursor_movement_Life(60, 8);
+		cout << "玩家等級：<" << Degree << ">";
+		cursor_movement_Life(60, 9);
+		cout << "                                       ";
+		cursor_movement_Life(60, 9);
+		cout << "玩家經驗：" << setw(2) << setfill('0') << EXP << " / 50";
+		cursor_movement_Life(60, 10);
+		cout << "                                       ";
+		cursor_movement_Life(60, 10);
+		cout << "技能點數：" << Skill_point;
 		cursor_movement_Life(60, 11);
-		cout << "                                           ";
+		cout << "                                       ";
 		cursor_movement_Life(60, 11);
 		cout << "魔力點數：" << setw(3) << setfill('0') << magic_power << " / 300";
 	}

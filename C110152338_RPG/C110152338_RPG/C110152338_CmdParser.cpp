@@ -937,6 +937,9 @@ void function_all_shop() {
 		cout << "->";
 	}
 	system("CLS");
+	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CFighter* set = (CFighter*)usr;
+	CGlobalInfo::map_data->show_description(set->get_current_city());
 }
 
 void function_hack() {

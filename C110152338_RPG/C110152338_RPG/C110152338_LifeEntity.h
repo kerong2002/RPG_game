@@ -59,6 +59,7 @@ public:
 	int choose_attack();
 	void set_Initjob(int);
 	int get_Initjob();
+	int showMAXHP();
 	void show_Money_detail(CLifeEntity*);
 	void show_HP_detail(CLifeEntity*);
 	void show_SP_detail(CLifeEntity*);

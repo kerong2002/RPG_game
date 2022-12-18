@@ -38,7 +38,7 @@ CFighter::CFighter(int job, int initHP, int initSP, int initLucky, string name, 
 	cur_city = in_city;
 	bag = new CBag();
 	cursor_movement_fighter(60, 4);
-	cout << "玩家血量：" << initHP;
+	cout << "玩家血量：" << initHP<<"/" << showMAXHP();
 	cursor_movement_fighter(60, 5);
 	cout << "玩家傷害：" << initSP;
 	cursor_movement_fighter(60, 6);
