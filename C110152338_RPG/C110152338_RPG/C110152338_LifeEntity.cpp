@@ -563,6 +563,7 @@ bool CLifeEntity::kill(CLifeEntity* enemy) {
 			set_pos();
 			s_damage = first->attack(second);
 			fightstatus(enemy, this);
+			Sleep(2000);
 			if (second->isdead()) {
 				Sleep(1000);
 				break;

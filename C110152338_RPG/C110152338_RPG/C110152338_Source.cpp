@@ -203,9 +203,9 @@ void printmap() {
 			if (all_map[y][x] == '=') {
 				cout << "■";
 			}
-			/*else if (x == map_x_size / 2 && y == map_y_size / 2) {
-				cout << "商";
-			}*/
+			else if (all_map[y][x] == '@') {
+				cout << "門";
+			}
 			else {
 				cout << "  ";
 			}
@@ -539,20 +539,10 @@ void out_of_map() {
 	cursor_movement(monster_x, monster_y);
 	cout << "敵";
 }
+bool monster_lock = true;
 //===================<怪物移動>========================
 void monster_move(int pos_x, int pos_y) {
-	if (pos_x == monster_x && pos_y == monster_y) {
-		CGlobalInfo::parser->query("meet_monster");
-		monster_x = rand() % (map_x_size - 2) + 1;
-		monster_y = rand() % (map_y_size - 2) + 1;
-		while (monster_x == pos_x && monster_y == pos_y) {
-			monster_x = rand() % (map_x_size - 2) + 1;
-			monster_y = rand() % (map_y_size - 2) + 1;
-		}
-		cursor_movement(monster_x, monster_y);
-		cout << "敵";
-		return;
-	}
+	monster_lock = false;
 	SetColor(15);
 	int m_list[8][2] =
 	{
@@ -577,6 +567,7 @@ void monster_move(int pos_x, int pos_y) {
 	monster_y += m_list[new_pos][1];
 	cursor_movement(monster_x, monster_y);
 	cout << "敵";
+	monster_lock = true;
 
 }
 void read_login() {
@@ -831,15 +822,26 @@ int choose_save_data() {
 	return -9;
 }
 void max_window() {
-	HANDLE HOUT = GetStdHandle(STD_OUTPUT_HANDLE);   
+	HANDLE HOUT = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD NewSize = GetLargestConsoleWindowSize(HOUT);
 
 	SMALL_RECT DisplayArea = { 0,0,0,0 };
 	DisplayArea.Right = NewSize.X;
 	DisplayArea.Bottom = NewSize.Y;
-	SetConsoleWindowInfo(HOUT, TRUE, &DisplayArea);   
+	SetConsoleWindowInfo(HOUT, TRUE, &DisplayArea);
 	HWND hwnd = GetConsoleWindow();
-	ShowWindow(hwnd, SW_MAXIMIZE);   
+	ShowWindow(hwnd, SW_MAXIMIZE);
+}
+bool monster_runing = true;
+void monster_move_thread() {
+	while(true){
+		if (monster_runing) {
+			if (monster_lock == true) {
+				monster_move(pos_x, pos_y);
+				Sleep(300);
+			}
+		}
+	}
 }
 //===================<主要程式>==========================
 int main() {
@@ -955,126 +957,154 @@ int main() {
 	cursor_movement(pos_x, pos_y);
 	SetColor(240);
 	cout << my_profession;
+	thread play_game(monster_move_thread);
 	int key = 0;
 	while (true) {
-		key = _getch();
-		monster_move(pos_x, pos_y);
-		fighter->show_fighter_detail(fighter);
-		system("color 0F");
-		if (key == ' ') {
-			clear_screen();
-			cursor_movement(map_x_size + 5, map_y_size / 2 + 2);
-			cout << "請輸入指令";
-			cursor_movement(map_x_size + 5, map_y_size / 2 + 3);
-			cin >> active;
-			cursor_movement(-cursor_x_offset, map_y_size / 2 + 10);
-			CGlobalInfo::parser->query(active);
-			if (active == "exit") {
-				break;
+		if (pos_x == monster_x && pos_y == monster_y) {
+			monster_runing = false;
+			CGlobalInfo::parser->query("meet_monster");
+			monster_x = rand() % (map_x_size - 2) + 1;
+			monster_y = rand() % (map_y_size - 2) + 1;
+			while (monster_x == pos_x && monster_y == pos_y) {
+				monster_x = rand() % (map_x_size - 2) + 1;
+				monster_y = rand() % (map_y_size - 2) + 1;
 			}
-			cursor_movement(map_x_size + 5, map_y_size / 2 + 2);
-			cout << "                      ";
-			cursor_movement(map_x_size + 5, map_y_size / 2 + 3);
-			for (int y = 0; y < active.length(); y++) {
-				cout << "        ";
-			}
+			cursor_movement(monster_x, monster_y);
+			cout << "敵";
 			fighter->show_fighter_detail(fighter);
-			printmap();
-			//CGlobalInfo::map_data->show_description(cur_city);
+			cursor_movement(pos_x, pos_y);
+			SetColor(240);
+			cout << my_profession;
+			Sleep(100);
+			monster_runing = true;
 		}
-		if ((key == 'W' || key == 'w')) {
-			if (pos_x == map_x_size / 2 && pos_y == 1) {
-				int cur_city = CGlobalInfo::user->get_current_city();
-				CGlobalInfo::parser->query("north");
-
-				//SetColor(15);
-				if (cur_city > 3) {
-					pos_y = map_y_size - 2;
+		if (_kbhit()) {
+			key = _getch();
+			system("color 0F");
+			if (key == ' ') {
+				monster_runing = false;
+				clear_screen();
+				cursor_movement(map_x_size + 5, map_y_size / 2 + 2);
+				cout << "請輸入指令";
+				cursor_movement(map_x_size + 5, map_y_size / 2 + 3);
+				cin >> active;
+				cursor_movement(-cursor_x_offset, map_y_size / 2 + 10);
+				CGlobalInfo::parser->query(active);
+				if (active == "exit") {
+					break;
 				}
-				out_of_map();
+				cursor_movement(map_x_size + 5, map_y_size / 2 + 2);
+				cout << "                      ";
+				cursor_movement(map_x_size + 5, map_y_size / 2 + 3);
+				for (int y = 0; y < active.length(); y++) {
+					cout << "        ";
+				}
 				fighter->show_fighter_detail(fighter);
+				monster_runing = true;
+				printmap();
 				//CGlobalInfo::map_data->show_description(cur_city);
 			}
-			else if (pos_y > 1) {
-				cursor_movement(pos_x, pos_y);
-				SetColor(15);
-				cout << "  ";
-				pos_y--;
-			}
-		}
-		if ((key == 'S' || key == 's')) {
-			if (pos_x == map_x_size / 2 && pos_y == map_y_size - 2) {
-				int cur_city = CGlobalInfo::user->get_current_city();
-				CGlobalInfo::parser->query("south");
+			if ((key == 'W' || key == 'w')) {
+				if (pos_x == map_x_size / 2 && pos_y == 1) {
+					monster_runing = false;
+					int cur_city = CGlobalInfo::user->get_current_city();
+					CGlobalInfo::parser->query("north");
 
-				//SetColor(15);
-				if (cur_city < 7) {
-					pos_y = 1;
+					//SetColor(15);
+					if (cur_city > 3) {
+						pos_y = map_y_size - 2;
+					}
+					monster_runing = true;
+					out_of_map();
+					fighter->show_fighter_detail(fighter);
+					//CGlobalInfo::map_data->show_description(cur_city);
 				}
-				out_of_map();
-				fighter->show_fighter_detail(fighter);
+				else if (pos_y > 1) {
+					cursor_movement(pos_x, pos_y);
+					SetColor(15);
+					cout << "  ";
+					pos_y--;
+				}
 			}
-			else if (pos_y < map_y_size - 2) {
-				cursor_movement(pos_x, pos_y);
-				SetColor(15);
-				cout << "  ";
-				pos_y++;
-			}
-		}
-		if ((key == 'A' || key == 'a')) {
-			if (pos_x == 1 && pos_y == map_y_size / 2) {
+			if ((key == 'S' || key == 's')) {
+				if (pos_x == map_x_size / 2 && pos_y == map_y_size - 2) {
+					monster_runing = false;
+					int cur_city = CGlobalInfo::user->get_current_city();
+					CGlobalInfo::parser->query("south");
 
-				int cur_city = CGlobalInfo::user->get_current_city();
-				//SetColor(15);
-				if (cur_city != 1 && cur_city != 4 && cur_city != 7) {
-					pos_x = map_x_size - 2;
+					//SetColor(15);
+					if (cur_city < 7) {
+						pos_y = 1;
+					}
+					monster_runing = true;
+					out_of_map();
+					fighter->show_fighter_detail(fighter);
 				}
-				CGlobalInfo::parser->query("west");
-				out_of_map();
-				fighter->show_fighter_detail(fighter);
-				//CGlobalInfo::map_data->show_description(cur_city);
+				else if (pos_y < map_y_size - 2) {
+					cursor_movement(pos_x, pos_y);
+					SetColor(15);
+					cout << "  ";
+					pos_y++;
+				}
 			}
-			else if (pos_x > 1) {
-				cursor_movement(pos_x, pos_y);
-				SetColor(15);
-				cout << "  ";
-				pos_x--;
+			if ((key == 'A' || key == 'a')) {
+				if (pos_x == 1 && pos_y == map_y_size / 2) {
+					monster_runing = false;
+					int cur_city = CGlobalInfo::user->get_current_city();
+					//SetColor(15);
+					if (cur_city != 1 && cur_city != 4 && cur_city != 7) {
+						pos_x = map_x_size - 2;
+					}
+					CGlobalInfo::parser->query("west");
+					monster_runing = true;
+					out_of_map();
+					fighter->show_fighter_detail(fighter);
+					//CGlobalInfo::map_data->show_description(cur_city);
+				}
+				else if (pos_x > 1) {
+					cursor_movement(pos_x, pos_y);
+					SetColor(15);
+					cout << "  ";
+					pos_x--;
+				}
 			}
-		}
-		if ((key == 'D' || key == 'd')) {
-			if (pos_x == map_x_size - 2 && pos_y == map_y_size / 2) {
-				int cur_city = CGlobalInfo::user->get_current_city();
-				CGlobalInfo::parser->query("east");
+			if ((key == 'D' || key == 'd')) {
+				if (pos_x == map_x_size - 2 && pos_y == map_y_size / 2) {
+					monster_runing = false;
+					int cur_city = CGlobalInfo::user->get_current_city();
+					CGlobalInfo::parser->query("east");
 
-				//SetColor(15);
-				if (cur_city % 3 != 0) {
-					pos_x = 1;
+					//SetColor(15);
+					if (cur_city % 3 != 0) {
+						pos_x = 1;
+					}
+					monster_runing = true;
+					out_of_map();
+					fighter->show_fighter_detail(fighter);
+					//CGlobalInfo::map_data->show_description(cur_city);
+					//break;
 				}
-				out_of_map();
-				fighter->show_fighter_detail(fighter);
-				//CGlobalInfo::map_data->show_description(cur_city);
-				//break;
+				else if (pos_x < map_x_size - 2) {
+					cursor_movement(pos_x, pos_y);
+					SetColor(15);
+					cout << "  ";
+					pos_x++;
+				}
 			}
-			else if (pos_x < map_x_size - 2) {
-				cursor_movement(pos_x, pos_y);
-				SetColor(15);
-				cout << "  ";
-				pos_x++;
-			}
+			SetColor(15);
+			cursor_movement(map_x_size - 1, map_y_size / 2);		//東
+			cout << "門";
+			cursor_movement(0, map_y_size / 2);						//西
+			cout << "門";
+			cursor_movement(map_x_size / 2, map_y_size - 1);		//南
+			cout << "門";
+			cursor_movement(map_x_size / 2, 0);						//北
+			cout << "門";
+			cursor_movement(pos_x, pos_y);
+			SetColor(240);
+			cout << my_profession;
+			Sleep(100);
 		}
-		SetColor(15);
-		cursor_movement(map_x_size - 1, map_y_size / 2);		//東
-		cout << "門";
-		cursor_movement(0, map_y_size / 2);						//西
-		cout << "門";
-		cursor_movement(map_x_size / 2, map_y_size - 1);		//南
-		cout << "門";
-		cursor_movement(map_x_size / 2, 0);						//北
-		cout << "門";
-		cursor_movement(pos_x, pos_y);
-		SetColor(240);
-		cout << my_profession;
-		Sleep(100);
 	}
 
 
@@ -1095,7 +1125,7 @@ int main() {
 			cout << endl << endl << "戰鬥開始" << endl << endl;
 			startfight(m, &fighter);
 			delete m;
-}
+		}
 		else
 			cout << "No monster generated" << endl;
 	}
