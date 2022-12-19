@@ -10,6 +10,8 @@ public:
 	CMonster (const CMonsterType *type);
 	int getRough ();
 	int physicaldamage ();	
+	void set_skip(bool);
+	bool get_skip();
 	virtual int attack (CLifeEntity *);
 	virtual int magic_skill_attack(CLifeEntity*,int);
 	virtual int defense (CLifeEntity *);
@@ -20,6 +22,7 @@ public:
 private:	
 	static int counter_for_monster_id;
 	string eng_name;
+	bool monster_skip;
 	int RoughDegree;
 };
 

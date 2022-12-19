@@ -13,6 +13,7 @@
 #include "C110152338_User.h"
 #include "C110152338_MapData.h"
 #include "C110152338_Fighter.h"
+#include "C110152338_Monster.h"
 #include "C110152338_def.h"
 #include "C110152338_ItemData.h"
 
@@ -124,7 +125,9 @@ int function_meet_monster(vector<string>& tokens) {
 	}
 
 	CLifeEntity* usr = CGlobalInfo::user->get_user();
+	CFighter* f = (CFighter*)usr;
 	assert(usr);
+	monster->set_skip(f->get_skip());
 	if (usr->kill(monster)) {
 		cityptr->remove_moster_by_engname(monster_engname);
 		cout << "怪物已死，從怪物身上掉下寶物" << endl;

@@ -87,7 +87,7 @@ void cursor_movement_animation(int x, int y) {
 //================<清屏>=============================
 void clear_screen() {
 	for (int y = 0; y < 50; y++) {
-		cursor_movement(-cursor_x_offset, map_y_size / 2 + 10 + y);
+		cursor_movement(-cursor_x_offset, map_y_size / 2 + 9 + y);
 		for (int x = 0; x < 100; x++) {
 			cout << " ";
 		}
@@ -296,6 +296,7 @@ void startfight(CMonster* m, CFighter* f) {
 		if (whofirst == 0) {
 			cout << "怪物搶得先機，先出手傷人" << endl;
 			first = (CLifeEntity*)m;
+
 			second = (CLifeEntity*)f;
 		}
 		else {
@@ -868,6 +869,7 @@ int main() {
 	string active;
 	cursor_movement(-cursor_x_offset, map_y_size / 2 + 10);
 	Initialize(data_num);												//初始化設定
+	cursor_movement(-cursor_x_offset,-cursor_y_offset);
 	//建置玩家
 	CFighter* fighter = new CFighter(get_job_num, profession[get_job_num].HP, profession[get_job_num].Damage, profession[get_job_num].Lucky, profession[get_job_num].name, 1);
 

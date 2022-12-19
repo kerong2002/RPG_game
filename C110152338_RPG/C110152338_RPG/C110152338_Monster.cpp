@@ -1,6 +1,9 @@
 #include <iostream>
 #include <string>
 #include <Windows.h>
+#include <fstream>
+#include <conio.h>
+#include <thread>
 #include "C110152338_Monster.h"
 #include "C110152338_MonsterData.h"
 #include "C110152338_def.h"
@@ -23,6 +26,18 @@ CMonster::CMonster(const CMonsterType* type) : CLifeEntity(1 + rand() % type->ma
 	cout << "Monster called " << type->name << " (" << eng_name << ") is created with <HP, SP, rough> = <" << this->getHP() << ", " << this->getSP() << ", " << this->getRough() << ">" << endl;
 }
 
+void sound_monster_kill() {
+	PlaySound(TEXT("monster_kill.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+}
+
+void CMonster::set_skip(bool skip) {
+	monster_skip = skip;
+}
+
+bool CMonster::get_skip() {
+	return monster_skip;
+}
+
 //==================<光標移動>=========================
 void cursor_movement_Monster(int x, int y) {
 	COORD coord;
@@ -38,6 +53,47 @@ int CMonster::getRough() {
 int CMonster::physicaldamage() {
 	return (rand() % getSP() + getRough());
 }
+void attack_monster_function(bool skip) {
+	ifstream fin_A1("monster_kill.txt");
+	string take_animation;
+	int cnt = 1;
+	thread th_monster_kill(sound_monster_kill);
+	//PlaySound(TEXT("among_kill.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
+		if (skip || _kbhit()) {
+			break;
+		}
+		fin_A1 >> take_animation;
+		for (int y = 0; y < take_animation.length(); y++) {
+			if (take_animation[y] == '@') {
+				cursor_movement_Monster(60 + y, 11 + cnt);
+				cout << " ";
+			}
+			else {
+				cursor_movement_Monster(60 + y, 11 + cnt);
+				cout << take_animation[y];
+			}
+		}
+		cout << endl;
+		if (cnt % 35 == 0) {
+			cursor_movement_Monster(60, 12);
+			cnt -= 35;
+			//Sleep(40);
+			//system("cls");
+			//for(int yy=0;yy<)
+		}
+		cnt += 1;
+		cursor_movement_Monster(0, 0);
+	}
+	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+	for (int y = 0; y < 40; y++) {
+		cursor_movement_Monster(60, 12 + y);
+		cout << "                                                                                                                        ";
+	}
+	th_monster_kill.join();
+	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	cursor_movement_Monster(0, 20);
+}
 
 int CMonster::attack(CLifeEntity* l) {
 	int damage = physicaldamage();
@@ -45,7 +101,13 @@ int CMonster::attack(CLifeEntity* l) {
 		damage = l->getHP();
 
 	int avoid = rand() % 100;
+	for (int y = 0; y < 6; y++) {
+		cursor_movement_Monster(0, 20 + y);
+		cout << "                                                        ";
+	}
+	cursor_movement_Monster(0, 20);
 
+	attack_monster_function(monster_skip);
 	if (l->defense(l) >= avoid || damage <= 0) {
 		cout << this->getname() << " 突襲而來，但是 " << l->getname() << " 異常幸運，因此躲避了攻擊" << endl;
 	}
@@ -53,6 +115,7 @@ int CMonster::attack(CLifeEntity* l) {
 		l->gethurt(damage);
 		cout << this->getname() << " 突襲而來，造成 " << l->getname() << " " << damage << " 血損失" << endl;
 	}
+	cursor_movement_Monster(0, 0);
 	return (damage);
 }
 

@@ -551,25 +551,33 @@ bool CLifeEntity::kill(CLifeEntity* enemy) {
 			//system("pause");
 			whofirst = rand() % 2;
 			if (whofirst == 0) {
+				cursor_movement_Life(0, 19);
+				cout << "                                                   ";
+				cursor_movement_Life(0, 19);
 				cout << "對方搶得先機，先出手傷人" << endl;
 				first = (CLifeEntity*)enemy;
 				second = (CLifeEntity*)this;
 			}
 			else {
+				cursor_movement_Life(0, 19);
+				cout << "                                                   ";
+				cursor_movement_Life(0, 19);
 				cout << "你搶得先機，先出手傷人" << endl;
 				first = (CLifeEntity*)this;
 				second = (CLifeEntity*)enemy;
 			}
-			set_pos();
+			cursor_movement_Life(0, 20);
 			s_damage = first->attack(second);
+			cursor_movement_Life(0, 20);
 			fightstatus(enemy, this);
 			Sleep(2000);
 			if (second->isdead()) {
 				Sleep(1000);
 				break;
 			}
-			set_pos();
+			cursor_movement_Life(0, 20);
 			f_damage = second->attack(first);
+			cursor_movement_Life(0, 20);
 			fightstatus(enemy, this);
 			Sleep(2000);
 		}
