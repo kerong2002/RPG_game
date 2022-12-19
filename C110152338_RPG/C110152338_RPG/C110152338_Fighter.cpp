@@ -3,6 +3,7 @@
 #include <fstream>
 #include <windows.h>
 #include <conio.h>
+#include <thread>
 #pragma comment(lib, "Winmm.lib")
 #include "C110152338_Profession.h"
 #include "C110152338_cursor_movement_fighter.h"
@@ -71,6 +72,29 @@ bool CFighter::get_skip() {
 	return skip_animation;
 }
 
+void sound_kill() {
+	PlaySound(TEXT("among_kill.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+}
+
+void sound_1() {
+	PlaySound(TEXT("skill_1_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+}
+
+void sound_2() {
+	PlaySound(TEXT("skill_2_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+}
+
+void sound_3() {
+	PlaySound(TEXT("skill_3_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+}
+
+void sound_4() {
+	PlaySound(TEXT("skill_4_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+}
+
+void sound_5() {
+	PlaySound(TEXT("skill_5_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+}
 
 void CFighter::set_wear_weapon_ID(int pos) {
 	save_wear_weapon_ID = pos + 15;
@@ -141,7 +165,8 @@ void skill_1_attack_function() {
 	ifstream fin_A1("Hanzo.txt");
 	string take_animation;
 	int cnt = 1;
-	PlaySound(TEXT("skill_1_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	thread th1(sound_1);
+	//PlaySound(TEXT("skill_1_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
 		if (_kbhit()) {
 			break;
@@ -174,6 +199,7 @@ void skill_1_attack_function() {
 		cursor_movement_fighter(60, 12 + y);
 		cout << "                                                                                                                        ";
 	}
+	th1.join();
 	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	system("color 0F");
 	cursor_movement_fighter(0, 0);
@@ -183,7 +209,8 @@ void skill_2_attack_function() {
 	ifstream fin_A1("among_skill.txt");
 	string take_animation;
 	int cnt = 1;
-	PlaySound(TEXT("skill_2_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	thread th2(sound_2);
+	//PlaySound(TEXT("skill_2_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
 		if (_kbhit()) {
 			break;
@@ -216,6 +243,7 @@ void skill_2_attack_function() {
 		cursor_movement_fighter(60, 12 + y);
 		cout << "                                                                                                                        ";
 	}
+	th2.join();
 	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	system("color 0F");
 	cursor_movement_fighter(0, 0);
@@ -225,7 +253,8 @@ void skill_3_attack_function() {
 	ifstream fin_A1("Pharah.txt");
 	string take_animation;
 	int cnt = 1;
-	PlaySound(TEXT("skill_3_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	thread th3(sound_3);
+	//PlaySound(TEXT("skill_3_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
 		if (_kbhit()) {
 			break;
@@ -258,6 +287,7 @@ void skill_3_attack_function() {
 		cursor_movement_fighter(60, 12 + y);
 		cout << "                                                                                                                        ";
 	}
+	th3.join();
 	PlaySound(NULL , NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	system("color 0F");
 	cursor_movement_fighter(0, 0);
@@ -267,8 +297,8 @@ void skill_4_attack_function() {
 	ifstream fin_A1("Genji.txt");
 	string take_animation;
 	int cnt = 1;
-	
-	PlaySound(TEXT("skill_4_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	thread th4(sound_4);
+	//PlaySound(TEXT("skill_4_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
 		if (_kbhit()) {
 			break;
@@ -296,6 +326,7 @@ void skill_4_attack_function() {
 		}
 		cnt += 1;
 	}
+	th4.join();
 	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	for (int y = 0; y < 40; y++) {
@@ -306,7 +337,8 @@ void skill_4_attack_function() {
 	cursor_movement_fighter(0, 0);
 }
 void skill_5_attack_function() {
-	PlaySound(TEXT("skill_5_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	thread th5(sound_5);
+	//PlaySound(TEXT("skill_5_sound.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	for (int x = 0; x < 4; x++) {
 		ifstream fin_A1("Beam.txt");
 		string take_animation;
@@ -345,6 +377,7 @@ void skill_5_attack_function() {
 		cursor_movement_fighter(60, 12 + y);
 		cout << "                                                                                                                        ";
 	}
+	th5.join();
 	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	system("color 0F");
 	cursor_movement_fighter(0, 0);
@@ -353,7 +386,8 @@ void attack_function(bool skip) {
 	ifstream fin_A1("among.txt");
 	string take_animation;
 	int cnt = 1;
-	PlaySound(TEXT("among_kill.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	thread th_kill(sound_kill);
+	//PlaySound(TEXT("among_kill.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	while (!fin_A1.eof()) { //只要還沒讀到完，條件成立就繼續一直讀
 		if (skip || _kbhit()) {
 			break;
@@ -384,6 +418,7 @@ void attack_function(bool skip) {
 		cursor_movement_fighter(60, 12 + y);
 		cout << "                                                                                                                        ";
 	}
+	th_kill.join();
 	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	cursor_movement_fighter(0, 0);
 }

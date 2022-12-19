@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <windows.h>
 #include <conio.h>
+#include <thread>
 //#include "C110152338_Profession.h"
 #include "C110152338_Fighter.h"
 #include "C110152338_Monster.h"
@@ -46,9 +47,13 @@ profession[Profession_size + 1] = {
 	{"射手"	 , 100, 200,  10, "射"},
 	{"法師"	 , 200, 100,   3, "法"},
 	{"召喚師", 100, 130,   5, "召"},
-	{"戰士"  , 500,  40,  25, "戰"},
-	{"輔助"  ,  20,   1, 100, "輔"}
+	{"戰士"  , 500,  80,  25, "戰"},
+	{"輔助"  ,  20,  40,  90, "輔"}
 };
+
+void sound_start() {
+	PlaySound(TEXT("among_start.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+}
 
 //=================<重製位置>==========================
 void reset_pos() {
@@ -287,7 +292,6 @@ void startfight(CMonster* m, CFighter* f) {
 	CLifeEntity* first, * second;
 	int whofirst;
 	while (!m->isdead() && !f->isdead()) {
-
 		whofirst = rand() % 2;
 		if (whofirst == 0) {
 			cout << "怪物搶得先機，先出手傷人" << endl;
@@ -629,7 +633,8 @@ void ow2_animation() {
 }*/
 void attack_among() {
 	cursor_movement_animation(5, 5);
-	PlaySound(TEXT("among_start.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	thread start_among(sound_start);
+	//PlaySound(TEXT("among_start.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	for (int x = 0; x < 4; x++) {
 		ifstream fin_A1("among_go.txt");
 		string take_animation;
@@ -663,6 +668,7 @@ void attack_among() {
 			cnt += 1;
 		}
 	}
+	start_among.join();
 	PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 	system("pause");
 	system("color 0F");
@@ -837,7 +843,7 @@ void max_window() {
 }
 //===================<主要程式>==========================
 int main() {
-	max_window();
+	max_window();						//全螢幕
 	read_login();
 	//modeset(150, 50);					//視窗大小設定
 	opening_password();					//登入系統

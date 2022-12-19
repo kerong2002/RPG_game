@@ -6,6 +6,7 @@
 #include <windows.h>
 #include <conio.h>
 #include <ctime>
+#include <thread>
 #include "C110152338_Place.h"
 #include "C110152338_CmdParser.h"
 #include "C110152338_GlobalInfo.h"
@@ -30,6 +31,10 @@ void SetColor_cmd(int color = 7) {
 	HANDLE hConsole;
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleTextAttribute(hConsole, color);
+}
+
+void sound_christmas() {
+	PlaySound(TEXT("christmas.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 }
 
 int function_next_direction (vector<string> &tokens){	
@@ -1134,8 +1139,9 @@ void function_christmas() {
 	if(1 + nowtime->tm_mon==12 && nowtime->tm_mday>=20 && nowtime->tm_mday<= 30){
 		usr->addHP(usr->getMAXHP());
 		cout << "\t\t\\聖誕節快樂!/" << "獲取禮物->恢復滿您的血量" << endl;
-		PlaySound(TEXT("christmas.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
-		for (int x = 0; x < 62; x++) {
+		thread th_tree(sound_christmas);
+		//PlaySound(TEXT("christmas.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+		for (int x = 0; x < 55; x++) {
 			ifstream fin_A1("tree.txt");
 			string take_animation;
 			int cnt = 1;
@@ -1212,6 +1218,7 @@ void function_christmas() {
 			}
 			Sleep(100);
 		}
+		th_tree.join();
 		PlaySound(NULL, NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 		for (int y = 0; y < 40; y++) {
 			cursor_movement_cmd(60, 8 + y);
