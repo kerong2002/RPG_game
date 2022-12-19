@@ -1,9 +1,11 @@
 #include <iostream>
+#pragma warning( disable : 4996 )
 #include <string>
 #include <fstream>
 #include <cassert>
 #include <windows.h>
 #include <conio.h>
+#include <ctime>
 #include "C110152338_Place.h"
 #include "C110152338_CmdParser.h"
 #include "C110152338_GlobalInfo.h"
@@ -1126,7 +1128,10 @@ void function_christmas() {
 	CLifeEntity* usr = CGlobalInfo::user->get_user();
 	CFighter* f = (CFighter*)usr;
 	int get_now_degree = f->getDegree();
-	if (get_now_degree % 12 == 0 || get_now_degree % 25 == 0) {
+	time_t curtime;
+	time(&curtime);
+	tm* nowtime = localtime(&curtime);
+	if(1 + nowtime->tm_mon==12 && nowtime->tm_mday>=20 && nowtime->tm_mday<= 30){
 		usr->addHP(usr->getMAXHP());
 		cout << "\t\t\\聖誕節快樂!/" << "獲取禮物->恢復滿您的血量" << endl;
 		PlaySound(TEXT("christmas.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
