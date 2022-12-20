@@ -109,7 +109,7 @@ int function_meet_monster(vector<string>& tokens) {
 	}*/
 	system("color 0F");
 	for (int y = 0; y < 34; y++) {
-		cursor_movement_cmd(0, 17+y);
+		cursor_movement_cmd(0, 16+y);
 		cout << "                                                                                                      ";
 	}
 	cursor_movement_cmd(0, 17);

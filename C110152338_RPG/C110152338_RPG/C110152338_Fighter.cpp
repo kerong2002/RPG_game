@@ -428,10 +428,10 @@ int CFighter::attack(CLifeEntity* l) {
 		damage = l->getHP();
 	l->gethurt(damage);
 	attack_function(skip_animation);
-	for (int y = 0; y < 6; y++) {
+	/*for (int y = 0; y < 6; y++) {
 		cursor_movement_fighter(0, 20+y);
 		cout << "                                                        ";
-	}
+	}*/
 	cursor_movement_fighter(0, 20);
 	if (damage > 0) {
 		cout << this->getname() << " 猛力一揮，造成 " << l->getname() << " " << damage << " 血損失" << endl;

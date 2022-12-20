@@ -567,6 +567,7 @@ bool CLifeEntity::kill(CLifeEntity* enemy) {
 				second = (CLifeEntity*)enemy;
 			}
 			cursor_movement_Life(0, 20);
+			fightstatus(enemy, this);
 			s_damage = first->attack(second);
 			cursor_movement_Life(0, 20);
 			fightstatus(enemy, this);
@@ -576,6 +577,7 @@ bool CLifeEntity::kill(CLifeEntity* enemy) {
 				break;
 			}
 			cursor_movement_Life(0, 20);
+			fightstatus(enemy, this);
 			f_damage = second->attack(first);
 			cursor_movement_Life(0, 20);
 			fightstatus(enemy, this);
@@ -589,8 +591,11 @@ bool CLifeEntity::kill(CLifeEntity* enemy) {
 				Sleep(1000);
 				break;
 			}
+			cursor_movement_Life(0, 20);
+			fightstatus(enemy, this);
 			delMagic_power((id->skill_array[get_skill_or_normal]->getattackbonus()));
 			f_damage = second->magic_skill_attack(first, get_skill_or_normal);
+			cursor_movement_Life(0, 20);
 			fightstatus(enemy, this);
 			Sleep(2000);
 		}

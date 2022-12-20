@@ -101,10 +101,11 @@ int CMonster::attack(CLifeEntity* l) {
 		damage = l->getHP();
 
 	int avoid = rand() % 100;
+	/*
 	for (int y = 0; y < 6; y++) {
 		cursor_movement_Monster(0, 20 + y);
 		cout << "                                                        ";
-	}
+	}*/
 	cursor_movement_Monster(0, 20);
 
 	attack_monster_function(monster_skip);
