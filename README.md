@@ -11,7 +11,7 @@
 | 從倉庫拿東西 | checkhouse | 食品商店 | fshop  |
 | 舜移 | move | 技能解鎖 | sshop  |
 | 釣魚 | fish | 傳奇鎧甲 | lshop  |
-| 保存 | log_out | 離開 | exit  |
+| 保存 | log_out | 離開 | exit  |  
 
 ## 2022/11/07
 ![image](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/RPG_TITLE.png)
