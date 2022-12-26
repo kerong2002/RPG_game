@@ -76,6 +76,21 @@ void  CLifeEntity::file_read_data() {
 	if (out_data_num == 1) {
 		ifstream input_f1("play1.txt");
 		input_f1 >> Name;
+		if (Name == "射手") {
+			set_Initjob(1);
+		}
+		else if (Name == "法師") {
+			set_Initjob(2);
+		}
+		else if (Name == "召喚師") {
+			set_Initjob(3);
+		}
+		else if (Name == "戰士") {
+			set_Initjob(4);
+		}
+		else if (Name == "輔助") {
+			set_Initjob(5);
+		}
 		input_f1 >> HP;
 		input_f1 >> SP;
 		input_f1 >> maxHP;
@@ -94,6 +109,21 @@ void  CLifeEntity::file_read_data() {
 	else if (out_data_num == 2) {
 		ifstream input_f2("play2.txt");
 		input_f2 >> Name;
+		if (Name == "射手") {
+			set_Initjob(1);
+		}
+		else if (Name == "法師") {
+			set_Initjob(2);
+		}
+		else if (Name == "召喚師") {
+			set_Initjob(3);
+		}
+		else if (Name == "戰士") {
+			set_Initjob(4);
+		}
+		else if (Name == "輔助") {
+			set_Initjob(5);
+		}
 		input_f2 >> HP;
 		input_f2 >> SP;
 		input_f2 >> maxHP;
@@ -112,6 +142,21 @@ void  CLifeEntity::file_read_data() {
 	else if (out_data_num == 3) {
 		ifstream input_f3("play3.txt");
 		input_f3 >> Name;
+		if (Name == "射手") {
+			set_Initjob(1);
+		}
+		else if (Name == "法師") {
+			set_Initjob(2);
+		}
+		else if (Name == "召喚師") {
+			set_Initjob(3);
+		}
+		else if (Name == "戰士") {
+			set_Initjob(4);
+		}
+		else if (Name == "輔助") {
+			set_Initjob(5);
+		}
 		input_f3 >> HP;
 		input_f3 >> SP;
 		input_f3 >> maxHP;
