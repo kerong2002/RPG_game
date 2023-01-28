@@ -1,17 +1,5 @@
 # RPG_game
-![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/2.PNG)  
 
-![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/1.PNG) 
-
-![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/3.PNG)  
-
-![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/4.PNG)  
-
-![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/5.PNG)  
-
-![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/6.PNG)  
-
-![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/7.PNG)  
 
 ## 爆肝RPG game挑戰
 ## 靈感來自 Minecraft Dungeon  
@@ -26,6 +14,21 @@
 | 舜移 | move | 技能解鎖 | sshop  |
 | 釣魚 | fish | 傳奇鎧甲 | lshop  |
 | 保存 | log_out | 離開 | exit  |  
+
+## 遊戲展示
+![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/2.PNG)  
+
+![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/1.PNG) 
+
+![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/3.PNG)  
+
+![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/4.PNG)  
+
+![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/5.PNG)  
+
+![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/6.PNG)  
+
+![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/7.PNG)  
 
 ## 2022/11/07
 ![image](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/RPG_TITLE.png)
