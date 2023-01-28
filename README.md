@@ -3,8 +3,19 @@
 
 <p>
  <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/1.PNG" width="46%" /> 
-  <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/2.PNG" width="46%" /> 
+ <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/3.PNG" width="46%" /> 
 </p>
+
+<p>
+ <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/4.PNG" width="46%" /> 
+ <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/5.PNG" width="46%" /> 
+</p>
+
+<p>
+ <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/6.PNG" width="46%" /> 
+ <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/7.PNG" width="46%" /> 
+</p>
+
 ## 爆肝RPG game挑戰
 ## 靈感來自 Minecraft Dungeon  
 
