@@ -2,18 +2,18 @@
 ![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/2.PNG)  
 
 <p>
- <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/1.PNG" width="40" /> 
- <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/3.PNG" width="80%" /> 
+ <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/1.PNG" width="50" /> 
+ <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/3.PNG" width="50%" /> 
 </p>
 
 <p>
- <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/4.PNG" width="46%" /> 
- <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/5.PNG" width="46%" /> 
+ <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/4.PNG" width="50%" /> 
+ <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/5.PNG" width="50%" /> 
 </p>
 
 <p>
- <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/6.PNG" width="46%" /> 
- <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/7.PNG" width="46%" /> 
+ <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/6.PNG" width="50%" /> 
+ <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/7.PNG" width="50%" /> 
 </p>
 
 ## 爆肝RPG game挑戰
