@@ -1,20 +1,12 @@
 # RPG_game
 ![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/2.PNG)  
 
-<p>
- <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/1.PNG" width="50" /> 
- <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/3.PNG" width="50%" /> 
-</p>
-
-<p>
- <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/4.PNG" width="50%" /> 
- <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/5.PNG" width="50%" /> 
-</p>
-
-<p>
- <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/6.PNG" width="50%" /> 
- <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/7.PNG" width="50%" /> 
-</p>
+![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/1.PNG")  
+![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/3.PNG")  
+![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/4.PNG")  
+![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/5.PNG")  
+![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/6.PNG")  
+![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/7.PNG")  
 
 ## 爆肝RPG game挑戰
 ## 靈感來自 Minecraft Dungeon  
