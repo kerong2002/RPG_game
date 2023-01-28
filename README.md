@@ -2,8 +2,8 @@
 ![img](https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/2.PNG)  
 
 <p>
- <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/1.PNG" width="46%" /> 
- <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/3.PNG" width="46%" /> 
+ <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/1.PNG" width="40" /> 
+ <img src="https://github.com/kerong2002/RPG_game/blob/main/RPG_PHOTO/3.PNG" width="80%" /> 
 </p>
 
 <p>
