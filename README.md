@@ -3,7 +3,6 @@
 ## 爆肝RPG game挑戰
 ## 靈感來自 Minecraft Dungeon  
 
-# 
 |Command|	Description|
 |:-:|:-:|
 |ls|	List all the monsters in the game.|
