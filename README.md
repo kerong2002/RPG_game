@@ -1,8 +1,24 @@
 # RPG_game
 
-
 ## 爆肝RPG game挑戰
 ## 靈感來自 Minecraft Dungeon  
+
+# 
+|Command|	Description|
+|:-:|:-:|
+|ls|	List all the monsters in the game.|
+|shop|	Display a list of all the available items in the shop.|
+|checkbag|	Open your backpack to view the items you have collected.|
+|wshop|	Visit the weapon shop to purchase new weapons.|
+|puthouse|	Store an item in your warehouse for safekeeping.|
+|checkhouse|	Retrieve an item from your warehouse.|
+|fshop|	Visit the food shop to purchase food items that will restore your health.|
+|move|	Use your teleportation ability to move to a different location.|
+|sshop|	Unlock new skills that will help you in battle.|
+|fish|	Try your luck at fishing and see what kind of fish you can catch.|
+|lshop|	Visit the legendary armor shop to purchase powerful armor.|
+|log_out|	Save your progress and log out of the game.|
+|exit|	Exit the game without saving.|
 
 ### ★請使用空白鍵開啟指令表
 | 功能\\指令 | 輸入 | 功能\\指令 | 輸入  |
