@@ -4,7 +4,7 @@
 ## 靈感來自 Minecraft Dungeon  
 
 |Command|	Description|
-|:-:|:-:|
+|:-:|-|
 |ls|	List all the monsters in the game.|
 |shop|	Display a list of all the available items in the shop.|
 |checkbag|	Open your backpack to view the items you have collected.|
